@@ -1,5 +1,5 @@
 ---
-title: "Create stimuli for project on composing concrete and abstract concepts"
+title: "FakeDiamond: find concreteness word pairs"
 author: "Ryan Law"
 date: "`r Sys.Date()`"
 output: html_document
