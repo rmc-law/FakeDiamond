@@ -1,7 +1,7 @@
 Stimulus creation for semantic composition + semantic memory
 
 1. Use LexOPS in R to find a set of concrete and abstract words that are matched on Zipf Frequency, Age of Acquisition, Length, Part of Speech 
-(see create_stimuli.Rmd for details). 
+(see 1_find_concreteness_word_pairs.Rmd for details). 
 Seed number: 42
 Input: Norming data (e.g., Brysbaert_etal_2014.csv or glasgow_norms_column_renamed.csv) 
 Output: stim_long_brysbaert_all_possible_seed42.csv (all possible pairs of concrete vs. abstract words whilst matching the aforementioned variables) 
