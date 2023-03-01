@@ -1,0 +1,52 @@
+---
+title: "Create stimuli for project on composing concrete and abstract concepts"
+author: "Ryan Law"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(LexOPS)
+library(tidyverse)
+```
+
+## Generate a list of single words 
+
+We generate a list of concrete and abstract words by sampling from the two local maxima in the concrete rating distribution, ranging from 1 to 7, from the Glasgow Norms (Scott et al., 2018). Concrete words were drawn from the range of 2.5-3.5, while abstract words were drawn from the distribution between the range of 6-7. 
+
+All pairs of concrete-abstract words are matched on several psycholinguistic variables known to influence lexical and conceptual access: 
+- single word frequency in Zipf (frequency per billion words; variance +-0.1)
+- word length (variance +-2 characters)
+- age of acquisition (variance +-0.1)
+- part-of-speech 
+The list is further filtered based on the proportion of people knowing that word at 0.9-1. That is, we keep only words that 90% of raters know. 
+
+
+```{r create list of words}
+stim <- LexOPS::lexops %>%
+	subset(PK.Brysbaert >= 0.9 & PK.Brysbaert <= 1) %>%
+	split_by(CNC.Brysbaert, 1.5:2.5 ~ 4:5) %>%
+	control_for(Zipf.SUBTLEX_UK, -0.3:0.3) %>%
+	control_for(AoA.Kuperman, -2:2) %>%
+	control_for(PoS.SUBTLEX_UK) %>%
+	control_for(Length, -2:2) %>%
+	generate("all", "balanced", seed = 42)
+stim_long <- long_format(stim)
+rep_str = c('A1'='Abstract','A2'='Concrete')
+stim_long$condition <- str_replace_all(stim_long$condition, rep_str)
+write.csv(stim_long, "U:\\ownCloud\\projects\\semantic_composition\\stimuli\\stim_long_brysbaert_all_possible_seed42.csv", row.names=FALSE)
+stim_long
+```
+
+## Examine distribution
+
+```{r visualise design, echo=FALSE}
+plot_design(stim_long)
+```
+
+## Examine SD of concreteness to make sure raters agree with ratings
+
+```{r visualise SD, echo=FALSE}
+
+```
