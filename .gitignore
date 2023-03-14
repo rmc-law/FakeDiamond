@@ -3,3 +3,5 @@
 *.pdf
 *.db
 */.ipynb_checkpoints
+*.docx
+*/*.docx
