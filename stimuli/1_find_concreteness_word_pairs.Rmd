@@ -26,16 +26,21 @@ The list is further filtered based on the proportion of people knowing that word
 ```{r create list of words}
 stim <- LexOPS::lexops %>%
 	subset(PK.Brysbaert >= 0.9 & PK.Brysbaert <= 1) %>%
-	split_by(CNC.Brysbaert, 1.5:2.5 ~ 4:5) %>%
+	subset(Length >= 3 & Length <= 10) %>%
+	subset(PoS.SUBTLEX_UK %in% c("noun")) %>%
+  split_by(CNC.Brysbaert, 1.5:2.5 ~ 4:5) %>%
 	control_for(Zipf.SUBTLEX_UK, -0.3:0.3) %>%
-	control_for(AoA.Kuperman, -2:2) %>%
-	control_for(PoS.SUBTLEX_UK) %>%
+	control_for(AoA.BrysbaertBiemiller, -2:2) %>%
+  control_for(Syllables.CMU, -2:2) %>%
+  control_for(Phonemes.CMU, -2:2) %>%
+	control_for(RT.BLP, -50:50) %>%
+  control_for(VAL.Glasgow_Norms, -1:1) %>%
 	control_for(Length, -2:2) %>%
 	generate("all", "balanced", seed = 42)
 stim_long <- long_format(stim)
 rep_str = c('A1'='Abstract','A2'='Concrete')
 stim_long$condition <- str_replace_all(stim_long$condition, rep_str)
-write.csv(stim_long, "U:\\ownCloud\\projects\\semantic_composition\\stimuli\\stim_long_brysbaert_all_possible_seed42.csv", row.names=FALSE)
+write.csv(stim_long, sprintf("U:\\ownCloud\\projects\\FakeDiamond\\stimuli\\word_list_seed42_%s.csv", Sys.Date()), row.names=FALSE)
 stim_long
 ```
 
