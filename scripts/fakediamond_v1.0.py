@@ -79,24 +79,22 @@ def present_instruction(text=''):
 
 def present_trial(stimuli, trial_i, run='', logfile=None):
     
-    """Present an experimental trial: instruction, fixation, target words, 
-    probe, then a brief pause.
+    """Present an experimental trial
     
-    Keyword Arguments
-    
-    stimuli             -   A csv file with rows of trial items.
-    
-    trial_i             -   Int that indicates trial index.
-    
-    run                 -   Run type, either 'prac' (practice) or 'expt' 
-                            (experiment).
-    
-    logfile             -   Logfile to log behavioural response. Default = None
+    Parameters
+    ----------    
+    stimuli : list 
+        A csv file with rows of trial items
+    trial : int 
+        Trial index for selecting the trial from stimuli
+    run : str
+        Session run type, either 'prac' (practice) or 'expt' (experiment)
+    logfile : object
+        Log behavioural response (default is None)
     
     Returns
-
-    logfile             -   Logfile containing behavioural response. 
-    
+    -------
+    logfile : logfile containing behavioural response. 
     """
     
     present_instruction('<Click to start trial>')
