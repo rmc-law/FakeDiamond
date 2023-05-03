@@ -12,8 +12,8 @@ from psychopy import visual, core, data #event
 
 from scansync.meg import MEGTriggerBox
 
-meg = MEGTriggerBox()
-meg.set_trigger_state(0) # reset trigger state
+MEG = MEGTriggerBox()
+MEG.set_trigger_state(0) # reset trigger state
 
 expInfo = {}
 expInfo['Subject'] = input('subject: ')
@@ -31,7 +31,7 @@ probe = visual.TextStim(window, text='', color='blue', font='Courier New',
 word_instruction = visual.TextStim(window, text='', font='Courier New', 
                                    wrapWidth=600, alignHoriz='center', height=25)
 fixation = visual.TextStim(window, text='+')
-# photodiode = visual.Rect(window, width=40, height=40, pos=[377,277], fillColor=[255,255,255], fillColorSpace='rgb255')
+photodiode = visual.Rect(window, width=40, height=40, pos=[377,277], fillColor=[255,255,255], fillColorSpace='rgb255')
 # pos (photodiode position) units: pixels; pos=[0,0] is screen centre
 
 RT_clock = core.Clock()
@@ -50,7 +50,8 @@ def present_fix():
 
 def present_word(trigger=None, photoDiode=True):
     if trigger is not None:
-        window.callOnFlip(triggerBox.activate_line, bitmask=int(trigger))
+        # window.callOnFlip(triggerBox.activate_line, bitmask=int(trigger))
+        window.callOnFlip(MEG.set_trigger_state(trigger, 20))
     for frame in range(36): # presents each word: on 300ms, off 300ms
         if frame < 18:
             word.draw()
@@ -63,7 +64,9 @@ def present_probe(text=''):
     probe.setText(text) # presents memory probe
     probe.draw()
     window.flip()
-    return event.waitKeys(keyList=['1','2','q'], timeStamped=RT_clock)
+    button_pressed, t = MEG.wait_for_button_press(allowed=['Ry','Rb'], timeout=None) # Ry = right yellow
+    # return event.waitKeys(keyList=['1','2','q'], timeStamped=RT_clock)
+    return button_pressed, t
 
 def present_feedback(text=''):
     for frame in range (78): # presents feedback: on 1s, off 500ms
@@ -75,9 +78,10 @@ def present_instruction(text=''):
     word_instruction.setText(text)
     word_instruction.draw() # presents instructions
     window.flip()
-    return event.waitKeys(keyList=['1','2'])
+    response, RT = MEG.wait_for_button_press(allowed=['Ry'], timeout=None) # Ry = right yellow
+    return response, RT
 
-def present_trial(stimuli, trial_i, run='', logfile=None):
+def present_trial(stimulus, trial, run='', logfile=None):
     
     """Present an experimental trial
     
@@ -100,27 +104,27 @@ def present_trial(stimuli, trial_i, run='', logfile=None):
     present_instruction('<Click to start trial>')
     present_fix()
     for word_i in [1,2]:
-        word.setText(stimuli[trial_i]['word%s' %word_i])
-        present_word()
+        word.setText(stimulus[trial]['word%s' %word_i])
+        present_word(trigger=stimulus[trial]['trigger'])
     if run == 'prac':
-        if stimuli[trial_i]['probe'] != '':
-            resp = present_probe(stimuli[trial_i]['probe'])
-            if resp[0][0] == stimuli[trial_i]['match']:
+        if stimulus[trial]['probe'] != '':
+            response, _ = present_probe(stimulus[trial]['probe'])
+            if response == stimulus[trial]['match']:
                 word.setText('Correct!')
                 present_feedback()
             else:
                 word.setText('Incorrect!')
                 present_feedback()
     elif run == 'expt':
-        if trial_i['Probe'] != '':
-            resp = present_probe(trial_i['Probe']) # presents probe
-            logfile.addData('response', resp[0][0])
-            logfile.addData('RT', resp[0][1])
-            if resp[0][0] == trial_i['Response']: # record response
+        if trial['probe'] != '':
+            response, RT = present_probe(trial['probe']) # presents probe
+            logfile.addData('response', response)
+            logfile.addData('RT', RT)
+            if response == trial['response']: # record response
                 logfile.addData('hit', 1)
-            elif resp[0][0] != trial_i['Response']:
+            elif response != trial['response']:
                 logfile.addData('hit', 0)
-            elif resp[0][0] == 'q':
+            elif response == 'q':
                 core.quit()
         else:
             logfile.addData('hit', 'NaN')
