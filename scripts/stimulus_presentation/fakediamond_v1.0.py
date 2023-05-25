@@ -46,7 +46,7 @@ window.mouseVisible = True
 # =============================================================================
 
 def present_fix():
-    for frame in range (36): # presents fix-cross: on 300ms, off 300ms
+    for frame in range (36): # refresh rate 60Hz; on 300ms, off 300ms
         if frame <= 18:
             fixation.draw()
         window.flip()
