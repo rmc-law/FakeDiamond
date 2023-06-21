@@ -1,0 +1,304 @@
+item_nr,set_nr,specificity,option1,option2,answer
+1,1,"['mid', 'high']",hopping animal,kangaroo,right
+2,1,"['low', 'high']",animal,kangaroo,right
+3,1,"['mid', 'low']",hopping animal,animal,left
+4,2,"['high', 'mid']",snail,slow animal,left
+5,2,"['low', 'mid']",animal,slow animal,right
+6,2,"['low', 'high']",animal,snail,right
+7,3,"['low', 'high']",bird,cardinal,right
+8,3,"['high', 'mid']",cardinal,red bird,left
+9,3,"['low', 'mid']",bird,red bird,right
+10,4,"['mid', 'low']",fishing bird,bird,left
+11,4,"['high', 'low']",kingfisher,bird,left
+12,4,"['mid', 'high']",fishing bird,kingfisher,right
+13,5,"['low', 'high']",bird,ostrich,right
+14,5,"['high', 'mid']",ostrich,big bird,left
+15,5,"['low', 'mid']",bird,big bird,right
+16,6,"['high', 'mid']",ostrich,large bird,left
+17,6,"['low', 'mid']",bird,large bird,right
+18,6,"['high', 'low']",ostrich,bird,left
+19,7,"['mid', 'low']",nocturnal bird,bird,left
+20,7,"['high', 'mid']",owl,nocturnal bird,left
+21,7,"['high', 'low']",owl,bird,left
+22,8,"['mid', 'low']",flightless bird,bird,left
+23,8,"['high', 'mid']",penguin,flightless bird,left
+24,8,"['high', 'low']",penguin,bird,left
+25,9,"['low', 'high']",bird,robin,right
+26,9,"['mid', 'high']",small bird,robin,right
+27,9,"['mid', 'low']",small bird,bird,left
+28,10,"['high', 'low']",swan,bird,left
+29,10,"['low', 'mid']",bird,white bird,right
+30,10,"['high', 'mid']",swan,white bird,left
+31,11,"['high', 'low']",yacht,boat,left
+32,11,"['mid', 'low']",expensive boat,boat,left
+33,11,"['mid', 'high']",expensive boat,yacht,right
+34,12,"['mid', 'low']",poetry book,book,left
+35,12,"['low', 'high']",book,anthology,right
+36,12,"['mid', 'high']",poetry book,anthology,right
+37,13,"['mid', 'high']",rain boots,wellies,right
+38,13,"['mid', 'low']",rain boots,boots,left
+39,13,"['high', 'low']",wellies,boots,left
+40,14,"['mid', 'high']",ring-shaped bread,bagel,right
+41,14,"['mid', 'low']",ring-shaped bread,bread,left
+42,14,"['low', 'high']",bread,bagel,right
+43,15,"['mid', 'high']",french bread,baguette,right
+44,15,"['mid', 'low']",french bread,bread,left
+45,15,"['low', 'high']",bread,baguette,right
+46,16,"['mid', 'low']",farm building,building,left
+47,16,"['mid', 'high']",farm building,barn,right
+48,16,"['high', 'low']",barn,building,left
+49,17,"['high', 'mid']",church,religious building,left
+50,17,"['high', 'low']",church,building,left
+51,17,"['mid', 'low']",religious building,building,left
+52,18,"['mid', 'low']",industrial building,building,left
+53,18,"['high', 'low']",factory,building,left
+54,18,"['mid', 'high']",industrial building,factory,right
+55,19,"['mid', 'high']",medical building,hospital,right
+56,19,"['high', 'low']",hospital,building,left
+57,19,"['mid', 'low']",medical building,building,left
+58,20,"['high', 'mid']",house,residential building,left
+59,20,"['high', 'low']",house,building,left
+60,20,"['mid', 'low']",residential building,building,left
+61,21,"['mid', 'high']",wooden buildings,cabins,right
+62,21,"['low', 'high']",buildings,cabins,right
+63,21,"['low', 'mid']",buildings,wooden buildings,right
+64,22,"['low', 'high']",car,bmw,right
+65,22,"['mid', 'high']",expensive car,bmw,right
+66,22,"['low', 'mid']",car,expensive car,right
+67,23,"['low', 'mid']",car,long car,right
+68,23,"['high', 'mid']",limousine,long car,left
+69,23,"['high', 'low']",limousine,car,left
+70,24,"['mid', 'low']",fast cat,cat,left
+71,24,"['low', 'high']",cat,cheetah,right
+72,24,"['mid', 'high']",fast cat,cheetah,right
+73,25,"['high', 'low']",panther,cat,left
+74,25,"['mid', 'low']",large cat,cat,left
+75,25,"['mid', 'high']",large cat,panther,right
+76,26,"['high', 'low']",sphynx,cat,left
+77,26,"['mid', 'low']",hairless cat,cat,left
+78,26,"['high', 'mid']",sphynx,hairless cat,left
+79,27,"['low', 'high']",cat,tiger,right
+80,27,"['low', 'mid']",cat,striped cat,right
+81,27,"['mid', 'high']",striped cat,tiger,right
+82,28,"['high', 'mid']",stools,small chairs,left
+83,28,"['low', 'mid']",chairs,small chairs,right
+84,28,"['low', 'high']",chairs,stools,right
+85,29,"['low', 'mid']",cheese,French cheese,right
+86,29,"['mid', 'high']",French cheese,brie,right
+87,29,"['low', 'high']",cheese,brie,right
+88,30,"['low', 'high']",cheese,cheddar,right
+89,30,"['low', 'mid']",cheese,English cheese,right
+90,30,"['high', 'mid']",cheddar,English cheese,left
+91,31,"['high', 'mid']",jacket,warm clothing,left
+92,31,"['low', 'high']",clothing,jacket,right
+93,31,"['low', 'mid']",clothing,warm clothing,right
+94,32,"['high', 'low']",chefs,cooks,left
+95,32,"['mid', 'high']",professional cooks,chefs,right
+96,32,"['mid', 'low']",professional cooks,cooks,left
+97,33,"['mid', 'high']",warm cover,blanket,right
+98,33,"['low', 'mid']",cover,warm cover,right
+99,33,"['low', 'high']",cover,blanket,right
+100,34,"['high', 'mid']",phones,calling devices,left
+101,34,"['mid', 'low']",calling devices,devices,left
+102,34,"['high', 'low']",phones,devices,left
+103,35,"['mid', 'high']",infectious disease,flu,right
+104,35,"['low', 'high']",disease,flu,right
+105,35,"['low', 'mid']",disease,infectious disease,right
+106,36,"['high', 'mid']",chihuahua,small dog,left
+107,36,"['high', 'low']",chihuahua,dog,left
+108,36,"['mid', 'low']",small dog,dog,left
+109,37,"['mid', 'high']",guide dog,labrador,right
+110,37,"['mid', 'low']",guide dog,dog,left
+111,37,"['low', 'high']",dog,labrador,right
+112,38,"['high', 'low']",pekinese,dog,left
+113,38,"['low', 'mid']",dog,long-haired dog,right
+114,38,"['high', 'mid']",pekinese,long-haired dog,left
+115,39,"['mid', 'low']",wrinkly dog,dog,left
+116,39,"['high', 'low']",pug,dog,left
+117,39,"['mid', 'high']",wrinkly dog,pug,right
+118,40,"['high', 'low']",waiters,employees,left
+119,40,"['mid', 'low']",restaurant employees,employees,left
+120,40,"['mid', 'high']",restaurant employees,waiters,right
+121,41,"['low', 'high']",fish,flounder,right
+122,41,"['mid', 'high']",flat fish,flounder,right
+123,41,"['low', 'mid']",fish,flat fish,right
+124,42,"['mid', 'low']",flat fish,fish,left
+125,42,"['high', 'low']",ray,fish,left
+126,42,"['mid', 'high']",flat fish,ray,right
+127,43,"['high', 'low']",salmon,fish,left
+128,43,"['low', 'mid']",fish,oily fish,right
+129,43,"['high', 'mid']",salmon,oily fish,left
+130,44,"['mid', 'high']",predator fish,shark,right
+131,44,"['low', 'high']",fish,shark,right
+132,44,"['mid', 'low']",predator fish,fish,left
+133,45,"['low', 'high']",floor,deck,right
+134,45,"['high', 'mid']",deck,wooden floor,left
+135,45,"['low', 'mid']",floor,wooden floor,right
+136,46,"['mid', 'low']",blue flower,flower,left
+137,46,"['high', 'low']",bluebell,flower,left
+138,46,"['high', 'mid']",bluebell,blue flower,left
+139,47,"['high', 'mid']",daffodil,yellow flower,left
+140,47,"['high', 'low']",daffodil,flower,left
+141,47,"['mid', 'low']",yellow flower,flower,left
+142,48,"['low', 'high']",flower,rose,right
+143,48,"['low', 'mid']",flower,thorny flower,right
+144,48,"['mid', 'high']",thorny flower,rose,right
+145,49,"['low', 'high']",fruit,durian,right
+146,49,"['high', 'mid']",durian,thorny fruit,left
+147,49,"['low', 'mid']",fruit,thorny fruit,right
+148,50,"['low', 'mid']",fruit,yellow fruit,right
+149,50,"['mid', 'high']",yellow fruit,banana,right
+150,50,"['low', 'high']",fruit,banana,right
+151,51,"['high', 'low']",grape,fruit,left
+152,51,"['high', 'mid']",grape,purple fruit,left
+153,51,"['low', 'mid']",fruit,purple fruit,right
+154,52,"['low', 'high']",fruit,kiwi,right
+155,52,"['mid', 'high']",hairy fruit,kiwi,right
+156,52,"['mid', 'low']",hairy fruit,fruit,left
+157,53,"['low', 'high']",fruit,watermelon,right
+158,53,"['mid', 'high']",juicy fruit,watermelon,right
+159,53,"['low', 'mid']",fruit,juicy fruit,right
+160,54,"['low', 'high']",fruit,apple,right
+161,54,"['mid', 'high']",red fruit,apple,right
+162,54,"['low', 'mid']",fruit,red fruit,right
+163,55,"['low', 'high']",games,rugby,right
+164,55,"['mid', 'high']",tackle games,rugby,right
+165,55,"['mid', 'low']",tackle games,games,left
+166,56,"['high', 'mid']",emerald,green gem,left
+167,56,"['high', 'low']",emerald,gem,left
+168,56,"['mid', 'low']",green gem,gem,left
+169,57,"['low', 'mid']",gem,red gem,right
+170,57,"['high', 'mid']",ruby,red gem,left
+171,57,"['low', 'high']",gem,ruby,right
+172,58,"['high', 'mid']",sapphire,blue gem,left
+173,58,"['high', 'low']",sapphire,gem,left
+174,58,"['mid', 'low']",blue gem,gem,left
+175,59,"['mid', 'low']",round handles,handles,left
+176,59,"['low', 'high']",handles,knobs,right
+177,59,"['mid', 'high']",round handles,knobs,right
+178,60,"['high', 'mid']",beret,French hat,left
+179,60,"['low', 'mid']",hat,French hat,right
+180,60,"['high', 'low']",beret,hat,left
+181,61,"['high', 'mid']",zebra,striped horse,left
+182,61,"['low', 'mid']",horse,striped horse,right
+183,61,"['high', 'low']",zebra,horse,left
+184,62,"['high', 'low']",school,institution,left
+185,62,"['high', 'mid']",school,teaching institution,left
+186,62,"['mid', 'low']",teaching institution,institution,left
+187,63,"['mid', 'low']",male kids,kids,left
+188,63,"['mid', 'high']",male kids,boys,right
+189,63,"['high', 'low']",boys,kids,left
+190,64,"['high', 'low']",whiskey,liquor,left
+191,64,"['mid', 'low']",smoky liquor,liquor,left
+192,64,"['high', 'mid']",whiskey,smoky liquor,left
+193,65,"['high', 'low']",bat,mammal,left
+194,65,"['mid', 'high']",flying mammal,bat,right
+195,65,"['mid', 'low']",flying mammal,mammal,left
+196,66,"['low', 'mid']",mammal,spiky mammal,right
+197,66,"['high', 'mid']",hedgehog,spiky mammal,left
+198,66,"['high', 'low']",hedgehog,mammal,left
+199,67,"['high', 'mid']",whale,marine mammal,left
+200,67,"['low', 'high']",mammal,whale,right
+201,67,"['low', 'mid']",mammal,marine mammal,right
+202,68,"['low', 'mid']",marks,permanent marks,right
+203,68,"['mid', 'high']",permanent marks,stains,right
+204,68,"['low', 'high']",marks,stains,right
+205,69,"['high', 'low']",kebab,meat,left
+206,69,"['mid', 'low']",skewered meat,meat,left
+207,69,"['high', 'mid']",kebab,skewered meat,left
+208,70,"['high', 'mid']",ointment,topical medicine,left
+209,70,"['mid', 'low']",topical medicine,medicine,left
+210,70,"['high', 'low']",ointment,medicine,left
+211,71,"['low', 'high']",politicians,governors,right
+212,71,"['mid', 'high']",appointed politicians,governors,right
+213,71,"['low', 'mid']",politicians,appointed politicians,right
+214,72,"['low', 'high']",reptile,crocodile,right
+215,72,"['mid', 'high']",large reptile,crocodile,right
+216,72,"['low', 'mid']",reptile,large reptile,right
+217,73,"['mid', 'low']",shelled reptile,reptile,left
+218,73,"['high', 'mid']",tortoise,shelled reptile,left
+219,73,"['high', 'low']",tortoise,reptile,left
+220,74,"['low', 'mid']",residences,huge residences,right
+221,74,"['high', 'mid']",mansions,huge residences,left
+222,74,"['high', 'low']",mansions,residences,left
+223,75,"['mid', 'low']",tomato sauce,sauce,left
+224,75,"['high', 'low']",ketchup,sauce,left
+225,75,"['mid', 'high']",tomato sauce,ketchup,right
+226,76,"['high', 'low']",clogs,shoe,left
+227,76,"['high', 'mid']",clogs,wooden shoe,left
+228,76,"['mid', 'low']",wooden shoe,shoe,left
+229,77,"['mid', 'low']",potato snacks,snacks,left
+230,77,"['high', 'mid']",crisps,potato snacks,left
+231,77,"['high', 'low']",crisps,snacks,left
+232,78,"['low', 'high']",tool,shears,right
+233,78,"['high', 'mid']",shears,cutting tool,left
+234,78,"['low', 'mid']",tool,cutting tool,right
+235,79,"['high', 'low']",spade,tool,left
+236,79,"['mid', 'low']",digging tool,tool,left
+237,79,"['mid', 'high']",digging tool,spade,right
+238,80,"['high', 'mid']",trowel,gardening tool,left
+239,80,"['low', 'high']",tool,trowel,right
+240,80,"['low', 'mid']",tool,gardening tool,right
+241,81,"['low', 'mid']",tree,coniferous tree,right
+242,81,"['low', 'high']",tree,fir,right
+243,81,"['mid', 'high']",coniferous tree,fir,right
+244,82,"['low', 'high']",tree,palm,right
+245,82,"['low', 'mid']",tree,tropical tree,right
+246,82,"['mid', 'high']",tropical tree,palm,right
+247,83,"['low', 'mid']",utensil,tined utensil,right
+248,83,"['high', 'mid']",fork,tined utensil,left
+249,83,"['low', 'high']",utensil,fork,right
+250,84,"['mid', 'high']",purple vegetable,aubergine,right
+251,84,"['low', 'mid']",vegetable,purple vegetable,right
+252,84,"['low', 'high']",vegetable,aubergine,right
+253,85,"['high', 'low']",carrot,vegetable,left
+254,85,"['mid', 'low']",orange vegetable,vegetable,left
+255,85,"['high', 'mid']",carrot,orange vegetable,left
+256,86,"['mid', 'high']",yellow vegetable,corn,right
+257,86,"['low', 'mid']",vegetable,yellow vegetable,right
+258,86,"['low', 'high']",vegetable,corn,right
+259,87,"['high', 'low']",lettuce,vegetable,left
+260,87,"['low', 'mid']",vegetable,leafy vegetable,right
+261,87,"['high', 'mid']",lettuce,leafy vegetable,left
+262,88,"['low', 'high']",vegetable,cabbage,right
+263,88,"['high', 'mid']",cabbage,round vegetable,left
+264,88,"['low', 'mid']",vegetable,round vegetable,right
+265,89,"['high', 'low']",potato,vegetable,left
+266,89,"['high', 'mid']",potato,starchy vegetable,left
+267,89,"['low', 'mid']",vegetable,starchy vegetable,right
+268,90,"['low', 'mid']",vegetable,orange vegetable,right
+269,90,"['high', 'mid']",pumpkin,orange vegetable,left
+270,90,"['low', 'high']",vegetable,pumpkin,right
+271,91,"['high', 'mid']",ambulance,medical vehicle,left
+272,91,"['high', 'low']",ambulance,vehicle,left
+273,91,"['low', 'mid']",vehicle,medical vehicle,right
+274,92,"['mid', 'low']",horse-drawn vehicle,vehicle,left
+275,92,"['mid', 'high']",horse-drawn vehicle,chariot,right
+276,92,"['low', 'high']",vehicle,chariot,right
+277,93,"['mid', 'low']",transport vehicle,vehicle,left
+278,93,"['high', 'mid']",lorry,transport vehicle,left
+279,93,"['high', 'low']",lorry,vehicle,left
+280,94,"['high', 'low']",submarine,vehicle,left
+281,94,"['low', 'mid']",vehicle,underwater vehicle,right
+282,94,"['high', 'mid']",submarine,underwater vehicle,left
+283,95,"['mid', 'high']",armoured vehicle,tank,right
+284,95,"['mid', 'low']",armoured vehicle,vehicle,left
+285,95,"['low', 'high']",vehicle,tank,right
+286,96,"['high', 'low']",tractor,vehicle,left
+287,96,"['mid', 'high']",farm vehicle,tractor,right
+288,96,"['mid', 'low']",farm vehicle,vehicle,left
+289,97,"['mid', 'high']",water vessel,bottle,right
+290,97,"['high', 'low']",bottle,vessel,left
+291,97,"['mid', 'low']",water vessel,vessel,left
+292,98,"['mid', 'low']",flower vessel,vessel,left
+293,98,"['high', 'low']",vase,vessel,left
+294,98,"['mid', 'high']",flower vessel,vase,right
+295,99,"['low', 'high']",wine,champagne,right
+296,99,"['high', 'mid']",champagne,fizzy wine,left
+297,99,"['low', 'mid']",wine,fizzy wine,right
+298,100,"['low', 'high']",food,pasta,right
+299,100,"['mid', 'high']",Italian food,pasta,right
+300,100,"['mid', 'low']",Italian food,food,left
+301,101,"['high', 'low']",sushi,food,left
+302,101,"['mid', 'low']",Japanese food,food,left
+303,101,"['high', 'mid']",sushi,Japanese food,left

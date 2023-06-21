@@ -1,0 +1,68 @@
+---
+title: "specificity"
+author: "Ryan Law"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(LexOPS)
+```
+
+## R Markdown
+
+This is a script to help make 
+
+```{r sensorimotor norms, echo=FALSE}
+sensorimotor <- read_csv("https://osf.io/48wsc/download")
+write.csv(sensorimotor, "U:\\ownCloud\\projects\\FakeDiamond\\stimuli\\specificity\\sensorimotor.csv", row.names=FALSE)
+sensorimotor %>%
+  head(5)
+```
+
+```{r joining lexops dataset, echo=FALSE}
+sensorimotor <- sensorimotor %>%
+  rename(word = Word) %>%
+  mutate(word = tolower(word))
+sensorimotor <- sensorimotor %>% 
+  left_join(lexops, by=c("word"="string"))
+sensorimotor
+```
+
+```{r use lexops to match stim}
+# stim <- sensorimotor %>%
+#   set_options(id_col = "word") %>%
+#   # subset(PK.Brysbaert >= 0.9 & PK.Brysbaert <= 1) %>%
+# 	# subset(PoS.SUBTLEX_UK %in% c("noun")) %>%
+#   split_by(Visual.mean, 0:2.5 ~ 2.6:5) %>%
+#   control_for(Length, 0:0) %>%
+#   control_for(Zipf.SUBTLEX_UK, -0.2:0.2) %>%
+#   control_for(RT.BLP, -20:20) %>%
+#   control_for(Accuracy.BLP, -0.02:0.02) %>%
+#   control_for(AoA.BrysbaertBiemiller, 0:0) %>%
+# 	generate(25, "balanced", seed = 42)
+
+stim <- LexOPS::lexops %>%
+	subset(PK.Brysbaert >= 0.9 & PK.Brysbaert <= 1) %>%
+	subset(Length >= 3 & Length <= 10) %>%
+	subset(PoS.SUBTLEX_UK %in% c("noun")) %>%
+	split_by(Zipf.SUBTLEX_UK, 1.1:2.5 ~ 2.6:4.1) %>%
+	control_for(CNC.Brysbaert, -0.1:0.1) %>%
+	control_for(RT.BLP, -20:20) %>%
+	control_for(AoA.Kuperman, -0.5:0.5) %>%
+	generate(120, "balanced", seed = 42)
+stim <- long_format(stim)
+rep_str = c('A1'='LowFreq','A2'='HighFreq')
+stim$condition <- str_replace_all(stim$condition, rep_str)
+# write.csv(stim_long, sprintf("U:\\ownCloud\\projects\\FakeDiamond\\stimuli\\concreteness_denotation\\1_word_list_seed42_%s.csv", Sys.Date()), row.names=FALSE)
+write.csv(stim, "U:\\ownCloud\\projects\\FakeDiamond\\stimuli\\specificity\\lexops_output_frequency_manipulation.csv", row.names=FALSE)
+stim
+
+```
+```{r plot design}
+plot_design(stim)
+```
