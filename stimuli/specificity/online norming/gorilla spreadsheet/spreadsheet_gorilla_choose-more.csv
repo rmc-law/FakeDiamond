@@ -1,8 +1,8 @@
 display,randomise_trials,option1,option2,correct_answer,condition_choose
-instructions_practice session,,,,,more
+instructions_practice,,,,,more
 trial_practice,0,white pigeon,pigeon,left,more
 trial_practice,0,bird,crow,right,more
-trial_practice,0,elegant bird,swan,left,more
+trial_practice,0,elegant bird,swan,right,more
 trial_practice,0,van,car,left,more
 trial_practice,0,vehicle,Audi,right,more
 trial_practice,0,Toyota,automobile,left,more
@@ -49,7 +49,7 @@ trial_experimental,1,python,snake,right,more
 trial_experimental,1,computer,laptop,left,more
 trial_experimental,1,leafy vegetable,lettuce,left,more
 trial_experimental,1,dog,wrinkly dog,right,more
-trial_experimental,1,tall mammel,giraffe,right,more
+trial_experimental,1,tall mammal,giraffe,right,more
 trial_experimental,1,wooden building,building,right,more
 trial_experimental,1,vehicle,chariot,left,more
 trial_experimental,1,head sculpture,sculpture,left,more
@@ -68,7 +68,7 @@ trial_experimental,1,diving bird,kingfisher,left,more
 trial_experimental,1,building,church,left,more
 trial_experimental,1,vehicle,armoured vehicle,right,more
 trial_experimental,1,gardening tool,tool,right,more
-trial_experimental,1,largest bird,ostrich,left,more
+trial_experimental,1,large bird,ostrich,left,more
 trial_experimental,1,stringed instrument,instrument,right,more
 trial_experimental,1,stick,frozen stick,right,more
 trial_experimental,1,cat,sphynx,left,more
@@ -76,7 +76,7 @@ trial_experimental,1,hospital,building,left,more
 trial_experimental,1,pearl,lustrous sphere,left,more
 trial_experimental,1,carrot,vegetable,right,more
 trial_experimental,1,pearl,sphere,right,more
-trial_experimental,1,corn,kerneled vegetable,right,more
+trial_experimental,1,corn,kernelled vegetable,right,more
 trial_experimental,1,tank,armoured vehicle,right,more
 trial_experimental,1,naval rank,admiral,right,more
 trial_experimental,1,cunning plan,ploy,left,more
@@ -112,7 +112,7 @@ trial_experimental,1,portable computer,laptop,left,more
 trial_experimental,1,digging tool,tool,left,more
 trial_experimental,1,flu,illness,right,more
 trial_experimental,1,collection,poetry collection,right,more
-trial_experimental,1,guide dog,labrador,left,more
+trial_experimental,1,guide dog,Labrador,left,more
 trial_experimental,1,gooey cheese,brie,right,more
 trial_experimental,1,protesting crowd,crowd,left,more
 trial_experimental,1,boat,canoe,left,more
@@ -122,7 +122,7 @@ trial_experimental,1,coniferous tree,fir,left,more
 trial_experimental,1,reptile,large reptile,left,more
 trial_experimental,1,bird,graceful bird,right,more
 trial_experimental,1,transport,bus,right,more
-trial_experimental,1,fruits,crisp fruit,left,more
+trial_experimental,1,fruit,crisp fruit,left,more
 trial_experimental,1,storm,weather,right,more
 trial_experimental,1,outer garment,jacket,left,more
 trial_experimental,1,car,limousine,left,more
@@ -163,7 +163,7 @@ trial_experimental,1,bird,diving bird,left,more
 trial_experimental,1,large poultry,poultry,left,more
 trial_experimental,1,durian,thorny fruit,left,more
 trial_experimental,1,grape,fruit,left,more
-trial_experimental,1,chihuahua,dog,left,more
+trial_experimental,1,Chihuahua,dog,left,more
 trial_experimental,1,orange vegetable,vegetable,right,more
 trial_experimental,1,expensive boat,yacht,right,more
 trial_experimental,1,agricultural vehicle,tractor,right,more
@@ -186,7 +186,7 @@ trial_experimental,1,wooden shoe,shoe,left,more
 trial_experimental,1,spherical vegetable,pea,left,more
 trial_experimental,1,crime,shoplifting,right,more
 trial_experimental,1,Japanese dish,dish,left,more
-trial_experimental,1,kerneled vegetable,vegetable,right,more
+trial_experimental,1,kernelled vegetable,vegetable,right,more
 trial_experimental,1,residential building,building,left,more
 trial_experimental,1,cook,chef,left,more
 trial_experimental,1,storm,violent weather,right,more
@@ -208,10 +208,10 @@ trial_experimental,1,bird,nocturnal bird,right,more
 trial_experimental,1,agricultural vehicle,vehicle,right,more
 trial_experimental,1,music,sound,left,more
 trial_experimental,1,gem,red gem,left,more
-trial_experimental,1,french loaf,baguette,left,more
+trial_experimental,1,French loaf,baguette,left,more
 trial_experimental,1,predator,marine predator,right,more
 trial_experimental,1,product,hairspray,right,more
-trial_experimental,1,dog,labrador,left,more
+trial_experimental,1,dog,Labrador,left,more
 trial_experimental,1,fish,flat fish,left,more
 trial_experimental,1,marsupial,pouched mammal,right,more
 trial_experimental,1,computer,portable computer,right,more
@@ -233,7 +233,7 @@ trial_experimental,1,warm clothing,jumper,left,more
 trial_experimental,1,bird,robin,right,more
 trial_experimental,1,tined utensil,fork,left,more
 trial_experimental,1,vegetable,starchy vegetable,left,more
-trial_experimental,1,loaf,french loaf,right,more
+trial_experimental,1,loaf,French loaf,right,more
 trial_experimental,1,medical vehicle,ambulance,right,more
 trial_experimental,1,mammal,spiky mammal,left,more
 trial_experimental,1,rain boots,boots,right,more
@@ -251,7 +251,7 @@ trial_experimental,1,odour,unpleasant odour,left,more
 trial_experimental,1,wooden building,cabin,right,more
 trial_experimental,1,bedding,warm bedding,right,more
 trial_experimental,1,flounder,flat fish,right,more
-trial_experimental,1,apple,fruits,left,more
+trial_experimental,1,apple,fruit,left,more
 trial_experimental,1,swan,graceful bird,left,more
 trial_experimental,1,shears,tool,left,more
 trial_experimental,1,red bird,cardinal,left,more
@@ -261,7 +261,7 @@ trial_experimental,1,fruit,fuzzy fruit,left,more
 trial_experimental,1,wine,sparkling wine,left,more
 trial_experimental,1,mansion,house,left,more
 trial_experimental,1,penguin,bird,right,more
-trial_experimental,1,mammal,tall mammel,left,more
+trial_experimental,1,mammal,tall mammal,left,more
 trial_experimental,1,building,medical building,right,more
 trial_experimental,1,skewered meat,meat,left,more
 trial_experimental,1,submarine,underwater vehicle,left,more
@@ -321,7 +321,7 @@ trial_experimental,1,rose,thorny flower,right,more
 trial_experimental,1,black cat,panther,right,more
 trial_experimental,1,dish,sushi,right,more
 trial_experimental,1,cabin,building,left,more
-trial_experimental,1,tiny dog,chihuahua,right,more
+trial_experimental,1,tiny dog,Chihuahua,right,more
 trial_experimental,1,mammal,nocturnal mammal,right,more
 trial_experimental,1,building,barn,left,more
 trial_experimental,1,wellies,boots,left,more
@@ -330,7 +330,7 @@ trial_experimental,1,purple vegetable,aubergine,right,more
 trial_experimental,1,senior diplomat,ambassador,right,more
 trial_experimental,1,corn,vegetable,left,more
 trial_experimental,1,warm clothing,clothing,left,more
-trial_experimental,1,largest bird,bird,right,more
+trial_experimental,1,large bird,bird,right,more
 trial_experimental,1,vehicle,ambulance,left,more
 trial_experimental,1,striped cat,tiger,left,more
 trial_experimental,1,daffodil,flower,left,more
@@ -340,7 +340,7 @@ trial_experimental,1,pumpkin,vegetable,left,more
 trial_experimental,1,sound,melodic sound,right,more
 trial_experimental,1,large house,house,left,more
 trial_experimental,1,vegetable,lettuce,right,more
-trial_experimental,1,backless steat,seat,right,more
+trial_experimental,1,backless seat,seat,right,more
 trial_experimental,1,submarine,vehicle,left,more
 trial_experimental,1,bus,public transport,right,more
 trial_experimental,1,cat,hairless cat,right,more
@@ -365,7 +365,7 @@ trial_experimental,1,seasonal illness,illness,left,more
 trial_experimental,1,swan,bird,right,more
 trial_experimental,1,mob,protesting crowd,right,more
 trial_experimental,1,durian,fruit,left,more
-trial_experimental,1,backless steat,stool,left,more
+trial_experimental,1,backless seat,stool,left,more
 trial_experimental,1,whiskey,liquor,left,more
 trial_experimental,1,weather,violent weather,left,more
 trial_experimental,1,stench,unpleasant odour,left,more

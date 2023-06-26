@@ -1,8 +1,8 @@
 display,randomise_trials,option1,option2,correct_answer,condition_choose
-instructions_practice session,,,,,less
+instructions_practice,,,,,less
 trial_practice,0,white pigeon,pigeon,right,less
 trial_practice,0,bird,crow,left,less
-trial_practice,0,elegant bird,swan,right,less
+trial_practice,0,elegant bird,swan,left,less
 trial_practice,0,van,car,right,less
 trial_practice,0,vehicle,Audi,left,less
 trial_practice,0,Toyota,automobile,right,less
@@ -81,7 +81,7 @@ trial_experimental,1,wine,champagne,left,less
 trial_experimental,1,loaf,baguette,left,less
 trial_experimental,1,orange vegetable,vegetable,right,less
 trial_experimental,1,cook,professional cook,left,less
-trial_experimental,1,loaf,french loaf,left,less
+trial_experimental,1,loaf,French loaf,left,less
 trial_experimental,1,whiskey,liquor,right,less
 trial_experimental,1,pearl,sphere,right,less
 trial_experimental,1,medical vehicle,vehicle,right,less
@@ -95,17 +95,17 @@ trial_experimental,1,rose,thorny flower,right,less
 trial_experimental,1,sloth,slow animal,right,less
 trial_experimental,1,violin,instrument,right,less
 trial_experimental,1,watermelon,fruit,right,less
-trial_experimental,1,corn,kerneled vegetable,right,less
+trial_experimental,1,corn,kernelled vegetable,right,less
 trial_experimental,1,tined utensil,fork,left,less
 trial_experimental,1,hat,beret,left,less
 trial_experimental,1,outer garment,garment,right,less
 trial_experimental,1,senior diplomat,ambassador,left,less
 trial_experimental,1,shears,tool,right,less
 trial_experimental,1,wooden building,building,right,less
-trial_experimental,1,tiny dog,chihuahua,left,less
+trial_experimental,1,tiny dog,Chihuahua,left,less
 trial_experimental,1,river,narrow river,left,less
 trial_experimental,1,diplomat,ambassador,left,less
-trial_experimental,1,tall mammel,giraffe,left,less
+trial_experimental,1,tall mammal,giraffe,left,less
 trial_experimental,1,odour,unpleasant odour,left,less
 trial_experimental,1,bird,diving bird,left,less
 trial_experimental,1,grape,fruit,right,less
@@ -127,14 +127,14 @@ trial_experimental,1,bird,ostrich,left,less
 trial_experimental,1,python,snake,right,less
 trial_experimental,1,striped cat,cat,right,less
 trial_experimental,1,gem,red gem,left,less
-trial_experimental,1,largest bird,ostrich,left,less
+trial_experimental,1,large bird,ostrich,left,less
 trial_experimental,1,gardening tool,trowel,left,less
 trial_experimental,1,mob,crowd,right,less
 trial_experimental,1,snacks,crisps,left,less
-trial_experimental,1,dog,labrador,left,less
+trial_experimental,1,dog,Labrador,left,less
 trial_experimental,1,swan,bird,right,less
 trial_experimental,1,small boat,canoe,left,less
-trial_experimental,1,apple,fruits,right,less
+trial_experimental,1,apple,fruit,right,less
 trial_experimental,1,planet,Saturn,left,less
 trial_experimental,1,tined utensil,utensil,right,less
 trial_experimental,1,pumpkin,orange vegetable,right,less
@@ -196,18 +196,18 @@ trial_experimental,1,Japanese dish,dish,right,less
 trial_experimental,1,striped horse,zebra,left,less
 trial_experimental,1,person,solitary person,left,less
 trial_experimental,1,kebab,meat,right,less
-trial_experimental,1,guide dog,labrador,left,less
+trial_experimental,1,guide dog,Labrador,left,less
 trial_experimental,1,vegetable,starchy vegetable,left,less
 trial_experimental,1,submarine,vehicle,right,less
-trial_experimental,1,backless steat,stool,left,less
+trial_experimental,1,backless seat,stool,left,less
 trial_experimental,1,vegetable,lettuce,left,less
 trial_experimental,1,ruby,gem,right,less
 trial_experimental,1,empress,female ruler,right,less
 trial_experimental,1,shark,marine predator,right,less
-trial_experimental,1,fruits,crisp fruit,left,less
+trial_experimental,1,fruit,crisp fruit,left,less
 trial_experimental,1,product,beauty product,left,less
 trial_experimental,1,bronze,brown alloy,right,less
-trial_experimental,1,chihuahua,dog,right,less
+trial_experimental,1,Chihuahua,dog,right,less
 trial_experimental,1,tomato sauce,sauce,right,less
 trial_experimental,1,male,boy,left,less
 trial_experimental,1,naval rank,admiral,left,less
@@ -264,7 +264,7 @@ trial_experimental,1,product,hairspray,left,less
 trial_experimental,1,spade,digging tool,right,less
 trial_experimental,1,amphibian,frog,left,less
 trial_experimental,1,bronze,alloy,right,less
-trial_experimental,1,kerneled vegetable,vegetable,right,less
+trial_experimental,1,kernelled vegetable,vegetable,right,less
 trial_experimental,1,coniferous tree,fir,left,less
 trial_experimental,1,spherical vegetable,pea,left,less
 trial_experimental,1,crime,shoplifting,left,less
@@ -277,7 +277,7 @@ trial_experimental,1,whale,marine mammal,right,less
 trial_experimental,1,cabin,building,right,less
 trial_experimental,1,building,barn,left,less
 trial_experimental,1,bird,graceful bird,left,less
-trial_experimental,1,french loaf,baguette,left,less
+trial_experimental,1,French loaf,baguette,left,less
 trial_experimental,1,carrot,orange vegetable,right,less
 trial_experimental,1,bird,robin,left,less
 trial_experimental,1,aria,operatic solo,right,less
@@ -310,7 +310,7 @@ trial_experimental,1,head sculpture,bust,left,less
 trial_experimental,1,boy,young male,right,less
 trial_experimental,1,green gem,gem,right,less
 trial_experimental,1,bagel,bread,right,less
-trial_experimental,1,mammal,tall mammel,left,less
+trial_experimental,1,mammal,tall mammal,left,less
 trial_experimental,1,grasping instrument,forceps,left,less
 trial_experimental,1,stream,narrow river,right,less
 trial_experimental,1,calling device,phone,left,less
@@ -364,11 +364,11 @@ trial_experimental,1,starchy vegetable,potato,left,less
 trial_experimental,1,marine mammal,mammal,right,less
 trial_experimental,1,dog,wrinkly dog,left,less
 trial_experimental,1,wine,sparkling wine,left,less
-trial_experimental,1,largest bird,bird,right,less
+trial_experimental,1,large bird,bird,right,less
 trial_experimental,1,school,teaching institution,right,less
 trial_experimental,1,fast cat,cat,right,less
 trial_experimental,1,calling device,device,right,less
-trial_experimental,1,backless steat,seat,right,less
+trial_experimental,1,backless seat,seat,right,less
 trial_experimental,1,tank,armoured vehicle,right,less
 trial_experimental,1,mob,protesting crowd,right,less
 end,,end,end,end,less
