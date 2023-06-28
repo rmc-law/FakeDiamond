@@ -1,5 +1,0 @@
-A major aim of this project is to bridge these two literatures, synthesising insights from the neural bases of semantic memory and of semantic composition. First, Previous works on conceptual combination in phrases have focussed on the combination of concrete concepts (e.g., red boat, plaid jacket, tiny radish). An open question is whether 
-
-Previous work has begun to explore how conceptual specificity (e.g., bird vs. sparrow) interactions with composition (Westerlund & Pylkkänen, 2014; Zhang & Pylkkänen, 2015). LATL saw an activity increase around 250 ms after noun presentation for low-specificity combinations (e.g., blue boat) relative to high-specificity combinations 
-
-concrete vs. abstract concepts, which are studied typically in the semantic memory literature, and denotational semantics, a fine-grained semantic distinction studied in linguistics and philosophy.
