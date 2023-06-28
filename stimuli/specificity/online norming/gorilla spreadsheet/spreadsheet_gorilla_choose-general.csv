@@ -1,0 +1,374 @@
+display,randomise_trials,option1,option2,correct_answer,condition_choose
+instructions_practice,,,,,general
+trial_practice,0,white pigeon,pigeon,right,general
+trial_practice,0,bird,crow,left,general
+trial_practice,0,elegant bird,swan,left,general
+trial_practice,0,van,car,right,general
+trial_practice,0,vehicle,Audi,left,general
+trial_practice,0,Toyota,automobile,right,general
+trial_practice,0,plant,cactus,left,general
+trial_practice,0,lily,flower,right,general
+trial_practice,0,palm,tree,right,general
+repeat_practice,,,,,general
+instructions_experimental,,,,,general
+trial_experimental,1,skewered meat,meat,right,general
+trial_experimental,1,bread,ring-shaped bread,left,general
+trial_experimental,1,music,sound,right,general
+trial_experimental,1,gardening tool,tool,right,general
+trial_experimental,1,building,medical building,left,general
+trial_experimental,1,seat,stool,left,general
+trial_experimental,1,bird,kingfisher,left,general
+trial_experimental,1,building,house,left,general
+trial_experimental,1,beauty product,hairspray,left,general
+trial_experimental,1,cocktail,drink,right,general
+trial_experimental,1,brie,cheese,right,general
+trial_experimental,1,storm,violent weather,right,general
+trial_experimental,1,mammal,spiky mammal,left,general
+trial_experimental,1,vehicle,horse-drawn vehicle,left,general
+trial_experimental,1,dog,guide dog,left,general
+trial_experimental,1,fish,flounder,left,general
+trial_experimental,1,male,young male,left,general
+trial_experimental,1,trowel,tool,right,general
+trial_experimental,1,fruit,thorny fruit,left,general
+trial_experimental,1,storm,weather,right,general
+trial_experimental,1,durian,fruit,right,general
+trial_experimental,1,skewered meat,kebab,left,general
+trial_experimental,1,leafy vegetable,lettuce,left,general
+trial_experimental,1,expensive boat,yacht,left,general
+trial_experimental,1,digging tool,tool,right,general
+trial_experimental,1,meal,light meal,left,general
+trial_experimental,1,fruit,fuzzy fruit,left,general
+trial_experimental,1,vegetable,leafy vegetable,left,general
+trial_experimental,1,waddling bird,bird,right,general
+trial_experimental,1,cat,black cat,left,general
+trial_experimental,1,head sculpture,sculpture,right,general
+trial_experimental,1,bedding,blanket,left,general
+trial_experimental,1,vehicle,underwater vehicle,left,general
+trial_experimental,1,kiwi,fruit,right,general
+trial_experimental,1,dish,sushi,left,general
+trial_experimental,1,rain boots,boots,right,general
+trial_experimental,1,owl,nocturnal bird,right,general
+trial_experimental,1,agricultural vehicle,tractor,left,general
+trial_experimental,1,cook,chef,left,general
+trial_experimental,1,computer,laptop,left,general
+trial_experimental,1,mansion,large house,right,general
+trial_experimental,1,swan,graceful bird,right,general
+trial_experimental,1,transport,public transport,left,general
+trial_experimental,1,diplomat,senior diplomat,left,general
+trial_experimental,1,jacket,garment,right,general
+trial_experimental,1,solitary person,hermit,left,general
+trial_experimental,1,hospital,building,right,general
+trial_experimental,1,frog,hopping amphibian,right,general
+trial_experimental,1,building,farm building,left,general
+trial_experimental,1,lorry,vehicle,right,general
+trial_experimental,1,sound,melodic sound,left,general
+trial_experimental,1,ringed planet,Saturn,left,general
+trial_experimental,1,mammal,nocturnal mammal,left,general
+trial_experimental,1,tiger,cat,right,general
+trial_experimental,1,pumpkin,vegetable,right,general
+trial_experimental,1,solo,operatic solo,left,general
+trial_experimental,1,amphibian,hopping amphibian,left,general
+trial_experimental,1,tiny dog,dog,right,general
+trial_experimental,1,cat,hairless cat,left,general
+trial_experimental,1,solo,aria,left,general
+trial_experimental,1,BMW,German car,right,general
+trial_experimental,1,barn,farm building,right,general
+trial_experimental,1,hedgehog,spiky mammal,right,general
+trial_experimental,1,cat,sphynx,left,general
+trial_experimental,1,cat,panther,left,general
+trial_experimental,1,warm clothing,jumper,left,general
+trial_experimental,1,wine,champagne,left,general
+trial_experimental,1,loaf,baguette,left,general
+trial_experimental,1,orange vegetable,vegetable,right,general
+trial_experimental,1,cook,professional cook,left,general
+trial_experimental,1,loaf,French loaf,left,general
+trial_experimental,1,whiskey,liquor,right,general
+trial_experimental,1,pearl,sphere,right,general
+trial_experimental,1,medical vehicle,vehicle,right,general
+trial_experimental,1,person,hermit,left,general
+trial_experimental,1,hairless cat,sphynx,left,general
+trial_experimental,1,stringed instrument,instrument,right,general
+trial_experimental,1,carrot,vegetable,right,general
+trial_experimental,1,diving bird,kingfisher,left,general
+trial_experimental,1,car,limousine,left,general
+trial_experimental,1,rose,thorny flower,right,general
+trial_experimental,1,sloth,slow animal,right,general
+trial_experimental,1,violin,instrument,right,general
+trial_experimental,1,watermelon,fruit,right,general
+trial_experimental,1,corn,kernelled vegetable,right,general
+trial_experimental,1,tined utensil,fork,left,general
+trial_experimental,1,hat,beret,left,general
+trial_experimental,1,outer garment,garment,right,general
+trial_experimental,1,senior diplomat,ambassador,left,general
+trial_experimental,1,shears,tool,right,general
+trial_experimental,1,wooden building,building,right,general
+trial_experimental,1,tiny dog,Chihuahua,left,general
+trial_experimental,1,river,narrow river,left,general
+trial_experimental,1,diplomat,ambassador,left,general
+trial_experimental,1,tall mammal,giraffe,left,general
+trial_experimental,1,odour,unpleasant odour,left,general
+trial_experimental,1,bird,diving bird,left,general
+trial_experimental,1,grape,fruit,right,general
+trial_experimental,1,penguin,waddling bird,right,general
+trial_experimental,1,petty crime,shoplifting,left,general
+trial_experimental,1,vegetable,aubergine,left,general
+trial_experimental,1,flu,illness,right,general
+trial_experimental,1,mammal,bat,left,general
+trial_experimental,1,pasta,Italian food,right,general
+trial_experimental,1,apple,crisp fruit,right,general
+trial_experimental,1,metal,magnetic metal,left,general
+trial_experimental,1,weather,violent weather,left,general
+trial_experimental,1,crocodile,large reptile,right,general
+trial_experimental,1,helmet,hat,right,general
+trial_experimental,1,tomato sauce,ketchup,left,general
+trial_experimental,1,gem,blue gem,left,general
+trial_experimental,1,violin,stringed instrument,right,general
+trial_experimental,1,bird,ostrich,left,general
+trial_experimental,1,python,snake,right,general
+trial_experimental,1,striped cat,cat,right,general
+trial_experimental,1,gem,red gem,left,general
+trial_experimental,1,large bird,ostrich,left,general
+trial_experimental,1,gardening tool,trowel,left,general
+trial_experimental,1,mob,crowd,right,general
+trial_experimental,1,snacks,crisps,left,general
+trial_experimental,1,dog,Labrador,left,general
+trial_experimental,1,swan,bird,right,general
+trial_experimental,1,small boat,canoe,left,general
+trial_experimental,1,apple,fruit,right,general
+trial_experimental,1,planet,Saturn,left,general
+trial_experimental,1,tined utensil,utensil,right,general
+trial_experimental,1,pumpkin,orange vegetable,right,general
+trial_experimental,1,naval rank,rank,right,general
+trial_experimental,1,metal,iron,left,general
+trial_experimental,1,residential building,building,right,general
+trial_experimental,1,Japanese dish,sushi,left,general
+trial_experimental,1,vehicle,transport vehicle,left,general
+trial_experimental,1,sloth,animal,right,general
+trial_experimental,1,female ruler,ruler,right,general
+trial_experimental,1,vehicle,ambulance,left,general
+trial_experimental,1,warm bedding,blanket,left,general
+trial_experimental,1,gem,sapphire,left,general
+trial_experimental,1,protesting crowd,crowd,right,general
+trial_experimental,1,gooey cheese,cheese,right,general
+trial_experimental,1,horse,striped horse,left,general
+trial_experimental,1,ringed planet,planet,right,general
+trial_experimental,1,mansion,house,right,general
+trial_experimental,1,flu,seasonal illness,right,general
+trial_experimental,1,large poultry,poultry,right,general
+trial_experimental,1,whiskey,smoky liquor,right,general
+trial_experimental,1,portable computer,laptop,left,general
+trial_experimental,1,fast cat,cheetah,left,general
+trial_experimental,1,large poultry,turkey,left,general
+trial_experimental,1,ointment,topical cream,right,general
+trial_experimental,1,banana,fruit,right,general
+trial_experimental,1,clogs,shoe,right,general
+trial_experimental,1,ointment,cream,right,general
+trial_experimental,1,smoky liquor,liquor,right,general
+trial_experimental,1,car,luxurious car,left,general
+trial_experimental,1,bird,nocturnal bird,left,general
+trial_experimental,1,boat,canoe,left,general
+trial_experimental,1,purple fruit,fruit,right,general
+trial_experimental,1,pug,dog,right,general
+trial_experimental,1,limousine,luxurious car,right,general
+trial_experimental,1,medical vehicle,ambulance,left,general
+trial_experimental,1,horse-drawn vehicle,chariot,left,general
+trial_experimental,1,music,melodic sound,right,general
+trial_experimental,1,knob,round handle,right,general
+trial_experimental,1,drink,mixed drink,left,general
+trial_experimental,1,purple fruit,grape,left,general
+trial_experimental,1,cutting tool,shears,left,general
+trial_experimental,1,warm clothing,clothing,right,general
+trial_experimental,1,transport,bus,left,general
+trial_experimental,1,helmet,protective hat,right,general
+trial_experimental,1,bus,public transport,right,general
+trial_experimental,1,beret,French hat,right,general
+trial_experimental,1,purple vegetable,vegetable,right,general
+trial_experimental,1,tortoise,shelled reptile,right,general
+trial_experimental,1,reptile,shelled reptile,left,general
+trial_experimental,1,large house,house,right,general
+trial_experimental,1,reptile,large reptile,left,general
+trial_experimental,1,yellow flower,flower,right,general
+trial_experimental,1,small boat,boat,right,general
+trial_experimental,1,bedding,warm bedding,left,general
+trial_experimental,1,plan,ploy,left,general
+trial_experimental,1,vehicle,chariot,left,general
+trial_experimental,1,Japanese dish,dish,right,general
+trial_experimental,1,striped horse,zebra,left,general
+trial_experimental,1,person,solitary person,left,general
+trial_experimental,1,kebab,meat,right,general
+trial_experimental,1,guide dog,Labrador,left,general
+trial_experimental,1,vegetable,starchy vegetable,left,general
+trial_experimental,1,submarine,vehicle,right,general
+trial_experimental,1,backless seat,stool,left,general
+trial_experimental,1,vegetable,lettuce,left,general
+trial_experimental,1,ruby,gem,right,general
+trial_experimental,1,empress,female ruler,right,general
+trial_experimental,1,shark,marine predator,right,general
+trial_experimental,1,fruit,crisp fruit,left,general
+trial_experimental,1,product,beauty product,left,general
+trial_experimental,1,bronze,brown alloy,right,general
+trial_experimental,1,Chihuahua,dog,right,general
+trial_experimental,1,tomato sauce,sauce,right,general
+trial_experimental,1,male,boy,left,general
+trial_experimental,1,naval rank,admiral,left,general
+trial_experimental,1,pug,wrinkly dog,right,general
+trial_experimental,1,crisps,potato snacks,right,general
+trial_experimental,1,predator,marine predator,left,general
+trial_experimental,1,tropical tree,palm,left,general
+trial_experimental,1,flounder,flat fish,right,general
+trial_experimental,1,black cat,panther,left,general
+trial_experimental,1,icicle,stick,right,general
+trial_experimental,1,bird,small bird,left,general
+trial_experimental,1,gooey cheese,brie,left,general
+trial_experimental,1,spade,tool,right,general
+trial_experimental,1,device,phone,left,general
+trial_experimental,1,pearl,lustrous sphere,right,general
+trial_experimental,1,light meal,snack,left,general
+trial_experimental,1,thorny flower,flower,right,general
+trial_experimental,1,seasonal illness,illness,right,general
+trial_experimental,1,tree,palm,left,general
+trial_experimental,1,bagel,ring-shaped bread,right,general
+trial_experimental,1,vegetable,potato,left,general
+trial_experimental,1,BMW,car,right,general
+trial_experimental,1,sculpture,bust,left,general
+trial_experimental,1,jumper,clothing,right,general
+trial_experimental,1,school,institution,right,general
+trial_experimental,1,cat,cheetah,left,general
+trial_experimental,1,green gem,emerald,left,general
+trial_experimental,1,cardinal,bird,right,general
+trial_experimental,1,boat,expensive boat,left,general
+trial_experimental,1,small bird,robin,left,general
+trial_experimental,1,handle,knob,left,general
+trial_experimental,1,yellow fruit,banana,left,general
+trial_experimental,1,watermelon,juicy fruit,right,general
+trial_experimental,1,odour,stench,left,general
+trial_experimental,1,meal,snack,left,general
+trial_experimental,1,daffodil,yellow flower,right,general
+trial_experimental,1,sphere,lustrous sphere,left,general
+trial_experimental,1,building,factory,left,general
+trial_experimental,1,cutting tool,tool,right,general
+trial_experimental,1,chef,professional cook,right,general
+trial_experimental,1,wooden shoe,clogs,left,general
+trial_experimental,1,horse,zebra,left,general
+trial_experimental,1,mammal,marsupial,left,general
+trial_experimental,1,cocktail,mixed drink,right,general
+trial_experimental,1,wellies,boots,right,general
+trial_experimental,1,anthology,poetry collection,right,general
+trial_experimental,1,python,large snake,right,general
+trial_experimental,1,marsupial,pouched mammal,right,general
+trial_experimental,1,food,Italian food,left,general
+trial_experimental,1,penguin,bird,right,general
+trial_experimental,1,agricultural vehicle,vehicle,right,general
+trial_experimental,1,yellow fruit,fruit,right,general
+trial_experimental,1,product,hairspray,left,general
+trial_experimental,1,spade,digging tool,right,general
+trial_experimental,1,amphibian,frog,left,general
+trial_experimental,1,bronze,alloy,right,general
+trial_experimental,1,kernelled vegetable,vegetable,right,general
+trial_experimental,1,coniferous tree,fir,left,general
+trial_experimental,1,spherical vegetable,pea,left,general
+trial_experimental,1,crime,shoplifting,left,general
+trial_experimental,1,magnetic metal,iron,left,general
+trial_experimental,1,lorry,transport vehicle,right,general
+trial_experimental,1,whale,mammal,right,general
+trial_experimental,1,hat,French hat,left,general
+trial_experimental,1,topical cream,cream,right,general
+trial_experimental,1,whale,marine mammal,right,general
+trial_experimental,1,cabin,building,right,general
+trial_experimental,1,building,barn,left,general
+trial_experimental,1,bird,graceful bird,left,general
+trial_experimental,1,French loaf,baguette,left,general
+trial_experimental,1,carrot,orange vegetable,right,general
+trial_experimental,1,bird,robin,left,general
+trial_experimental,1,aria,operatic solo,right,general
+trial_experimental,1,stench,unpleasant odour,right,general
+trial_experimental,1,river,stream,left,general
+trial_experimental,1,ruby,red gem,right,general
+trial_experimental,1,corn,vegetable,right,general
+trial_experimental,1,durian,thorny fruit,right,general
+trial_experimental,1,wooden building,cabin,left,general
+trial_experimental,1,pasta,food,right,general
+trial_experimental,1,fish,flat fish,left,general
+trial_experimental,1,slow animal,animal,right,general
+trial_experimental,1,German car,car,right,general
+trial_experimental,1,red bird,cardinal,left,general
+trial_experimental,1,outer garment,jacket,left,general
+trial_experimental,1,wellies,rain boots,right,general
+trial_experimental,1,vehicle,armoured vehicle,left,general
+trial_experimental,1,stick,frozen stick,left,general
+trial_experimental,1,mammal,giraffe,left,general
+trial_experimental,1,snake,large snake,left,general
+trial_experimental,1,tree,tropical tree,left,general
+trial_experimental,1,plan,cunning plan,left,general
+trial_experimental,1,bat,nocturnal mammal,right,general
+trial_experimental,1,hedgehog,mammal,right,general
+trial_experimental,1,vegetable,pea,left,general
+trial_experimental,1,admiral,rank,right,general
+trial_experimental,1,tank,vehicle,right,general
+trial_experimental,1,vegetable,spherical vegetable,left,general
+trial_experimental,1,head sculpture,bust,left,general
+trial_experimental,1,boy,young male,right,general
+trial_experimental,1,green gem,gem,right,general
+trial_experimental,1,bagel,bread,right,general
+trial_experimental,1,mammal,tall mammal,left,general
+trial_experimental,1,grasping instrument,forceps,left,general
+trial_experimental,1,stream,narrow river,right,general
+trial_experimental,1,calling device,phone,left,general
+trial_experimental,1,building,industrial building,left,general
+trial_experimental,1,brown alloy,alloy,right,general
+trial_experimental,1,church,religious building,right,general
+trial_experimental,1,striped cat,tiger,left,general
+trial_experimental,1,mammal,pouched mammal,left,general
+trial_experimental,1,boat,yacht,left,general
+trial_experimental,1,empress,ruler,right,general
+trial_experimental,1,computer,portable computer,left,general
+trial_experimental,1,industrial building,factory,left,general
+trial_experimental,1,ketchup,sauce,right,general
+trial_experimental,1,turkey,poultry,right,general
+trial_experimental,1,red bird,bird,right,general
+trial_experimental,1,purple vegetable,aubergine,left,general
+trial_experimental,1,collection,poetry collection,left,general
+trial_experimental,1,wooden shoe,shoe,right,general
+trial_experimental,1,sapphire,blue gem,right,general
+trial_experimental,1,vehicle,tractor,left,general
+trial_experimental,1,rose,flower,right,general
+trial_experimental,1,fir,tree,right,general
+trial_experimental,1,submarine,underwater vehicle,right,general
+trial_experimental,1,orange vegetable,vegetable,right,general
+trial_experimental,1,predator,shark,left,general
+trial_experimental,1,hospital,medical building,right,general
+trial_experimental,1,building,religious building,left,general
+trial_experimental,1,protective hat,hat,right,general
+trial_experimental,1,instrument,forceps,left,general
+trial_experimental,1,sparkling wine,champagne,left,general
+trial_experimental,1,teaching institution,institution,right,general
+trial_experimental,1,handle,round handle,left,general
+trial_experimental,1,residential building,house,left,general
+trial_experimental,1,building,church,left,general
+trial_experimental,1,cunning plan,ploy,left,general
+trial_experimental,1,crocodile,reptile,right,general
+trial_experimental,1,bird,owl,left,general
+trial_experimental,1,utensil,fork,left,general
+trial_experimental,1,gem,emerald,left,general
+trial_experimental,1,snacks,potato snacks,left,general
+trial_experimental,1,instrument,grasping instrument,left,general
+trial_experimental,1,icicle,frozen stick,right,general
+trial_experimental,1,tortoise,reptile,right,general
+trial_experimental,1,coniferous tree,tree,right,general
+trial_experimental,1,kiwi,fuzzy fruit,right,general
+trial_experimental,1,daffodil,flower,right,general
+trial_experimental,1,juicy fruit,fruit,right,general
+trial_experimental,1,crime,petty crime,left,general
+trial_experimental,1,collection,anthology,left,general
+trial_experimental,1,starchy vegetable,potato,left,general
+trial_experimental,1,marine mammal,mammal,right,general
+trial_experimental,1,dog,wrinkly dog,left,general
+trial_experimental,1,wine,sparkling wine,left,general
+trial_experimental,1,large bird,bird,right,general
+trial_experimental,1,school,teaching institution,right,general
+trial_experimental,1,fast cat,cat,right,general
+trial_experimental,1,calling device,device,right,general
+trial_experimental,1,backless seat,seat,right,general
+trial_experimental,1,tank,armoured vehicle,right,general
+trial_experimental,1,mob,protesting crowd,right,general
+end,,end,end,end,general
