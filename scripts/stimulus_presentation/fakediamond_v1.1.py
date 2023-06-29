@@ -5,7 +5,6 @@ Created on Thu Apr 20 19:12:38 2023
 @author: rl05
 """
 
-import os
 import numpy as np
 import csv
 import random
@@ -13,14 +12,14 @@ from psychopy import visual, core, data, event
 
 from scansync.meg import MEGTriggerBox
 
-# MEG = MEGTriggerBox()
-# MEG.set_trigger_state(0) # reset trigger state
+MEG = MEGTriggerBox()
+MEG.set_trigger_state(0) # reset trigger state
 
 expInfo = {}
-expInfo['Subject'] = input('subject: ')
-expInfo['Run'] = input('prac/expt: ')
-
-# os.chdir('U:\ownCloud\projects\FakeDiamond\scripts')
+expInfo['Subject'] = input('Subject: ')
+expInfo['Run'] = input('Run (prac/expt): ')
+if expInfo['Run'] == 'expt':
+    expInfo['Block'] = input('Block (1-6): ')
 
 # =============================================================================
 # Psychopy display settings
@@ -33,7 +32,7 @@ window = visual.Window(monitor='testMonitor', units='pix', fullscr=False)
 word = visual.TextStim(window, text='', font=font, anchorHoriz=anchorHoriz, wrapWidth=500, height=30)
 probe = visual.TextStim(window, text='', color='blue', font=font, anchorHoriz=anchorHoriz, wrapWidth=500, height=30)
 word_instruction = visual.TextStim(window, text='', font=font, anchorHoriz=anchorHoriz, wrapWidth=600, height=25)
-fixation = visual.TextStim(window, font=font, text='+', height=40)
+fixation = visual.TextStim(window, font=font, text='+', height=50)
 photodiode = visual.Rect(window, width=40, height=40, pos=[-377,-277], fillColor=[255,255,255], fillColorSpace='rgb255')
 # pos (photodiode position) units: pixels; pos=[0,0] is screen centre
 
@@ -52,8 +51,8 @@ def present_fix():
         window.flip()
 
 def present_word(trigger=None, photoDiode=True):
-    # if trigger is not None:
-    #     window.callOnFlip(MEG.set_trigger_state, value=trigger, return_to_zero_ms=20)
+    if trigger is not None:
+        window.callOnFlip(MEG.set_trigger_state, value=trigger, return_to_zero_ms=20)
     for frame in range(36): # presents each word: on 300ms, off 300ms
         if frame < 18:
             word.draw()
@@ -66,9 +65,9 @@ def present_probe(text=''):
     probe.setText(text) # presents memory probe
     probe.draw()
     window.flip()
-    # button_pressed, t = MEG.wait_for_button_press(allowed=['Ry','Rb'], timeout=None) # Ry = right yellow
-    return event.waitKeys(keyList=['1','2','q'], timeStamped=RT_clock)
-    # return button_pressed, t
+    button_pressed, t = MEG.wait_for_button_press(allowed=['Ry','Rb'], timeout=None) # Ry = right yellow
+    # return event.waitKeys(keyList=['1','2','q'], timeStamped=RT_clock)
+    return button_pressed, t
 
 def present_feedback(text=''):
     for frame in range (54): # presents feedback: on 600ms, off 300ms
@@ -80,19 +79,16 @@ def present_instruction(text=''):
     word_instruction.setText(text)
     word_instruction.draw() # presents instructions
     window.flip()
-    # core.wait(random.uniform(0.2,0.7))
-    # core.wait(random.uniform(1.2,1.7))
-    # response, RT = MEG.wait_for_button_press(allowed=['Ry'], timeout=None) # Ry = right yellow
+    # response, RT = MEG.wait_for_button_press(allowed=['Rb','Ry'], timeout=None) # Ry = right yellow
+    MEG.wait_for_button_press(allowed=['Rb','Ry'], timeout=None) # Ry = right yellow
     # return response, RT
-    return event.waitKeys(keyList=['1','2','q'], timeStamped=RT_clock)
+    # return event.waitKeys(keyList=['1','2','q'], timeStamped=RT_clock)
 
 def present_instruction_experimenter(text=''):
     word_instruction.setText(text)
     word_instruction.draw() 
     window.flip()
-    MEG.wait_for_button_press(allowed=['3'], timeout=None) # Ry = right yellow
-    # return response, RT
-    # return event.waitKeys(keyList=['1','2','q'], timeStamped=RT_clock)
+    return event.waitKeys(keyList=['1'], timeStamped=RT_clock)
 
 def present_trial(trial, run='', logfile=None):
     
@@ -121,26 +117,37 @@ def present_trial(trial, run='', logfile=None):
         present_word(trigger=int(trial[f'trigger_word{word_i}']))
     if run == 'prac':
         if trial['probe'] != '':
-            # response, _ = present_probe(trial['probe'])
-            response = present_probe(trial['probe'])
-            if response == trial['answer']:
+            response, _ = present_probe(trial['probe'])
+            # response = present_probe(trial['probe'])
+            answer = ''
+            if trial['answer'] == 'yes':
+                answer = 'Rb'
+            elif trial['answer'] == 'no':
+                answer = 'Ry'
+            if response == answer:
                 word.setText('Correct :)')
                 present_feedback()
             else:
                 word.setText('Incorrect :(')
                 present_feedback()
+            del answer
     elif run == 'expt':
         if trial['probe'] != '':
-            # response, RT = present_probe(trial['probe']) # presents probe
-            response = present_probe(trial['probe'])
+            response, RT = present_probe(trial['probe'])
+            # response = present_probe(trial['probe'])
+            answer = ''
+            if trial['answer'] == 'yes':
+                answer = 'Rb'
+            elif trial['answer'] == 'no':
+                answer = 'Ry'
             logfile.addData('response', response)
-            # logfile.addData('RT', RT)
-            # if response == trial['answer']: # record response
-            #     logfile.addData('hit', 1)
-            # elif response != trial['answer']:
-            #     logfile.addData('hit', 0)
-            # elif response == 'q':
-            #     core.quit()
+            logfile.addData('RT', RT)
+            if response == answer: # record response
+                logfile.addData('hit', 1)
+            elif response != answer:
+                logfile.addData('hit', 0)
+            elif response == 'q':
+                core.quit()
         # else:
         #     logfile.addData('hit', 'NaN')
     core.wait(random.uniform(0.2,0.7))
@@ -155,7 +162,7 @@ if expInfo['Run'] == 'prac':
     stimuli_fname = 'stimuli_practice.csv'
     with open(stimuli_fname, 'rU') as f:
         stimuli = [i for i in csv.DictReader(f)]
-    random.shuffle(stimuli) 
+    random.Random(expInfo['Subject']).shuffle(stimuli) 
     
     instructions = ['In this study, you will read phrases word-by-word at the centre of the screen.',
                     'Please fixate on the cross and then read the phrases carefully.',
@@ -168,50 +175,52 @@ if expInfo['Run'] == 'prac':
     for j, trial in enumerate(stimuli): 
         present_trial(trial=trial, run=expInfo['Run'], logfile=None)
 
-    present_instruction('Any questions?')
+    present_instruction_experimenter('Any questions?')
     window.close()
-    del stimuli, instructions
     
 # experimental session
 elif expInfo['Run'] == 'expt':
 
     # logfile: object created using psychopy
-    logfile = data.ExperimentHandler(dataFileName='logs/{}_logfile'.format(expInfo['Subject']), autoLog=False, savePickle=False)
+
+    logfile = data.ExperimentHandler(dataFileName='logs/logfile_subject{}_block{}'.format(expInfo['Subject'],expInfo['Block']), autoLog=False, savePickle=False)
 
     # stimuli fully randomised
-    # stimuli_fname = 'stimuli_test.csv'
-    stimuli_fname = 'stimuli_debug.csv'
-
+    stimuli_fname = 'stimuli_test.csv'
+    # stimuli_fname = 'stimuli_debug.csv'
     with open(stimuli_fname, 'r') as f:
         stimuli = [i for i in csv.DictReader(f)]
-    random.shuffle(stimuli) 
-    blocks = np.array_split(stimuli, 6) # split stimuli into blocks
-    random.shuffle(blocks) 
+    random.Random(int(expInfo['Subject'])).shuffle(stimuli) # set subject number as random.Random instance
+    blocks = np.array_split(stimuli, 6) 
 
-    instructions = ['Please read the phrases carefully and answer yes/no questions as quickly and accurately as you can.',
-                    'Respond with your INDEX finger for YES,\n and MIDDLE finger for NO.',
-                    'This time, there will no feedback on your responses.',
-                    'Around 8 minutes there will be a break.',
-                    'Any questions?']
-    for instruction in instructions:
-        present_instruction(instruction)
+    block_nr = int(expInfo['Block'])
+    block = blocks[block_nr-1]
 
-    for i, block in enumerate(blocks):
-        present_instruction(f'This will be block {str(i+1)} of {len(blocks)}. \n\nClick to begin.')
-        for j, trial in enumerate(block): 
-            present_trial(trial=trial, run=expInfo['Run'], logfile=logfile)
-            # save trial info to logfile
-            logfile.addData('block_nr', i+1)
-            logfile.addData('trial_nr', j+1)        
-            logfile.addData('set_nr', trial['set_nr'])
-            logfile.addData('item_nr', trial['item_nr'])
-            logfile.addData('word1', trial['word1'])
-            logfile.addData('word2', trial['word2'])
-            logfile.addData('probe', trial['probe'])
-            logfile.nextEntry()
-        present_instruction_experimenter('Test')
+    if block_nr == 1:
+        instructions = ['Please read the phrases carefully and answer yes/no questions as quickly and accurately as you can.',
+                        'Respond with your INDEX finger for YES,\n and MIDDLE finger for NO.',
+                        'This time, there will no feedback on your responses.',
+                        'Around 8 minutes there will be a break.',
+                        'Any questions?']
+        for instruction in instructions:
+            present_instruction(instruction)
 
-    present_instruction('The study is now over. \n\nPlease keep still while we finish the recording.')
+    present_instruction_experimenter('Getting ready...')
+    present_instruction(f'This will be block {str(block_nr)} of {len(blocks)}.\n\n<Click to begin>')
+    for j, trial in enumerate(block): 
+        present_trial(trial=trial, run=expInfo['Run'], logfile=logfile)
+        # save trial info to logfile
+        logfile.addData('block_nr', block_nr)
+        logfile.addData('trial_nr', j+1)        
+        logfile.addData('set_nr', trial['set_nr'])
+        logfile.addData('item_nr', trial['item_nr'])
+        logfile.addData('word1', trial['word1'])
+        logfile.addData('word2', trial['word2'])
+        logfile.addData('probe', trial['probe'])
+        logfile.nextEntry()
+    present_instruction_experimenter(f'This is end of block {str(block_nr)} of {len(blocks)}.\n\nOne moment please.')
+
+    if block_nr == 6:
+        present_instruction_experimenter('The study is now over. \n\nPlease keep still while we finish the recording.')
     window.close()
-    del stimuli, instructions
 # core.quit()

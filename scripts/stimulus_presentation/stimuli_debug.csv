@@ -1,0 +1,9 @@
+experiment,set_nr,item_nr,condition_name,word1,word2,probe,answer,trigger_word1,trigger_word2
+concreteness_denotation,62,371,abstract_privative,hypothetical,pause,,,221,222
+concreteness_denotation,75,449,abstract_privative,past,essence,,,221,222
+concreteness_denotation,127,761,abstract_privative,counterfeit,issue,,,221,222
+concreteness_denotation,110,660,abstract_baseline,fxldmr,courage,,,231,232
+concreteness_denotation,76,452,concrete_privative,artificial,corpse,,,121,122
+specificity,60,1000,low,htbqzylm,horse,Does it have scales?,no,71,72
+concreteness_denotation,25,147,concrete_baseline,fxldmr,bomb,Is it safe to handle? ,no,131,132
+specificity,113,1159,low,vpbyzkgrf,vehicle,,,71,72

@@ -1,0 +1,1183 @@
+experiment,set_nr,item_nr,condition_name,word1,word2,probe,answer,trigger_word1,trigger_word2
+concreteness_denotation,1,1,concrete_subsective,old,sulphur,,,111,112
+concreteness_denotation,1,2,concrete_privative,imaginary,sulphur,,,121,122
+concreteness_denotation,1,3,concrete_baseline,tqvgqrz,sulphur,,,131,132
+concreteness_denotation,1,4,abstract_subsective,special,longing,,,211,212
+concreteness_denotation,1,5,abstract_privative,past,longing,,,221,222
+concreteness_denotation,1,6,abstract_baseline,vpbyzkgrf,longing,,,231,232
+concreteness_denotation,2,7,concrete_subsective,special,poison,Is it safe to consume? ,no,111,112
+concreteness_denotation,2,8,concrete_privative,past,poison,,,121,122
+concreteness_denotation,2,9,concrete_baseline,wvcnz,poison,,,131,132
+concreteness_denotation,2,10,abstract_subsective,true,terror,Is it good in a children's book?,no,211,212
+concreteness_denotation,2,11,abstract_privative,phony,terror,,,221,222
+concreteness_denotation,2,12,abstract_baseline,tqvgqrz,terror,,,231,232
+concreteness_denotation,3,13,concrete_subsective,average,sauce,,,111,112
+concreteness_denotation,3,14,concrete_privative,fabricated,sauce,,,121,122
+concreteness_denotation,3,15,concrete_baseline,vpbyzkgrf,sauce,,,131,132
+concreteness_denotation,3,16,abstract_subsective,important,duty,Should it be neglected?,no,211,212
+concreteness_denotation,3,17,abstract_privative,former,duty,,,221,222
+concreteness_denotation,3,18,abstract_baseline,rjdnw,duty,,,231,232
+concreteness_denotation,4,19,concrete_subsective,current,band,,,111,112
+concreteness_denotation,4,20,concrete_privative,false,band,Have they broken up?,yes,121,122
+concreteness_denotation,4,21,concrete_baseline,qxsw,band,,,131,132
+concreteness_denotation,4,22,abstract_subsective,special,spirit,,,211,212
+concreteness_denotation,4,23,abstract_privative,past,spirit,,,221,222
+concreteness_denotation,4,24,abstract_baseline,ptrgsbkv,spirit,,,231,232
+concreteness_denotation,5,25,concrete_subsective,new,brush,,,111,112
+concreteness_denotation,5,26,concrete_privative,hypothetical,brush,,,121,122
+concreteness_denotation,5,27,concrete_baseline,vpbyzkgrf,brush,,,131,132
+concreteness_denotation,5,28,abstract_subsective,actual,pride,,,211,212
+concreteness_denotation,5,29,abstract_privative,artificial,pride,,,221,222
+concreteness_denotation,5,30,abstract_baseline,rvqf,pride,Is it good to have too much of it?,no,231,232
+concreteness_denotation,6,31,concrete_subsective,unique,mint,,,111,112
+concreteness_denotation,6,32,concrete_privative,virtual,mint,,,121,122
+concreteness_denotation,6,33,concrete_baseline,fxldmr,mint,,,131,132
+concreteness_denotation,6,34,abstract_subsective,unique,manner,,,211,212
+concreteness_denotation,6,35,abstract_privative,virtual,manner,,,221,222
+concreteness_denotation,6,36,abstract_baseline,htbqzylm,manner,,,231,232
+concreteness_denotation,7,37,concrete_subsective,unique,sunshine,,,111,112
+concreteness_denotation,7,38,concrete_privative,virtual,sunshine,,,121,122
+concreteness_denotation,7,39,concrete_baseline,kmlsdjtw,sunshine,,,131,132
+concreteness_denotation,7,40,abstract_subsective,important,respect,,,211,212
+concreteness_denotation,7,41,abstract_privative,former,respect,,,221,222
+concreteness_denotation,7,42,abstract_baseline,xkq,respect,,,231,232
+concreteness_denotation,8,43,concrete_subsective,average,reptile,,,111,112
+concreteness_denotation,8,44,concrete_privative,fabricated,reptile,Is it cool to the touch?,no,121,122
+concreteness_denotation,8,45,concrete_baseline,rjdnw,reptile,,,131,132
+concreteness_denotation,8,46,abstract_subsective,true,mischief,,,211,212
+concreteness_denotation,8,47,abstract_privative,phony,mischief,,,221,222
+concreteness_denotation,8,48,abstract_baseline,htbqzylm,mischief,,,231,232
+concreteness_denotation,9,49,concrete_subsective,genuine,crown,,,111,112
+concreteness_denotation,9,50,concrete_privative,fictional,crown,Is is suitable for a TV show?,yes,121,122
+concreteness_denotation,9,51,concrete_baseline,rvqf,crown,Is it shiny?,yes,131,132
+concreteness_denotation,9,52,abstract_subsective,good,faith,,,211,212
+concreteness_denotation,9,53,abstract_privative,fictitious,faith,,,221,222
+concreteness_denotation,9,54,abstract_baseline,ptrgsbkv,faith,,,231,232
+concreteness_denotation,10,55,concrete_subsective,actual,barrier,,,111,112
+concreteness_denotation,10,56,concrete_privative,artificial,barrier,,,121,122
+concreteness_denotation,10,57,concrete_baseline,ptrgsbkv,barrier,,,131,132
+concreteness_denotation,10,58,abstract_subsective,true,scandal,Is it newsworthy?,yes,211,212
+concreteness_denotation,10,59,abstract_privative,phony,scandal,,,221,222
+concreteness_denotation,10,60,abstract_baseline,ypdcglkc,scandal,Is it morally dubious?,yes,231,232
+concreteness_denotation,11,61,concrete_subsective,good,trailer,,,111,112
+concreteness_denotation,11,62,concrete_privative,fictitious,trailer,,,121,122
+concreteness_denotation,11,63,concrete_baseline,ypdcglkc,trailer,,,131,132
+concreteness_denotation,11,64,abstract_subsective,special,caution,,,211,212
+concreteness_denotation,11,65,abstract_privative,past,caution,,,221,222
+concreteness_denotation,11,66,abstract_baseline,htbqzylm,caution,,,231,232
+concreteness_denotation,12,67,concrete_subsective,unique,beggar,,,111,112
+concreteness_denotation,12,68,concrete_privative,virtual,beggar,Are they poor?,no,121,122
+concreteness_denotation,12,69,concrete_baseline,rjdnw,beggar,,,131,132
+concreteness_denotation,12,70,abstract_subsective,typical,blunder,,,211,212
+concreteness_denotation,12,71,abstract_privative,spurious,blunder,,,221,222
+concreteness_denotation,12,72,abstract_baseline,qxsw,blunder,,,231,232
+concreteness_denotation,13,73,concrete_subsective,authentic,brake,,,111,112
+concreteness_denotation,13,74,concrete_privative,counterfeit,brake,,,121,122
+concreteness_denotation,13,75,concrete_baseline,qxsw,brake,Is it made of plastic? ,no,131,132
+concreteness_denotation,13,76,abstract_subsective,average,hint,,,211,212
+concreteness_denotation,13,77,abstract_privative,fabricated,hint,,,221,222
+concreteness_denotation,13,78,abstract_baseline,bxfjwts,hint,Is it useful for a puzzle?,yes,231,232
+concreteness_denotation,14,79,concrete_subsective,typical,baggage,,,111,112
+concreteness_denotation,14,80,concrete_privative,spurious,baggage,,,121,122
+concreteness_denotation,14,81,concrete_baseline,mtpv,baggage,,,131,132
+concreteness_denotation,14,82,abstract_subsective,new,gloom,,,211,212
+concreteness_denotation,14,83,abstract_privative,hypothetical,gloom,,,221,222
+concreteness_denotation,14,84,abstract_baseline,tqvgqrz,gloom,,,231,232
+concreteness_denotation,15,85,concrete_subsective,average,daughter,,,111,112
+concreteness_denotation,15,86,concrete_privative,fabricated,daughter,,,121,122
+concreteness_denotation,15,87,concrete_baseline,mghljkqr,daughter,,,131,132
+concreteness_denotation,15,88,abstract_subsective,special,reason,,,211,212
+concreteness_denotation,15,89,abstract_privative,past,reason,,,221,222
+concreteness_denotation,15,90,abstract_baseline,tqvgqrz,reason,,,231,232
+concreteness_denotation,16,91,concrete_subsective,important,chess,,,111,112
+concreteness_denotation,16,92,concrete_privative,former,chess,,,121,122
+concreteness_denotation,16,93,concrete_baseline,mtpv,chess,,,131,132
+concreteness_denotation,16,94,abstract_subsective,special,mercy,,,211,212
+concreteness_denotation,16,95,abstract_privative,past,mercy,,,221,222
+concreteness_denotation,16,96,abstract_baseline,ypdcglkc,mercy,,,231,232
+concreteness_denotation,17,97,concrete_subsective,important,beast,,,111,112
+concreteness_denotation,17,98,concrete_privative,former,beast,,,121,122
+concreteness_denotation,17,99,concrete_baseline,zbxlv,beast,,,131,132
+concreteness_denotation,17,100,abstract_subsective,important,loser,,,211,212
+concreteness_denotation,17,101,abstract_privative,former,loser,,,221,222
+concreteness_denotation,17,102,abstract_baseline,wvcnz,loser,,,231,232
+concreteness_denotation,18,103,concrete_subsective,bad,cooker,Is it efficient?,no,111,112
+concreteness_denotation,18,104,concrete_privative,fake,cooker,,,121,122
+concreteness_denotation,18,105,concrete_baseline,mghljkqr,cooker,,,131,132
+concreteness_denotation,18,106,abstract_subsective,good,mode,,,211,212
+concreteness_denotation,18,107,abstract_privative,fictitious,mode,,,221,222
+concreteness_denotation,18,108,abstract_baseline,qxsw,mode,,,231,232
+concreteness_denotation,19,109,concrete_subsective,perfect,fireworks,,,111,112
+concreteness_denotation,19,110,concrete_privative,mock,fireworks,,,121,122
+concreteness_denotation,19,111,concrete_baseline,kmlsdjtw,fireworks,,,131,132
+concreteness_denotation,19,112,abstract_subsective,important,blessing,,,211,212
+concreteness_denotation,19,113,abstract_privative,former,blessing,,,221,222
+concreteness_denotation,19,114,abstract_baseline,tqvgqrz,blessing,,,231,232
+concreteness_denotation,20,115,concrete_subsective,authentic,blister,,,111,112
+concreteness_denotation,20,116,concrete_privative,counterfeit,blister,Does it hurt?,no,121,122
+concreteness_denotation,20,117,concrete_baseline,vpbyzkgrf,blister,,,131,132
+concreteness_denotation,20,118,abstract_subsective,new,disgust,,,211,212
+concreteness_denotation,20,119,abstract_privative,hypothetical,disgust,,,221,222
+concreteness_denotation,20,120,abstract_baseline,bxfjwts,disgust,,,231,232
+concreteness_denotation,21,121,concrete_subsective,real,ground,,,111,112
+concreteness_denotation,21,122,concrete_privative,mythical,ground,,,121,122
+concreteness_denotation,21,123,concrete_baseline,tqvgqrz,ground,,,131,132
+concreteness_denotation,21,124,abstract_subsective,old,value,Should it be taught in school?,no,211,212
+concreteness_denotation,21,125,abstract_privative,imaginary,value,,,221,222
+concreteness_denotation,21,126,abstract_baseline,ptrgsbkv,value,,,231,232
+concreteness_denotation,22,127,concrete_subsective,new,night,,,111,112
+concreteness_denotation,22,128,concrete_privative,hypothetical,night,,,121,122
+concreteness_denotation,22,129,concrete_baseline,rjdnw,night,,,131,132
+concreteness_denotation,22,130,abstract_subsective,perfect,chance,,,211,212
+concreteness_denotation,22,131,abstract_privative,mock,chance,,,221,222
+concreteness_denotation,22,132,abstract_baseline,qxsw,chance,,,231,232
+concreteness_denotation,23,133,concrete_subsective,bad,squash,,,111,112
+concreteness_denotation,23,134,concrete_privative,fake,squash,,,121,122
+concreteness_denotation,23,135,concrete_baseline,rvqf,squash,,,131,132
+concreteness_denotation,23,136,abstract_subsective,important,fuss,,,211,212
+concreteness_denotation,23,137,abstract_privative,former,fuss,,,221,222
+concreteness_denotation,23,138,abstract_baseline,kmlsdjtw,fuss,,,231,232
+concreteness_denotation,24,139,concrete_subsective,real,packet,,,111,112
+concreteness_denotation,24,140,concrete_privative,mythical,packet,,,121,122
+concreteness_denotation,24,141,concrete_baseline,zrtqgfplh,packet,,,131,132
+concreteness_denotation,24,142,abstract_subsective,perfect,myth,,,211,212
+concreteness_denotation,24,143,abstract_privative,mock,myth,,,221,222
+concreteness_denotation,24,144,abstract_baseline,rvqf,myth,Can it be verified?,no,231,232
+concreteness_denotation,25,145,concrete_subsective,genuine,bomb,,,111,112
+concreteness_denotation,25,146,concrete_privative,fictional,bomb,,,121,122
+concreteness_denotation,25,147,concrete_baseline,fxldmr,bomb,Is it safe to handle? ,no,131,132
+concreteness_denotation,25,148,abstract_subsective,old,shame,,,211,212
+concreteness_denotation,25,149,abstract_privative,imaginary,shame,,,221,222
+concreteness_denotation,25,150,abstract_baseline,qxsw,shame,,,231,232
+concreteness_denotation,26,151,concrete_subsective,unique,stab,,,111,112
+concreteness_denotation,26,152,concrete_privative,virtual,stab,,,121,122
+concreteness_denotation,26,153,concrete_baseline,ypdcglkc,stab,,,131,132
+concreteness_denotation,26,154,abstract_subsective,actual,sin,,,211,212
+concreteness_denotation,26,155,abstract_privative,artificial,sin,,,221,222
+concreteness_denotation,26,156,abstract_baseline,zrtqgfplh,sin,,,231,232
+concreteness_denotation,27,157,concrete_subsective,current,beer,,,111,112
+concreteness_denotation,27,158,concrete_privative,false,beer,,,121,122
+concreteness_denotation,27,159,concrete_baseline,rjdnw,beer,Is it efferverscent? ,yes,131,132
+concreteness_denotation,27,160,abstract_subsective,true,fame,,,211,212
+concreteness_denotation,27,161,abstract_privative,phony,fame,Is it to be celebrated now?,no,221,222
+concreteness_denotation,27,162,abstract_baseline,zbxlv,fame,,,231,232
+concreteness_denotation,28,163,concrete_subsective,real,book,,,111,112
+concreteness_denotation,28,164,concrete_privative,mythical,book,,,121,122
+concreteness_denotation,28,165,concrete_baseline,bxfjwts,book,,,131,132
+concreteness_denotation,28,166,abstract_subsective,current,care,,,211,212
+concreteness_denotation,28,167,abstract_privative,false,care,,,221,222
+concreteness_denotation,28,168,abstract_baseline,mghljkqr,care,,,231,232
+concreteness_denotation,29,169,concrete_subsective,actual,monarch,,,111,112
+concreteness_denotation,29,170,concrete_privative,artificial,monarch,,,121,122
+concreteness_denotation,29,171,concrete_baseline,bxfjwts,monarch,,,131,132
+concreteness_denotation,29,172,abstract_subsective,typical,glamour,,,211,212
+concreteness_denotation,29,173,abstract_privative,spurious,glamour,,,221,222
+concreteness_denotation,29,174,abstract_baseline,zbxlv,glamour,,,231,232
+concreteness_denotation,30,175,concrete_subsective,special,forum,,,111,112
+concreteness_denotation,30,176,concrete_privative,past,forum,,,121,122
+concreteness_denotation,30,177,concrete_baseline,bxfjwts,forum,,,131,132
+concreteness_denotation,30,178,abstract_subsective,bad,rating,,,211,212
+concreteness_denotation,30,179,abstract_privative,fake,rating,Is it to be disregarded?,yes,221,222
+concreteness_denotation,30,180,abstract_baseline,zrtqgfplh,rating,,,231,232
+concreteness_denotation,31,181,concrete_subsective,authentic,visa,,,111,112
+concreteness_denotation,31,182,concrete_privative,counterfeit,visa,Is it suitable for travel?,no,121,122
+concreteness_denotation,31,183,concrete_baseline,fxldmr,visa,,,131,132
+concreteness_denotation,31,184,abstract_subsective,current,lust,,,211,212
+concreteness_denotation,31,185,abstract_privative,false,lust,,,221,222
+concreteness_denotation,31,186,abstract_baseline,ptrgsbkv,lust,,,231,232
+concreteness_denotation,32,187,concrete_subsective,authentic,item,,,111,112
+concreteness_denotation,32,188,concrete_privative,counterfeit,item,,,121,122
+concreteness_denotation,32,189,concrete_baseline,xkq,item,,,131,132
+concreteness_denotation,32,190,abstract_subsective,bad,limit,Does it apply now?,yes,211,212
+concreteness_denotation,32,191,abstract_privative,fake,limit,,,221,222
+concreteness_denotation,32,192,abstract_baseline,tqvgqrz,limit,,,231,232
+concreteness_denotation,33,193,concrete_subsective,old,prison,Is it escapable? ,no,111,112
+concreteness_denotation,33,194,concrete_privative,imaginary,prison,,,121,122
+concreteness_denotation,33,195,concrete_baseline,rvqf,prison,,,131,132
+concreteness_denotation,33,196,abstract_subsective,perfect,trouble,,,211,212
+concreteness_denotation,33,197,abstract_privative,mock,trouble,,,221,222
+concreteness_denotation,33,198,abstract_baseline,bxfjwts,trouble,,,231,232
+concreteness_denotation,34,199,concrete_subsective,genuine,trophy,Is it shiny?,yes,111,112
+concreteness_denotation,34,200,concrete_privative,fictional,trophy,,,121,122
+concreteness_denotation,34,201,concrete_baseline,ptrgsbkv,trophy,,,131,132
+concreteness_denotation,34,202,abstract_subsective,perfect,skill,Is it acquired recently?,yes,211,212
+concreteness_denotation,34,203,abstract_privative,mock,skill,,,221,222
+concreteness_denotation,34,204,abstract_baseline,tqvgqrz,skill,Do musicians have it?,yes,231,232
+concreteness_denotation,35,205,concrete_subsective,true,shroud,,,111,112
+concreteness_denotation,35,206,concrete_privative,phony,shroud,,,121,122
+concreteness_denotation,35,207,concrete_baseline,xkq,shroud,,,131,132
+concreteness_denotation,35,208,abstract_subsective,real,jargon,,,211,212
+concreteness_denotation,35,209,abstract_privative,mythical,jargon,,,221,222
+concreteness_denotation,35,210,abstract_baseline,mghljkqr,jargon,,,231,232
+concreteness_denotation,36,211,concrete_subsective,old,pheasant,,,111,112
+concreteness_denotation,36,212,concrete_privative,imaginary,pheasant,,,121,122
+concreteness_denotation,36,213,concrete_baseline,mghljkqr,pheasant,Is it large for a bird?,yes,131,132
+concreteness_denotation,36,214,abstract_subsective,real,inkling,,,211,212
+concreteness_denotation,36,215,abstract_privative,mythical,inkling,,,221,222
+concreteness_denotation,36,216,abstract_baseline,ypdcglkc,inkling,,,231,232
+concreteness_denotation,37,217,concrete_subsective,average,chef,,,111,112
+concreteness_denotation,37,218,concrete_privative,fabricated,chef,Might they still cook well?,yes,121,122
+concreteness_denotation,37,219,concrete_baseline,wvcnz,chef,,,131,132
+concreteness_denotation,37,220,abstract_subsective,current,option,,,211,212
+concreteness_denotation,37,221,abstract_privative,false,option,,,221,222
+concreteness_denotation,37,222,abstract_baseline,ypdcglkc,option,,,231,232
+concreteness_denotation,38,223,concrete_subsective,average,dog,,,111,112
+concreteness_denotation,38,224,concrete_privative,fabricated,dog,,,121,122
+concreteness_denotation,38,225,concrete_baseline,kmlsdjtw,dog,,,131,132
+concreteness_denotation,38,226,abstract_subsective,true,truth,,,211,212
+concreteness_denotation,38,227,abstract_privative,phony,truth,,,221,222
+concreteness_denotation,38,228,abstract_baseline,mghljkqr,truth,,,231,232
+concreteness_denotation,39,229,concrete_subsective,old,groom,,,111,112
+concreteness_denotation,39,230,concrete_privative,imaginary,groom,,,121,122
+concreteness_denotation,39,231,concrete_baseline,bxfjwts,groom,,,131,132
+concreteness_denotation,39,232,abstract_subsective,typical,notion,,,211,212
+concreteness_denotation,39,233,abstract_privative,spurious,notion,,,221,222
+concreteness_denotation,39,234,abstract_baseline,kmlsdjtw,notion,,,231,232
+concreteness_denotation,40,235,concrete_subsective,perfect,dinner,,,111,112
+concreteness_denotation,40,236,concrete_privative,mock,dinner,,,121,122
+concreteness_denotation,40,237,concrete_baseline,zbxlv,dinner,,,131,132
+concreteness_denotation,40,238,abstract_subsective,genuine,safety,,,211,212
+concreteness_denotation,40,239,abstract_privative,fictional,safety,,,221,222
+concreteness_denotation,40,240,abstract_baseline,mtpv,safety,Is it to be neglected in a workplace?,no,231,232
+concreteness_denotation,41,241,concrete_subsective,real,bread,,,111,112
+concreteness_denotation,41,242,concrete_privative,mythical,bread,Is it good for decoration?,yes,121,122
+concreteness_denotation,41,243,concrete_baseline,qxsw,bread,,,131,132
+concreteness_denotation,41,244,abstract_subsective,current,reserve,,,211,212
+concreteness_denotation,41,245,abstract_privative,false,reserve,,,221,222
+concreteness_denotation,41,246,abstract_baseline,xkq,reserve,,,231,232
+concreteness_denotation,42,247,concrete_subsective,bad,battle,,,111,112
+concreteness_denotation,42,248,concrete_privative,fake,battle,,,121,122
+concreteness_denotation,42,249,concrete_baseline,kmlsdjtw,battle,Is it violent?,yes,131,132
+concreteness_denotation,42,250,abstract_subsective,typical,mistake,,,211,212
+concreteness_denotation,42,251,abstract_privative,spurious,mistake,,,221,222
+concreteness_denotation,42,252,abstract_baseline,wvcnz,mistake,,,231,232
+concreteness_denotation,43,253,concrete_subsective,genuine,petrol,,,111,112
+concreteness_denotation,43,254,concrete_privative,fictional,petrol,Is it to be used for a car?,no,121,122
+concreteness_denotation,43,255,concrete_baseline,vpbyzkgrf,petrol,,,131,132
+concreteness_denotation,43,256,abstract_subsective,average,trend,,,211,212
+concreteness_denotation,43,257,abstract_privative,fabricated,trend,,,221,222
+concreteness_denotation,43,258,abstract_baseline,qxsw,trend,,,231,232
+concreteness_denotation,44,259,concrete_subsective,real,clergy,,,111,112
+concreteness_denotation,44,260,concrete_privative,mythical,clergy,,,121,122
+concreteness_denotation,44,261,concrete_baseline,mtpv,clergy,,,131,132
+concreteness_denotation,44,262,abstract_subsective,important,plight,,,211,212
+concreteness_denotation,44,263,abstract_privative,former,plight,,,221,222
+concreteness_denotation,44,264,abstract_baseline,vpbyzkgrf,plight,,,231,232
+concreteness_denotation,45,265,concrete_subsective,real,salt,Is it sweet?,no,111,112
+concreteness_denotation,45,266,concrete_privative,mythical,salt,,,121,122
+concreteness_denotation,45,267,concrete_baseline,kmlsdjtw,salt,,,131,132
+concreteness_denotation,45,268,abstract_subsective,new,effort,,,211,212
+concreteness_denotation,45,269,abstract_privative,hypothetical,effort,,,221,222
+concreteness_denotation,45,270,abstract_baseline,xkq,effort,,,231,232
+concreteness_denotation,46,271,concrete_subsective,typical,puffin,,,111,112
+concreteness_denotation,46,272,concrete_privative,spurious,puffin,,,121,122
+concreteness_denotation,46,273,concrete_baseline,zrtqgfplh,puffin,,,131,132
+concreteness_denotation,46,274,abstract_subsective,real,proxy,,,211,212
+concreteness_denotation,46,275,abstract_privative,mythical,proxy,,,221,222
+concreteness_denotation,46,276,abstract_baseline,htbqzylm,proxy,,,231,232
+concreteness_denotation,47,277,concrete_subsective,good,throne,,,111,112
+concreteness_denotation,47,278,concrete_privative,fictitious,throne,,,121,122
+concreteness_denotation,47,279,concrete_baseline,rvqf,throne,,,131,132
+concreteness_denotation,47,280,abstract_subsective,perfect,method,Is it efficient?,yes,211,212
+concreteness_denotation,47,281,abstract_privative,mock,method,,,221,222
+concreteness_denotation,47,282,abstract_baseline,fxldmr,method,,,231,232
+concreteness_denotation,48,283,concrete_subsective,genuine,lettuce,,,111,112
+concreteness_denotation,48,284,concrete_privative,fictional,lettuce,,,121,122
+concreteness_denotation,48,285,concrete_baseline,qxsw,lettuce,,,131,132
+concreteness_denotation,48,286,abstract_subsective,bad,fiction,,,211,212
+concreteness_denotation,48,287,abstract_privative,fake,fiction,,,221,222
+concreteness_denotation,48,288,abstract_baseline,ptrgsbkv,fiction,,,231,232
+concreteness_denotation,49,289,concrete_subsective,actual,resort,,,111,112
+concreteness_denotation,49,290,concrete_privative,artificial,resort,,,121,122
+concreteness_denotation,49,291,concrete_baseline,tqvgqrz,resort,,,131,132
+concreteness_denotation,49,292,abstract_subsective,typical,status,,,211,212
+concreteness_denotation,49,293,abstract_privative,spurious,status,,,221,222
+concreteness_denotation,49,294,abstract_baseline,tqvgqrz,status,,,231,232
+concreteness_denotation,50,295,concrete_subsective,new,street,,,111,112
+concreteness_denotation,50,296,concrete_privative,hypothetical,street,,,121,122
+concreteness_denotation,50,297,concrete_baseline,zbxlv,street,,,131,132
+concreteness_denotation,50,298,abstract_subsective,bad,service,Is it noteworthy?,no,211,212
+concreteness_denotation,50,299,abstract_privative,fake,service,,,221,222
+concreteness_denotation,50,300,abstract_baseline,fxldmr,service,,,231,232
+concreteness_denotation,51,301,concrete_subsective,typical,pastry,Is it dry?,no,111,112
+concreteness_denotation,51,302,concrete_privative,spurious,pastry,,,121,122
+concreteness_denotation,51,303,concrete_baseline,ypdcglkc,pastry,,,131,132
+concreteness_denotation,51,304,abstract_subsective,actual,outcome,,,211,212
+concreteness_denotation,51,305,abstract_privative,artificial,outcome,,,221,222
+concreteness_denotation,51,306,abstract_baseline,wvcnz,outcome,,,231,232
+concreteness_denotation,52,307,concrete_subsective,new,crab,,,111,112
+concreteness_denotation,52,308,concrete_privative,hypothetical,crab,,,121,122
+concreteness_denotation,52,309,concrete_baseline,mghljkqr,crab,Has it got a hard shell?,yes,131,132
+concreteness_denotation,52,310,abstract_subsective,actual,mood,,,211,212
+concreteness_denotation,52,311,abstract_privative,artificial,mood,,,221,222
+concreteness_denotation,52,312,abstract_baseline,vpbyzkgrf,mood,,,231,232
+concreteness_denotation,53,313,concrete_subsective,good,heart,,,111,112
+concreteness_denotation,53,314,concrete_privative,fictitious,heart,,,121,122
+concreteness_denotation,53,315,concrete_baseline,xkq,heart,,,131,132
+concreteness_denotation,53,316,abstract_subsective,actual,fun,,,211,212
+concreteness_denotation,53,317,abstract_privative,artificial,fun,,,221,222
+concreteness_denotation,53,318,abstract_baseline,zbxlv,fun,,,231,232
+concreteness_denotation,54,319,concrete_subsective,new,concert,,,111,112
+concreteness_denotation,54,320,concrete_privative,hypothetical,concert,,,121,122
+concreteness_denotation,54,321,concrete_baseline,kmlsdjtw,concert,Is it a quiet place?,no,131,132
+concreteness_denotation,54,322,abstract_subsective,good,romance,,,211,212
+concreteness_denotation,54,323,abstract_privative,fictitious,romance,,,221,222
+concreteness_denotation,54,324,abstract_baseline,rjdnw,romance,,,231,232
+concreteness_denotation,55,325,concrete_subsective,authentic,lightning,,,111,112
+concreteness_denotation,55,326,concrete_privative,counterfeit,lightning,,,121,122
+concreteness_denotation,55,327,concrete_baseline,kmlsdjtw,lightning,,,131,132
+concreteness_denotation,55,328,abstract_subsective,perfect,command,,,211,212
+concreteness_denotation,55,329,abstract_privative,mock,command,,,221,222
+concreteness_denotation,55,330,abstract_baseline,xkq,command,Are soldiers required to follow it?,yes,231,232
+concreteness_denotation,56,331,concrete_subsective,good,wreck,,,111,112
+concreteness_denotation,56,332,concrete_privative,fictitious,wreck,,,121,122
+concreteness_denotation,56,333,concrete_baseline,htbqzylm,wreck,,,131,132
+concreteness_denotation,56,334,abstract_subsective,unique,curse,,,211,212
+concreteness_denotation,56,335,abstract_privative,virtual,curse,,,221,222
+concreteness_denotation,56,336,abstract_baseline,mghljkqr,curse,,,231,232
+concreteness_denotation,57,337,concrete_subsective,authentic,pasta,,,111,112
+concreteness_denotation,57,338,concrete_privative,counterfeit,pasta,,,121,122
+concreteness_denotation,57,339,concrete_baseline,mtpv,pasta,Can it be eaten raw?,no,131,132
+concreteness_denotation,57,340,abstract_subsective,authentic,closure,,,211,212
+concreteness_denotation,57,341,abstract_privative,counterfeit,closure,,,221,222
+concreteness_denotation,57,342,abstract_baseline,wvcnz,closure,,,231,232
+concreteness_denotation,58,343,concrete_subsective,current,bridesmaid,,,111,112
+concreteness_denotation,58,344,concrete_privative,false,bridesmaid,,,121,122
+concreteness_denotation,58,345,concrete_baseline,mtpv,bridesmaid,,,131,132
+concreteness_denotation,58,346,abstract_subsective,genuine,tranquil,,,211,212
+concreteness_denotation,58,347,abstract_privative,fictional,tranquil,,,221,222
+concreteness_denotation,58,348,abstract_baseline,mghljkqr,tranquil,,,231,232
+concreteness_denotation,59,349,concrete_subsective,bad,mountain,,,111,112
+concreteness_denotation,59,350,concrete_privative,fake,mountain,Might it be featured in some story?,yes,121,122
+concreteness_denotation,59,351,concrete_baseline,qxsw,mountain,,,131,132
+concreteness_denotation,59,352,abstract_subsective,unique,progress,,,211,212
+concreteness_denotation,59,353,abstract_privative,virtual,progress,,,221,222
+concreteness_denotation,59,354,abstract_baseline,vpbyzkgrf,progress,,,231,232
+concreteness_denotation,60,355,concrete_subsective,unique,stake,,,111,112
+concreteness_denotation,60,356,concrete_privative,virtual,stake,,,121,122
+concreteness_denotation,60,357,concrete_baseline,bxfjwts,stake,,,131,132
+concreteness_denotation,60,358,abstract_subsective,actual,version,,,211,212
+concreteness_denotation,60,359,abstract_privative,artificial,version,,,221,222
+concreteness_denotation,60,360,abstract_baseline,rjdnw,version,,,231,232
+concreteness_denotation,61,361,concrete_subsective,new,badger,,,111,112
+concreteness_denotation,61,362,concrete_privative,hypothetical,badger,,,121,122
+concreteness_denotation,61,363,concrete_baseline,zrtqgfplh,badger,,,131,132
+concreteness_denotation,61,364,abstract_subsective,genuine,output,,,211,212
+concreteness_denotation,61,365,abstract_privative,fictional,output,,,221,222
+concreteness_denotation,61,366,abstract_baseline,htbqzylm,output,,,231,232
+concreteness_denotation,62,367,concrete_subsective,true,vein,,,111,112
+concreteness_denotation,62,368,concrete_privative,phony,vein,,,121,122
+concreteness_denotation,62,369,concrete_baseline,bxfjwts,vein,,,131,132
+concreteness_denotation,62,370,abstract_subsective,new,pause,,,211,212
+concreteness_denotation,62,371,abstract_privative,hypothetical,pause,,,221,222
+concreteness_denotation,62,372,abstract_baseline,rvqf,pause,,,231,232
+concreteness_denotation,63,373,concrete_subsective,authentic,midwife,,,111,112
+concreteness_denotation,63,374,concrete_privative,counterfeit,midwife,,,121,122
+concreteness_denotation,63,375,concrete_baseline,zbxlv,midwife,,,131,132
+concreteness_denotation,63,376,abstract_subsective,important,virtue,Is it to be disregarded?,no,211,212
+concreteness_denotation,63,377,abstract_privative,former,virtue,Is it to be promoted?,no,221,222
+concreteness_denotation,63,378,abstract_baseline,zrtqgfplh,virtue,,,231,232
+concreteness_denotation,64,379,concrete_subsective,unique,metal,,,111,112
+concreteness_denotation,64,380,concrete_privative,virtual,metal,,,121,122
+concreteness_denotation,64,381,concrete_baseline,zbxlv,metal,,,131,132
+concreteness_denotation,64,382,abstract_subsective,true,scheme,,,211,212
+concreteness_denotation,64,383,abstract_privative,phony,scheme,,,221,222
+concreteness_denotation,64,384,abstract_baseline,wvcnz,scheme,,,231,232
+concreteness_denotation,65,385,concrete_subsective,average,morgue,,,111,112
+concreteness_denotation,65,386,concrete_privative,fabricated,morgue,,,121,122
+concreteness_denotation,65,387,concrete_baseline,zrtqgfplh,morgue,,,131,132
+concreteness_denotation,65,388,abstract_subsective,typical,deceit,,,211,212
+concreteness_denotation,65,389,abstract_privative,spurious,deceit,,,221,222
+concreteness_denotation,65,390,abstract_baseline,bxfjwts,deceit,,,231,232
+concreteness_denotation,66,391,concrete_subsective,special,medal,,,111,112
+concreteness_denotation,66,392,concrete_privative,past,medal,,,121,122
+concreteness_denotation,66,393,concrete_baseline,fxldmr,medal,,,131,132
+concreteness_denotation,66,394,abstract_subsective,actual,freedom,,,211,212
+concreteness_denotation,66,395,abstract_privative,artificial,freedom,Is it bad to have?,yes,221,222
+concreteness_denotation,66,396,abstract_baseline,xkq,freedom,,,231,232
+concreteness_denotation,67,397,concrete_subsective,special,rash,,,111,112
+concreteness_denotation,67,398,concrete_privative,past,rash,,,121,122
+concreteness_denotation,67,399,concrete_baseline,zrtqgfplh,rash,,,131,132
+concreteness_denotation,67,400,abstract_subsective,authentic,greed,,,211,212
+concreteness_denotation,67,401,abstract_privative,counterfeit,greed,,,221,222
+concreteness_denotation,67,402,abstract_baseline,rjdnw,greed,,,231,232
+concreteness_denotation,68,403,concrete_subsective,good,trap,,,111,112
+concreteness_denotation,68,404,concrete_privative,fictitious,trap,,,121,122
+concreteness_denotation,68,405,concrete_baseline,mghljkqr,trap,,,131,132
+concreteness_denotation,68,406,abstract_subsective,current,anger,Is it to be worsened?,no,211,212
+concreteness_denotation,68,407,abstract_privative,false,anger,,,221,222
+concreteness_denotation,68,408,abstract_baseline,tqvgqrz,anger,,,231,232
+concreteness_denotation,69,409,concrete_subsective,important,dagger,Is it sharp?,yes,111,112
+concreteness_denotation,69,410,concrete_privative,former,dagger,,,121,122
+concreteness_denotation,69,411,concrete_baseline,ypdcglkc,dagger,,,131,132
+concreteness_denotation,69,412,abstract_subsective,average,boredom,,,211,212
+concreteness_denotation,69,413,abstract_privative,fabricated,boredom,,,221,222
+concreteness_denotation,69,414,abstract_baseline,htbqzylm,boredom,,,231,232
+concreteness_denotation,70,415,concrete_subsective,perfect,taste,,,111,112
+concreteness_denotation,70,416,concrete_privative,mock,taste,,,121,122
+concreteness_denotation,70,417,concrete_baseline,ypdcglkc,taste,,,131,132
+concreteness_denotation,70,418,abstract_subsective,current,trust,,,211,212
+concreteness_denotation,70,419,abstract_privative,false,trust,,,221,222
+concreteness_denotation,70,420,abstract_baseline,zbxlv,trust,Is it inviolable?,no,231,232
+concreteness_denotation,71,421,concrete_subsective,actual,port,,,111,112
+concreteness_denotation,71,422,concrete_privative,artificial,port,,,121,122
+concreteness_denotation,71,423,concrete_baseline,htbqzylm,port,,,131,132
+concreteness_denotation,71,424,abstract_subsective,average,drama,,,211,212
+concreteness_denotation,71,425,abstract_privative,fabricated,drama,,,221,222
+concreteness_denotation,71,426,abstract_baseline,mtpv,drama,,,231,232
+concreteness_denotation,72,427,concrete_subsective,true,pulse,,,111,112
+concreteness_denotation,72,428,concrete_privative,phony,pulse,,,121,122
+concreteness_denotation,72,429,concrete_baseline,vpbyzkgrf,pulse,,,131,132
+concreteness_denotation,72,430,abstract_subsective,new,outlook,,,211,212
+concreteness_denotation,72,431,abstract_privative,hypothetical,outlook,,,221,222
+concreteness_denotation,72,432,abstract_baseline,fxldmr,outlook,,,231,232
+concreteness_denotation,73,433,concrete_subsective,bad,mother,,,111,112
+concreteness_denotation,73,434,concrete_privative,fake,mother,,,121,122
+concreteness_denotation,73,435,concrete_baseline,zbxlv,mother,,,131,132
+concreteness_denotation,73,436,abstract_subsective,special,idea,,,211,212
+concreteness_denotation,73,437,abstract_privative,past,idea,,,221,222
+concreteness_denotation,73,438,abstract_baseline,rvqf,idea,,,231,232
+concreteness_denotation,74,439,concrete_subsective,real,husband,,,111,112
+concreteness_denotation,74,440,concrete_privative,mythical,husband,,,121,122
+concreteness_denotation,74,441,concrete_baseline,fxldmr,husband,,,131,132
+concreteness_denotation,74,442,abstract_subsective,actual,language,,,211,212
+concreteness_denotation,74,443,abstract_privative,artificial,language,,,221,222
+concreteness_denotation,74,444,abstract_baseline,mtpv,language,,,231,232
+concreteness_denotation,75,445,concrete_subsective,true,stance,,,111,112
+concreteness_denotation,75,446,concrete_privative,phony,stance,,,121,122
+concreteness_denotation,75,447,concrete_baseline,qxsw,stance,,,131,132
+concreteness_denotation,75,448,abstract_subsective,special,essence,,,211,212
+concreteness_denotation,75,449,abstract_privative,past,essence,,,221,222
+concreteness_denotation,75,450,abstract_baseline,mtpv,essence,,,231,232
+concreteness_denotation,76,451,concrete_subsective,actual,corpse,,,111,112
+concreteness_denotation,76,452,concrete_privative,artificial,corpse,,,121,122
+concreteness_denotation,76,453,concrete_baseline,xkq,corpse,,,131,132
+concreteness_denotation,76,454,abstract_subsective,perfect,hatred,,,211,212
+concreteness_denotation,76,455,abstract_privative,mock,hatred,Is it despicable?,yes,221,222
+concreteness_denotation,76,456,abstract_baseline,rjdnw,hatred,,,231,232
+concreteness_denotation,77,457,concrete_subsective,current,lager,,,111,112
+concreteness_denotation,77,458,concrete_privative,false,lager,,,121,122
+concreteness_denotation,77,459,concrete_baseline,vpbyzkgrf,lager,,,131,132
+concreteness_denotation,77,460,abstract_subsective,unique,norm,,,211,212
+concreteness_denotation,77,461,abstract_privative,virtual,norm,,,221,222
+concreteness_denotation,77,462,abstract_baseline,xkq,norm,,,231,232
+concreteness_denotation,78,463,concrete_subsective,old,wave,,,111,112
+concreteness_denotation,78,464,concrete_privative,imaginary,wave,,,121,122
+concreteness_denotation,78,465,concrete_baseline,mtpv,wave,,,131,132
+concreteness_denotation,78,466,abstract_subsective,authentic,soul,,,211,212
+concreteness_denotation,78,467,abstract_privative,counterfeit,soul,,,221,222
+concreteness_denotation,78,468,abstract_baseline,rvqf,soul,,,231,232
+concreteness_denotation,79,469,concrete_subsective,genuine,bugle,Is it loud? ,yes,111,112
+concreteness_denotation,79,470,concrete_privative,fictional,bugle,,,121,122
+concreteness_denotation,79,471,concrete_baseline,ypdcglkc,bugle,,,131,132
+concreteness_denotation,79,472,abstract_subsective,important,folly,,,211,212
+concreteness_denotation,79,473,abstract_privative,former,folly,,,221,222
+concreteness_denotation,79,474,abstract_baseline,rvqf,folly,,,231,232
+concreteness_denotation,80,475,concrete_subsective,good,mansion,,,111,112
+concreteness_denotation,80,476,concrete_privative,fictitious,mansion,,,121,122
+concreteness_denotation,80,477,concrete_baseline,zbxlv,mansion,,,131,132
+concreteness_denotation,80,478,abstract_subsective,old,consent,,,211,212
+concreteness_denotation,80,479,abstract_privative,imaginary,consent,,,221,222
+concreteness_denotation,80,480,abstract_baseline,htbqzylm,consent,,,231,232
+concreteness_denotation,81,481,concrete_subsective,bad,toga,,,111,112
+concreteness_denotation,81,482,concrete_privative,fake,toga,,,121,122
+concreteness_denotation,81,483,concrete_baseline,wvcnz,toga,,,131,132
+concreteness_denotation,81,484,abstract_subsective,genuine,zeal,,,211,212
+concreteness_denotation,81,485,abstract_privative,fictional,zeal,,,221,222
+concreteness_denotation,81,486,abstract_baseline,tqvgqrz,zeal,,,231,232
+concreteness_denotation,82,487,concrete_subsective,current,gadget,,,111,112
+concreteness_denotation,82,488,concrete_privative,false,gadget,,,121,122
+concreteness_denotation,82,489,concrete_baseline,zrtqgfplh,gadget,,,131,132
+concreteness_denotation,82,490,abstract_subsective,good,leisure,,,211,212
+concreteness_denotation,82,491,abstract_privative,fictitious,leisure,,,221,222
+concreteness_denotation,82,492,abstract_baseline,wvcnz,leisure,,,231,232
+concreteness_denotation,83,493,concrete_subsective,real,traffic,,,111,112
+concreteness_denotation,83,494,concrete_privative,mythical,traffic,,,121,122
+concreteness_denotation,83,495,concrete_baseline,zbxlv,traffic,,,131,132
+concreteness_denotation,83,496,abstract_subsective,authentic,fault,,,211,212
+concreteness_denotation,83,497,abstract_privative,counterfeit,fault,,,221,222
+concreteness_denotation,83,498,abstract_baseline,htbqzylm,fault,,,231,232
+concreteness_denotation,84,499,concrete_subsective,typical,doctor,,,111,112
+concreteness_denotation,84,500,concrete_privative,spurious,doctor,,,121,122
+concreteness_denotation,84,501,concrete_baseline,rvqf,doctor,,,131,132
+concreteness_denotation,84,502,abstract_subsective,true,interest,,,211,212
+concreteness_denotation,84,503,abstract_privative,phony,interest,,,221,222
+concreteness_denotation,84,504,abstract_baseline,kmlsdjtw,interest,,,231,232
+concreteness_denotation,85,505,concrete_subsective,real,piston,Does it have moving parts?,yes,111,112
+concreteness_denotation,85,506,concrete_privative,mythical,piston,,,121,122
+concreteness_denotation,85,507,concrete_baseline,rvqf,piston,,,131,132
+concreteness_denotation,85,508,abstract_subsective,bad,doctrine,,,211,212
+concreteness_denotation,85,509,abstract_privative,fake,doctrine,,,221,222
+concreteness_denotation,85,510,abstract_baseline,mtpv,doctrine,,,231,232
+concreteness_denotation,86,511,concrete_subsective,good,tripod,,,111,112
+concreteness_denotation,86,512,concrete_privative,fictitious,tripod,,,121,122
+concreteness_denotation,86,513,concrete_baseline,bxfjwts,tripod,,,131,132
+concreteness_denotation,86,514,abstract_subsective,new,tact,,,211,212
+concreteness_denotation,86,515,abstract_privative,hypothetical,tact,,,221,222
+concreteness_denotation,86,516,abstract_baseline,htbqzylm,tact,,,231,232
+concreteness_denotation,87,517,concrete_subsective,typical,hydrant,,,111,112
+concreteness_denotation,87,518,concrete_privative,spurious,hydrant,,,121,122
+concreteness_denotation,87,519,concrete_baseline,fxldmr,hydrant,Can you easily move it around? ,no,131,132
+concreteness_denotation,87,520,abstract_subsective,unique,pronoun,,,211,212
+concreteness_denotation,87,521,abstract_privative,virtual,pronoun,,,221,222
+concreteness_denotation,87,522,abstract_baseline,wvcnz,pronoun,,,231,232
+concreteness_denotation,88,523,concrete_subsective,bad,lynx,,,111,112
+concreteness_denotation,88,524,concrete_privative,fake,lynx,,,121,122
+concreteness_denotation,88,525,concrete_baseline,ypdcglkc,lynx,,,131,132
+concreteness_denotation,88,526,abstract_subsective,old,allure,,,211,212
+concreteness_denotation,88,527,abstract_privative,imaginary,allure,,,221,222
+concreteness_denotation,88,528,abstract_baseline,xkq,allure,,,231,232
+concreteness_denotation,89,529,concrete_subsective,real,ditch,,,111,112
+concreteness_denotation,89,530,concrete_privative,mythical,ditch,,,121,122
+concreteness_denotation,89,531,concrete_baseline,wvcnz,ditch,,,131,132
+concreteness_denotation,89,532,abstract_subsective,special,pity,,,211,212
+concreteness_denotation,89,533,abstract_privative,past,pity,,,221,222
+concreteness_denotation,89,534,abstract_baseline,mghljkqr,pity,,,231,232
+concreteness_denotation,90,535,concrete_subsective,good,picture,,,111,112
+concreteness_denotation,90,536,concrete_privative,fictitious,picture,,,121,122
+concreteness_denotation,90,537,concrete_baseline,vpbyzkgrf,picture,,,131,132
+concreteness_denotation,90,538,abstract_subsective,important,future,,,211,212
+concreteness_denotation,90,539,abstract_privative,former,future,,,221,222
+concreteness_denotation,90,540,abstract_baseline,htbqzylm,future,Is it predictable?,no,231,232
+concreteness_denotation,91,541,concrete_subsective,current,barrel,,,111,112
+concreteness_denotation,91,542,concrete_privative,false,barrel,,,121,122
+concreteness_denotation,91,543,concrete_baseline,htbqzylm,barrel,,,131,132
+concreteness_denotation,91,544,abstract_subsective,true,function,,,211,212
+concreteness_denotation,91,545,abstract_privative,phony,function,,,221,222
+concreteness_denotation,91,546,abstract_baseline,rjdnw,function,,,231,232
+concreteness_denotation,92,547,concrete_subsective,typical,pudding,Is it edible?,yes,111,112
+concreteness_denotation,92,548,concrete_privative,spurious,pudding,,,121,122
+concreteness_denotation,92,549,concrete_baseline,vpbyzkgrf,pudding,,,131,132
+concreteness_denotation,92,550,abstract_subsective,unique,heaven,,,211,212
+concreteness_denotation,92,551,abstract_privative,virtual,heaven,,,221,222
+concreteness_denotation,92,552,abstract_baseline,rvqf,heaven,,,231,232
+concreteness_denotation,93,553,concrete_subsective,typical,cake,Is it stale?,no,111,112
+concreteness_denotation,93,554,concrete_privative,spurious,cake,,,121,122
+concreteness_denotation,93,555,concrete_baseline,htbqzylm,cake,,,131,132
+concreteness_denotation,93,556,abstract_subsective,important,joy,,,211,212
+concreteness_denotation,93,557,abstract_privative,former,joy,,,221,222
+concreteness_denotation,93,558,abstract_baseline,bxfjwts,joy,,,231,232
+concreteness_denotation,94,559,concrete_subsective,old,banker,,,111,112
+concreteness_denotation,94,560,concrete_privative,imaginary,banker,,,121,122
+concreteness_denotation,94,561,concrete_baseline,wvcnz,banker,,,131,132
+concreteness_denotation,94,562,abstract_subsective,new,shortage,,,211,212
+concreteness_denotation,94,563,abstract_privative,hypothetical,shortage,,,221,222
+concreteness_denotation,94,564,abstract_baseline,wvcnz,shortage,,,231,232
+concreteness_denotation,95,565,concrete_subsective,perfect,troll,,,111,112
+concreteness_denotation,95,566,concrete_privative,mock,troll,,,121,122
+concreteness_denotation,95,567,concrete_baseline,ptrgsbkv,troll,,,131,132
+concreteness_denotation,95,568,abstract_subsective,genuine,setback,,,211,212
+concreteness_denotation,95,569,abstract_privative,fictional,setback,,,221,222
+concreteness_denotation,95,570,abstract_baseline,xkq,setback,,,231,232
+concreteness_denotation,96,571,concrete_subsective,current,fungus,,,111,112
+concreteness_denotation,96,572,concrete_privative,false,fungus,,,121,122
+concreteness_denotation,96,573,concrete_baseline,kmlsdjtw,fungus,Does it grow in dry places?,no,131,132
+concreteness_denotation,96,574,abstract_subsective,authentic,remorse,,,211,212
+concreteness_denotation,96,575,abstract_privative,counterfeit,remorse,Is it to be believed?,no,221,222
+concreteness_denotation,96,576,abstract_baseline,tqvgqrz,remorse,,,231,232
+concreteness_denotation,97,577,concrete_subsective,true,church,,,111,112
+concreteness_denotation,97,578,concrete_privative,phony,church,,,121,122
+concreteness_denotation,97,579,concrete_baseline,mtpv,church,,,131,132
+concreteness_denotation,97,580,abstract_subsective,good,risk,,,211,212
+concreteness_denotation,97,581,abstract_privative,fictitious,risk,,,221,222
+concreteness_denotation,97,582,abstract_baseline,kmlsdjtw,risk,Is it good in moderation?,yes,231,232
+concreteness_denotation,98,583,concrete_subsective,new,chasm,,,111,112
+concreteness_denotation,98,584,concrete_privative,hypothetical,chasm,,,121,122
+concreteness_denotation,98,585,concrete_baseline,qxsw,chasm,,,131,132
+concreteness_denotation,98,586,abstract_subsective,special,ploy,,,211,212
+concreteness_denotation,98,587,abstract_privative,past,ploy,,,221,222
+concreteness_denotation,98,588,abstract_baseline,kmlsdjtw,ploy,,,231,232
+concreteness_denotation,99,589,concrete_subsective,good,froth,,,111,112
+concreteness_denotation,99,590,concrete_privative,fictitious,froth,,,121,122
+concreteness_denotation,99,591,concrete_baseline,mtpv,froth,,,131,132
+concreteness_denotation,99,592,abstract_subsective,genuine,upkeep,,,211,212
+concreteness_denotation,99,593,abstract_privative,fictional,upkeep,,,221,222
+concreteness_denotation,99,594,abstract_baseline,wvcnz,upkeep,,,231,232
+concreteness_denotation,100,595,concrete_subsective,genuine,swan,,,111,112
+concreteness_denotation,100,596,concrete_privative,fictional,swan,,,121,122
+concreteness_denotation,100,597,concrete_baseline,zrtqgfplh,swan,,,131,132
+concreteness_denotation,100,598,abstract_subsective,new,thrill,,,211,212
+concreteness_denotation,100,599,abstract_privative,hypothetical,thrill,,,221,222
+concreteness_denotation,100,600,abstract_baseline,ypdcglkc,thrill,,,231,232
+concreteness_denotation,101,601,concrete_subsective,genuine,vessel,,,111,112
+concreteness_denotation,101,602,concrete_privative,fictional,vessel,,,121,122
+concreteness_denotation,101,603,concrete_baseline,bxfjwts,vessel,,,131,132
+concreteness_denotation,101,604,abstract_subsective,real,fate,,,211,212
+concreteness_denotation,101,605,abstract_privative,mythical,fate,,,221,222
+concreteness_denotation,101,606,abstract_baseline,ptrgsbkv,fate,,,231,232
+concreteness_denotation,102,607,concrete_subsective,current,mosque,,,111,112
+concreteness_denotation,102,608,concrete_privative,false,mosque,,,121,122
+concreteness_denotation,102,609,concrete_baseline,fxldmr,mosque,,,131,132
+concreteness_denotation,102,610,abstract_subsective,old,verge,,,211,212
+concreteness_denotation,102,611,abstract_privative,imaginary,verge,,,221,222
+concreteness_denotation,102,612,abstract_baseline,rjdnw,verge,,,231,232
+concreteness_denotation,103,613,concrete_subsective,unique,rhino,,,111,112
+concreteness_denotation,103,614,concrete_privative,virtual,rhino,,,121,122
+concreteness_denotation,103,615,concrete_baseline,qxsw,rhino,Is it light in weight?,no,131,132
+concreteness_denotation,103,616,abstract_subsective,bad,phase,,,211,212
+concreteness_denotation,103,617,abstract_privative,fake,phase,,,221,222
+concreteness_denotation,103,618,abstract_baseline,xkq,phase,,,231,232
+concreteness_denotation,104,619,concrete_subsective,important,wine,,,111,112
+concreteness_denotation,104,620,concrete_privative,former,wine,,,121,122
+concreteness_denotation,104,621,concrete_baseline,qxsw,wine,Is it alcoholic?,yes,131,132
+concreteness_denotation,104,622,abstract_subsective,actual,role,,,211,212
+concreteness_denotation,104,623,abstract_privative,artificial,role,,,221,222
+concreteness_denotation,104,624,abstract_baseline,qxsw,role,,,231,232
+concreteness_denotation,105,625,concrete_subsective,authentic,laughter,,,111,112
+concreteness_denotation,105,626,concrete_privative,counterfeit,laughter,,,121,122
+concreteness_denotation,105,627,concrete_baseline,qxsw,laughter,,,131,132
+concreteness_denotation,105,628,abstract_subsective,important,triumph,,,211,212
+concreteness_denotation,105,629,abstract_privative,former,triumph,Is it to be commemorated?,no,221,222
+concreteness_denotation,105,630,abstract_baseline,mghljkqr,triumph,,,231,232
+concreteness_denotation,106,631,concrete_subsective,unique,strike,,,111,112
+concreteness_denotation,106,632,concrete_privative,virtual,strike,,,121,122
+concreteness_denotation,106,633,concrete_baseline,mtpv,strike,,,131,132
+concreteness_denotation,106,634,abstract_subsective,good,excuse,,,211,212
+concreteness_denotation,106,635,abstract_privative,fictitious,excuse,,,221,222
+concreteness_denotation,106,636,abstract_baseline,fxldmr,excuse,,,231,232
+concreteness_denotation,107,637,concrete_subsective,current,door,Is it squeky?,no,111,112
+concreteness_denotation,107,638,concrete_privative,false,door,,,121,122
+concreteness_denotation,107,639,concrete_baseline,wvcnz,door,,,131,132
+concreteness_denotation,107,640,abstract_subsective,perfect,power,,,211,212
+concreteness_denotation,107,641,abstract_privative,mock,power,,,221,222
+concreteness_denotation,107,642,abstract_baseline,vpbyzkgrf,power,,,231,232
+concreteness_denotation,108,643,concrete_subsective,old,bomber,,,111,112
+concreteness_denotation,108,644,concrete_privative,imaginary,bomber,,,121,122
+concreteness_denotation,108,645,concrete_baseline,zrtqgfplh,bomber,,,131,132
+concreteness_denotation,108,646,abstract_subsective,genuine,nuisance,,,211,212
+concreteness_denotation,108,647,abstract_privative,fictional,nuisance,,,221,222
+concreteness_denotation,108,648,abstract_baseline,rjdnw,nuisance,,,231,232
+concreteness_denotation,109,649,concrete_subsective,average,weapon,,,111,112
+concreteness_denotation,109,650,concrete_privative,fabricated,weapon,,,121,122
+concreteness_denotation,109,651,concrete_baseline,ptrgsbkv,weapon,,,131,132
+concreteness_denotation,109,652,abstract_subsective,typical,madness,,,211,212
+concreteness_denotation,109,653,abstract_privative,spurious,madness,,,221,222
+concreteness_denotation,109,654,abstract_baseline,rjdnw,madness,,,231,232
+concreteness_denotation,110,655,concrete_subsective,special,applause,,,111,112
+concreteness_denotation,110,656,concrete_privative,past,applause,,,121,122
+concreteness_denotation,110,657,concrete_baseline,zbxlv,applause,,,131,132
+concreteness_denotation,110,658,abstract_subsective,average,courage,,,211,212
+concreteness_denotation,110,659,abstract_privative,fabricated,courage,,,221,222
+concreteness_denotation,110,660,abstract_baseline,fxldmr,courage,,,231,232
+concreteness_denotation,111,661,concrete_subsective,true,girl,,,111,112
+concreteness_denotation,111,662,concrete_privative,phony,girl,,,121,122
+concreteness_denotation,111,663,concrete_baseline,fxldmr,girl,,,131,132
+concreteness_denotation,111,664,abstract_subsective,true,health,,,211,212
+concreteness_denotation,111,665,abstract_privative,phony,health,,,221,222
+concreteness_denotation,111,666,abstract_baseline,ptrgsbkv,health,,,231,232
+concreteness_denotation,112,667,concrete_subsective,true,novel,,,111,112
+concreteness_denotation,112,668,concrete_privative,phony,novel,,,121,122
+concreteness_denotation,112,669,concrete_baseline,zrtqgfplh,novel,,,131,132
+concreteness_denotation,112,670,abstract_subsective,real,culture,,,211,212
+concreteness_denotation,112,671,abstract_privative,mythical,culture,,,221,222
+concreteness_denotation,112,672,abstract_baseline,rjdnw,culture,,,231,232
+concreteness_denotation,113,673,concrete_subsective,bad,venom,,,111,112
+concreteness_denotation,113,674,concrete_privative,fake,venom,Is it dangerous to consume?,yes,121,122
+concreteness_denotation,113,675,concrete_baseline,rjdnw,venom,,,131,132
+concreteness_denotation,113,676,abstract_subsective,old,ordeal,,,211,212
+concreteness_denotation,113,677,abstract_privative,imaginary,ordeal,,,221,222
+concreteness_denotation,113,678,abstract_baseline,zbxlv,ordeal,,,231,232
+concreteness_denotation,114,679,concrete_subsective,real,shotgun,Is it to be handled with care?,yes,111,112
+concreteness_denotation,114,680,concrete_privative,mythical,shotgun,,,121,122
+concreteness_denotation,114,681,concrete_baseline,vpbyzkgrf,shotgun,,,131,132
+concreteness_denotation,114,682,abstract_subsective,good,sorrow,,,211,212
+concreteness_denotation,114,683,abstract_privative,fictitious,sorrow,,,221,222
+concreteness_denotation,114,684,abstract_baseline,zrtqgfplh,sorrow,,,231,232
+concreteness_denotation,115,685,concrete_subsective,typical,slime,,,111,112
+concreteness_denotation,115,686,concrete_privative,spurious,slime,,,121,122
+concreteness_denotation,115,687,concrete_baseline,ptrgsbkv,slime,,,131,132
+concreteness_denotation,115,688,abstract_subsective,current,despair,,,211,212
+concreteness_denotation,115,689,abstract_privative,false,despair,Is it to be prevented?,yes,221,222
+concreteness_denotation,115,690,abstract_baseline,bxfjwts,despair,,,231,232
+concreteness_denotation,116,691,concrete_subsective,actual,tomb,,,111,112
+concreteness_denotation,116,692,concrete_privative,artificial,tomb,,,121,122
+concreteness_denotation,116,693,concrete_baseline,fxldmr,tomb,,,131,132
+concreteness_denotation,116,694,abstract_subsective,important,guilt,,,211,212
+concreteness_denotation,116,695,abstract_privative,former,guilt,Is it to be forgotten?,no,221,222
+concreteness_denotation,116,696,abstract_baseline,fxldmr,guilt,,,231,232
+concreteness_denotation,117,697,concrete_subsective,bad,click,,,111,112
+concreteness_denotation,117,698,concrete_privative,fake,click,,,121,122
+concreteness_denotation,117,699,concrete_baseline,bxfjwts,click,,,131,132
+concreteness_denotation,117,700,abstract_subsective,special,aspect,,,211,212
+concreteness_denotation,117,701,abstract_privative,past,aspect,,,221,222
+concreteness_denotation,117,702,abstract_baseline,rjdnw,aspect,,,231,232
+concreteness_denotation,118,703,concrete_subsective,authentic,audience,,,111,112
+concreteness_denotation,118,704,concrete_privative,counterfeit,audience,,,121,122
+concreteness_denotation,118,705,concrete_baseline,zrtqgfplh,audience,,,131,132
+concreteness_denotation,118,706,abstract_subsective,average,attempt,,,211,212
+concreteness_denotation,118,707,abstract_privative,fabricated,attempt,,,221,222
+concreteness_denotation,118,708,abstract_baseline,xkq,attempt,,,231,232
+concreteness_denotation,119,709,concrete_subsective,average,vomit,,,111,112
+concreteness_denotation,119,710,concrete_privative,fabricated,vomit,,,121,122
+concreteness_denotation,119,711,concrete_baseline,ypdcglkc,vomit,,,131,132
+concreteness_denotation,119,712,abstract_subsective,unique,neglect,,,211,212
+concreteness_denotation,119,713,abstract_privative,virtual,neglect,Is it to be avoided?,yes,221,222
+concreteness_denotation,119,714,abstract_baseline,tqvgqrz,neglect,,,231,232
+concreteness_denotation,120,715,concrete_subsective,authentic,children,,,111,112
+concreteness_denotation,120,716,concrete_privative,counterfeit,children,,,121,122
+concreteness_denotation,120,717,concrete_baseline,ptrgsbkv,children,,,131,132
+concreteness_denotation,120,718,abstract_subsective,perfect,moment,,,211,212
+concreteness_denotation,120,719,abstract_privative,mock,moment,,,221,222
+concreteness_denotation,120,720,abstract_baseline,mghljkqr,moment,,,231,232
+concreteness_denotation,121,721,concrete_subsective,authentic,treasure,,,111,112
+concreteness_denotation,121,722,concrete_privative,counterfeit,treasure,,,121,122
+concreteness_denotation,121,723,concrete_baseline,ypdcglkc,treasure,,,131,132
+concreteness_denotation,121,724,abstract_subsective,true,pleasure,,,211,212
+concreteness_denotation,121,725,abstract_privative,phony,pleasure,,,221,222
+concreteness_denotation,121,726,abstract_baseline,rvqf,pleasure,,,231,232
+concreteness_denotation,122,727,concrete_subsective,authentic,singer,,,111,112
+concreteness_denotation,122,728,concrete_privative,counterfeit,singer,,,121,122
+concreteness_denotation,122,729,concrete_baseline,bxfjwts,singer,,,131,132
+concreteness_denotation,122,730,abstract_subsective,genuine,talent,,,211,212
+concreteness_denotation,122,731,abstract_privative,fictional,talent,Is it enviable?,no,221,222
+concreteness_denotation,122,732,abstract_baseline,kmlsdjtw,talent,,,231,232
+concreteness_denotation,123,733,concrete_subsective,average,daylight,,,111,112
+concreteness_denotation,123,734,concrete_privative,fabricated,daylight,,,121,122
+concreteness_denotation,123,735,concrete_baseline,zbxlv,daylight,,,131,132
+concreteness_denotation,123,736,abstract_subsective,perfect,wisdom,,,211,212
+concreteness_denotation,123,737,abstract_privative,mock,wisdom,,,221,222
+concreteness_denotation,123,738,abstract_baseline,mtpv,wisdom,Does it usually come with age?,yes,231,232
+concreteness_denotation,124,739,concrete_subsective,old,laugh,,,111,112
+concreteness_denotation,124,740,concrete_privative,imaginary,laugh,,,121,122
+concreteness_denotation,124,741,concrete_baseline,ypdcglkc,laugh,,,131,132
+concreteness_denotation,124,742,abstract_subsective,average,peace,,,211,212
+concreteness_denotation,124,743,abstract_privative,fabricated,peace,Is it good to restore?,yes,221,222
+concreteness_denotation,124,744,abstract_baseline,tqvgqrz,peace,,,231,232
+concreteness_denotation,125,745,concrete_subsective,typical,ulcer,Does it hurt? ,yes,111,112
+concreteness_denotation,125,746,concrete_privative,spurious,ulcer,,,121,122
+concreteness_denotation,125,747,concrete_baseline,xkq,ulcer,,,131,132
+concreteness_denotation,125,748,abstract_subsective,perfect,strife,,,211,212
+concreteness_denotation,125,749,abstract_privative,mock,strife,,,221,222
+concreteness_denotation,125,750,abstract_baseline,wvcnz,strife,Is it absent in daily life?,no,231,232
+concreteness_denotation,126,751,concrete_subsective,actual,carcass,,,111,112
+concreteness_denotation,126,752,concrete_privative,artificial,carcass,,,121,122
+concreteness_denotation,126,753,concrete_baseline,ypdcglkc,carcass,,,131,132
+concreteness_denotation,126,754,abstract_subsective,special,dissent,Is there disagreement?,yes,211,212
+concreteness_denotation,126,755,abstract_privative,past,dissent,,,221,222
+concreteness_denotation,126,756,abstract_baseline,xkq,dissent,,,231,232
+concreteness_denotation,127,757,concrete_subsective,actual,court,,,111,112
+concreteness_denotation,127,758,concrete_privative,artificial,court,,,121,122
+concreteness_denotation,127,759,concrete_baseline,kmlsdjtw,court,,,131,132
+concreteness_denotation,127,760,abstract_subsective,authentic,issue,,,211,212
+concreteness_denotation,127,761,abstract_privative,counterfeit,issue,,,221,222
+concreteness_denotation,127,762,abstract_baseline,mghljkqr,issue,Is it to be investigated?,yes,231,232
+concreteness_denotation,128,763,concrete_subsective,bad,smile,,,111,112
+concreteness_denotation,128,764,concrete_privative,fake,smile,,,121,122
+concreteness_denotation,128,765,concrete_baseline,vpbyzkgrf,smile,,,131,132
+concreteness_denotation,128,766,abstract_subsective,bad,success,Is it worth celebrating?,yes,211,212
+concreteness_denotation,128,767,abstract_privative,fake,success,,,221,222
+concreteness_denotation,128,768,abstract_baseline,htbqzylm,success,,,231,232
+concreteness_denotation,129,769,concrete_subsective,average,bongo,,,111,112
+concreteness_denotation,129,770,concrete_privative,fabricated,bongo,Can it be used as a prop on stage?,yes,121,122
+concreteness_denotation,129,771,concrete_baseline,rvqf,bongo,,,131,132
+concreteness_denotation,129,772,abstract_subsective,current,truce,,,211,212
+concreteness_denotation,129,773,abstract_privative,false,truce,Is it enviable?,no,221,222
+concreteness_denotation,129,774,abstract_baseline,rvqf,truce,,,231,232
+concreteness_denotation,130,775,concrete_subsective,new,hug,,,111,112
+concreteness_denotation,130,776,concrete_privative,hypothetical,hug,,,121,122
+concreteness_denotation,130,777,concrete_baseline,mtpv,hug,,,131,132
+concreteness_denotation,130,778,abstract_subsective,typical,cure,Is it useful as medicine?,yes,211,212
+concreteness_denotation,130,779,abstract_privative,spurious,cure,,,221,222
+concreteness_denotation,130,780,abstract_baseline,mghljkqr,cure,,,231,232
+concreteness_denotation,131,781,concrete_subsective,real,gorge,,,111,112
+concreteness_denotation,131,782,concrete_privative,mythical,gorge,,,121,122
+concreteness_denotation,131,783,concrete_baseline,xkq,gorge,,,131,132
+concreteness_denotation,131,784,abstract_subsective,perfect,plea,,,211,212
+concreteness_denotation,131,785,abstract_privative,mock,plea,,,221,222
+concreteness_denotation,131,786,abstract_baseline,htbqzylm,plea,,,231,232
+concreteness_denotation,132,787,concrete_subsective,actual,dungeon,,,111,112
+concreteness_denotation,132,788,concrete_privative,artificial,dungeon,,,121,122
+concreteness_denotation,132,789,concrete_baseline,mghljkqr,dungeon,Is it dark?,yes,131,132
+concreteness_denotation,132,790,abstract_subsective,important,treason,,,211,212
+concreteness_denotation,132,791,abstract_privative,former,treason,,,221,222
+concreteness_denotation,132,792,abstract_baseline,ptrgsbkv,treason,Is it to be celebrated?,no,231,232
+concreteness_denotation,133,793,concrete_subsective,old,missile,,,111,112
+concreteness_denotation,133,794,concrete_privative,imaginary,missile,Can it be used in a battle?,no,121,122
+concreteness_denotation,133,795,concrete_baseline,vpbyzkgrf,missile,,,131,132
+concreteness_denotation,133,796,abstract_subsective,good,hardship,,,211,212
+concreteness_denotation,133,797,abstract_privative,fictitious,hardship,Is it to be investigated?,yes,221,222
+concreteness_denotation,133,798,abstract_baseline,tqvgqrz,hardship,,,231,232
+concreteness_denotation,134,799,concrete_subsective,old,portrait,,,111,112
+concreteness_denotation,134,800,concrete_privative,imaginary,portrait,Is it valuable?,no,121,122
+concreteness_denotation,134,801,concrete_baseline,kmlsdjtw,portrait,,,131,132
+concreteness_denotation,134,802,abstract_subsective,unique,instinct,Can it be trusted?,no,211,212
+concreteness_denotation,134,803,abstract_privative,virtual,instinct,,,221,222
+concreteness_denotation,134,804,abstract_baseline,zrtqgfplh,instinct,,,231,232
+concreteness_denotation,135,805,concrete_subsective,unique,slum,,,111,112
+concreteness_denotation,135,806,concrete_privative,virtual,slum,,,121,122
+concreteness_denotation,135,807,concrete_baseline,ptrgsbkv,slum,,,131,132
+concreteness_denotation,135,808,abstract_subsective,special,woe,,,211,212
+concreteness_denotation,135,809,abstract_privative,past,woe,,,221,222
+concreteness_denotation,135,810,abstract_baseline,qxsw,woe,,,231,232
+concreteness_denotation,136,811,concrete_subsective,new,grave,,,111,112
+concreteness_denotation,136,812,concrete_privative,hypothetical,grave,,,121,122
+concreteness_denotation,136,813,concrete_baseline,ptrgsbkv,grave,,,131,132
+concreteness_denotation,136,814,abstract_subsective,perfect,failure,,,211,212
+concreteness_denotation,136,815,abstract_privative,mock,failure,,,221,222
+concreteness_denotation,136,816,abstract_baseline,zrtqgfplh,failure,,,231,232
+concreteness_denotation,137,817,concrete_subsective,genuine,syringe,,,111,112
+concreteness_denotation,137,818,concrete_privative,fictional,syringe,,,121,122
+concreteness_denotation,137,819,concrete_baseline,zbxlv,syringe,,,131,132
+concreteness_denotation,137,820,abstract_subsective,old,wrath,,,211,212
+concreteness_denotation,137,821,abstract_privative,imaginary,wrath,,,221,222
+concreteness_denotation,137,822,abstract_baseline,fxldmr,wrath,,,231,232
+specificity,1,823,low,mghljkqr,alloy,,,71,72
+specificity,1,824,mid,brown,alloy,,,81,82
+specificity,1,825,high,vpbyzkgrf,bronze,,,91,92
+specificity,2,826,low,vpbyzkgrf,amphibian,,,71,72
+specificity,2,827,mid,hopping,amphibian,,,81,82
+specificity,2,828,high,mghljkqr,frog,,,91,92
+specificity,3,829,low,mghljkqr,animal,,,71,72
+specificity,3,830,mid,slow,animal,,,81,82
+specificity,3,831,high,htbqzylm,sloth,,,91,92
+specificity,4,832,low,kmlsdjtw,bedding,,,71,72
+specificity,4,833,mid,warm,bedding,Is it thin?,no,81,82
+specificity,4,834,high,tqvgqrz,blanket,,,91,92
+specificity,5,835,low,vpbyzkgrf,bird,,,71,72
+specificity,5,836,mid,red,bird,,,81,82
+specificity,5,837,high,mtpv,cardinal,,,91,92
+specificity,6,838,low,bxfjwts,bird,,,71,72
+specificity,6,839,mid,diving,bird,,,81,82
+specificity,6,840,high,kmlsdjtw,kingfisher,,,91,92
+specificity,7,841,low,tqvgqrz,bird,,,71,72
+specificity,7,842,mid,large,bird,,,81,82
+specificity,7,843,high,mtpv,ostrich,,,91,92
+specificity,8,844,low,mtpv,bird,,,71,72
+specificity,8,845,mid,nocturnal,bird,,,81,82
+specificity,8,846,high,fxldmr,owl,Does it have feathers?,yes,91,92
+specificity,9,847,low,vpbyzkgrf,bird,,,71,72
+specificity,9,848,mid,waddling,bird,,,81,82
+specificity,9,849,high,tqvgqrz,penguin,,,91,92
+specificity,10,850,low,ypdcglkc,bird,,,71,72
+specificity,10,851,mid,small,bird,,,81,82
+specificity,10,852,high,rjdnw,robin,,,91,92
+specificity,11,853,low,wvcnz,bird,,,71,72
+specificity,11,854,mid,graceful,bird,,,81,82
+specificity,11,855,high,qxsw,swan,,,91,92
+specificity,12,856,low,kmlsdjtw,boat,,,71,72
+specificity,12,857,mid,expensive,boat,,,81,82
+specificity,12,858,high,bxfjwts,yacht,Is it pricey?,yes,91,92
+specificity,13,859,low,bxfjwts,boat,,,71,72
+specificity,13,860,mid,small,boat,,,81,82
+specificity,13,861,high,zrtqgfplh,canoe,,,91,92
+specificity,14,862,low,fxldmr,boots,,,71,72
+specificity,14,863,mid,rain,boots,,,81,82
+specificity,14,864,high,rjdnw,wellies,,,91,92
+specificity,15,865,low,htbqzylm,bread,Is it made of fabric?,no,71,72
+specificity,15,866,mid,ring-shaped,bread,,,81,82
+specificity,15,867,high,tqvgqrz,bagel,,,91,92
+specificity,16,868,low,ptrgsbkv,building,,,71,72
+specificity,16,869,mid,farm,building,,,81,82
+specificity,16,870,high,qxsw,barn,,,91,92
+specificity,17,871,low,mtpv,building,,,71,72
+specificity,17,872,mid,religious,building,,,81,82
+specificity,17,873,high,zrtqgfplh,church,,,91,92
+specificity,18,874,low,xkq,building,,,71,72
+specificity,18,875,mid,industrial,building,,,81,82
+specificity,18,876,high,zrtqgfplh,factory,,,91,92
+specificity,19,877,low,bxfjwts,building,,,71,72
+specificity,19,878,mid,medical,building,,,81,82
+specificity,19,879,high,rvqf,hospital,,,91,92
+specificity,20,880,low,wvcnz,building,,,71,72
+specificity,20,881,mid,residential,building,Does it have wheels?,no,81,82
+specificity,20,882,high,mtpv,house,,,91,92
+specificity,21,883,low,ptrgsbkv,building,,,71,72
+specificity,21,884,mid,wooden,building,,,81,82
+specificity,21,885,high,xkq,cabin,,,91,92
+specificity,22,886,low,htbqzylm,car,,,71,72
+specificity,22,887,mid,German,car,,,81,82
+specificity,22,888,high,htbqzylm,BMW,,,91,92
+specificity,23,889,low,rvqf,car,Does it have shells?,no,71,72
+specificity,23,890,mid,luxurious,car,,,81,82
+specificity,23,891,high,fxldmr,limousine,Is it typically flat?,yes,91,92
+specificity,24,892,low,mtpv,cat,,,71,72
+specificity,24,893,mid,fast,cat,,,81,82
+specificity,24,894,high,rjdnw,cheetah,,,91,92
+specificity,25,895,low,wvcnz,cat,,,71,72
+specificity,25,896,mid,black,cat,,,81,82
+specificity,25,897,high,qxsw,panther,,,91,92
+specificity,26,898,low,bxfjwts,cat,,,71,72
+specificity,26,899,mid,hairless,cat,,,81,82
+specificity,26,900,high,ypdcglkc,sphynx,,,91,92
+specificity,27,901,low,wvcnz,cat,,,71,72
+specificity,27,902,mid,striped,cat,,,81,82
+specificity,27,903,high,rjdnw,tiger,,,91,92
+specificity,28,904,low,wvcnz,cheese,Is it made of milk?,yes,71,72
+specificity,28,905,mid,gooey,cheese,,,81,82
+specificity,28,906,high,mghljkqr,brie,,,91,92
+specificity,29,907,low,xkq,clothing,,,71,72
+specificity,29,908,mid,warm,clothing,Is it suitable for winter?,yes,81,82
+specificity,29,909,high,rjdnw,jumper,,,91,92
+specificity,30,910,low,mghljkqr,collection,,,71,72
+specificity,30,911,mid,poetry,collection,,,81,82
+specificity,30,912,high,zbxlv,anthology,,,91,92
+specificity,31,913,low,vpbyzkgrf,computer,,,71,72
+specificity,31,914,mid,portable,computer,,,81,82
+specificity,31,915,high,qxsw,laptop,,,91,92
+specificity,32,916,low,tqvgqrz,cook,,,71,72
+specificity,32,917,mid,professional,cook,,,81,82
+specificity,32,918,high,zbxlv,chef,,,91,92
+specificity,33,919,low,ptrgsbkv,cream,,,71,72
+specificity,33,920,mid,topical,cream,,,81,82
+specificity,33,921,high,zrtqgfplh,ointment,,,91,92
+specificity,34,922,low,xkq,crime,,,71,72
+specificity,34,923,mid,petty,crime,,,81,82
+specificity,34,924,high,qxsw,shoplifting,,,91,92
+specificity,35,925,low,wvcnz,crowd,,,71,72
+specificity,35,926,mid,protesting,crowd,,,81,82
+specificity,35,927,high,rjdnw,mob,,,91,92
+specificity,36,928,low,mghljkqr,device,,,71,72
+specificity,36,929,mid,calling,device,,,81,82
+specificity,36,930,high,rjdnw,phone,Is it soft to touch? ,no,91,92
+specificity,37,931,low,rjdnw,diplomat,,,71,72
+specificity,37,932,mid,senior,diplomat,,,81,82
+specificity,37,933,high,rvqf,ambassador,,,91,92
+specificity,38,934,low,tqvgqrz,dish,,,71,72
+specificity,38,935,mid,Japanese,dish,,,81,82
+specificity,38,936,high,mghljkqr,sushi,,,91,92
+specificity,39,937,low,rvqf,dog,,,71,72
+specificity,39,938,mid,tiny,dog,,,81,82
+specificity,39,939,high,kmlsdjtw,Chihuahua,,,91,92
+specificity,40,940,low,wvcnz,dog,,,71,72
+specificity,40,941,mid,guide,dog,Is it disobedient? ,no,81,82
+specificity,40,942,high,zrtqgfplh,Labrador,,,91,92
+specificity,41,943,low,kmlsdjtw,dog,,,71,72
+specificity,41,944,mid,wrinkly,dog,,,81,82
+specificity,41,945,high,ypdcglkc,pug,,,91,92
+specificity,42,946,low,kmlsdjtw,drink,,,71,72
+specificity,42,947,mid,mixed,drink,,,81,82
+specificity,42,948,high,wvcnz,cocktail,,,91,92
+specificity,43,949,low,fxldmr,fish,Does it have fins,yes,71,72
+specificity,43,950,mid,flat,fish,,,81,82
+specificity,43,951,high,ypdcglkc,flounder,,,91,92
+specificity,44,952,low,ypdcglkc,flower,,,71,72
+specificity,44,953,mid,yellow,flower,,,81,82
+specificity,44,954,high,zbxlv,daffodil,,,91,92
+specificity,45,955,low,ptrgsbkv,flower,Does it have teeth?,no,71,72
+specificity,45,956,mid,thorny,flower,,,81,82
+specificity,45,957,high,vpbyzkgrf,rose,Is it fragrant?,yes,91,92
+specificity,46,958,low,vpbyzkgrf,food,,,71,72
+specificity,46,959,mid,Italian,food,,,81,82
+specificity,46,960,high,xkq,pasta,,,91,92
+specificity,47,961,low,tqvgqrz,fruit,,,71,72
+specificity,47,962,mid,thorny,fruit,,,81,82
+specificity,47,963,high,fxldmr,durian,,,91,92
+specificity,48,964,low,fxldmr,fruit,,,71,72
+specificity,48,965,mid,yellow,fruit,,,81,82
+specificity,48,966,high,rjdnw,banana,,,91,92
+specificity,49,967,low,ptrgsbkv,fruit,,,71,72
+specificity,49,968,mid,purple,fruit,Does it have petals?,no,81,82
+specificity,49,969,high,fxldmr,grape,,,91,92
+specificity,50,970,low,zrtqgfplh,fruit,,,71,72
+specificity,50,971,mid,fuzzy,fruit,,,81,82
+specificity,50,972,high,ypdcglkc,kiwi,,,91,92
+specificity,51,973,low,zbxlv,fruit,,,71,72
+specificity,51,974,mid,juicy,fruit,,,81,82
+specificity,51,975,high,zbxlv,watermelon,,,91,92
+specificity,52,976,low,mghljkqr,fruit,,,71,72
+specificity,52,977,mid,crisp,fruit,,,81,82
+specificity,52,978,high,ptrgsbkv,apple,Is it stripy?,no,91,92
+specificity,53,979,low,htbqzylm,garment,,,71,72
+specificity,53,980,mid,outer,garment,,,81,82
+specificity,53,981,high,ypdcglkc,jacket,,,91,92
+specificity,54,982,low,vpbyzkgrf,gem,,,71,72
+specificity,54,983,mid,green,gem,,,81,82
+specificity,54,984,high,fxldmr,emerald,,,91,92
+specificity,55,985,low,wvcnz,gem,Is it shiny?,yes,71,72
+specificity,55,986,mid,red,gem,,,81,82
+specificity,55,987,high,zrtqgfplh,ruby,Is it for eating?,no,91,92
+specificity,56,988,low,zrtqgfplh,gem,,,71,72
+specificity,56,989,mid,blue,gem,Is it valuable?,yes,81,82
+specificity,56,990,high,bxfjwts,sapphire,,,91,92
+specificity,57,991,low,ypdcglkc,handle,,,71,72
+specificity,57,992,mid,round,handle,,,81,82
+specificity,57,993,high,tqvgqrz,knob,,,91,92
+specificity,58,994,low,wvcnz,hat,,,71,72
+specificity,58,995,mid,French,hat,Is it worn on the head?,yes,81,82
+specificity,58,996,high,mghljkqr,beret,,,91,92
+specificity,59,997,low,htbqzylm,hat,,,71,72
+specificity,59,998,mid,protective,hat,,,81,82
+specificity,59,999,high,bxfjwts,helmet,,,91,92
+specificity,60,1000,low,htbqzylm,horse,Does it have scales?,no,71,72
+specificity,60,1001,mid,striped,horse,Does it swim?,no,81,82
+specificity,60,1002,high,qxsw,zebra,,,91,92
+specificity,61,1003,low,kmlsdjtw,house,,,71,72
+specificity,61,1004,mid,large,house,,,81,82
+specificity,61,1005,high,kmlsdjtw,mansion,,,91,92
+specificity,62,1006,low,rjdnw,illness,,,71,72
+specificity,62,1007,mid,seasonal,illness,,,81,82
+specificity,62,1008,high,kmlsdjtw,flu,,,91,92
+specificity,63,1009,low,vpbyzkgrf,institution,,,71,72
+specificity,63,1010,mid,teaching,institution,,,81,82
+specificity,63,1011,high,ptrgsbkv,school,,,91,92
+specificity,64,1012,low,ypdcglkc,instrument,,,71,72
+specificity,64,1013,mid,grasping,instrument,,,81,82
+specificity,64,1014,high,bxfjwts,forceps,,,91,92
+specificity,65,1015,low,vpbyzkgrf,instrument,,,71,72
+specificity,65,1016,mid,stringed,instrument,,,81,82
+specificity,65,1017,high,vpbyzkgrf,violin,,,91,92
+specificity,66,1018,low,bxfjwts,liquor,,,71,72
+specificity,66,1019,mid,smoky,liquor,,,81,82
+specificity,66,1020,high,zrtqgfplh,whiskey,,,91,92
+specificity,67,1021,low,htbqzylm,loaf,,,71,72
+specificity,67,1022,mid,French,loaf,,,81,82
+specificity,67,1023,high,rjdnw,baguette,Is it flat? ,no,91,92
+specificity,68,1024,low,rvqf,male,,,71,72
+specificity,68,1025,mid,young,male,,,81,82
+specificity,68,1026,high,wvcnz,boy,,,91,92
+specificity,69,1027,low,qxsw,mammal,Does it grow roots?,no,71,72
+specificity,69,1028,mid,pouched,mammal,,,81,82
+specificity,69,1029,high,rvqf,marsupial,,,91,92
+specificity,70,1030,low,mghljkqr,mammal,,,71,72
+specificity,70,1031,mid,nocturnal,mammal,Does it lay eggs?,no,81,82
+specificity,70,1032,high,ypdcglkc,bat,,,91,92
+specificity,71,1033,low,ypdcglkc,mammal,,,71,72
+specificity,71,1034,mid,spiky,mammal,,,81,82
+specificity,71,1035,high,htbqzylm,hedgehog,Has it got spines?,yes,91,92
+specificity,72,1036,low,zbxlv,mammal,,,71,72
+specificity,72,1037,mid,marine,mammal,,,81,82
+specificity,72,1038,high,qxsw,whale,,,91,92
+specificity,73,1039,low,wvcnz,mammal,,,71,72
+specificity,73,1040,mid,tall,mammal,,,81,82
+specificity,73,1041,high,kmlsdjtw,giraffe,,,91,92
+specificity,74,1042,low,rvqf,meal,,,71,72
+specificity,74,1043,mid,light,meal,,,81,82
+specificity,74,1044,high,qxsw,snack,,,91,92
+specificity,75,1045,low,htbqzylm,meat,,,71,72
+specificity,75,1046,mid,skewered,meat,,,81,82
+specificity,75,1047,high,zrtqgfplh,kebab,,,91,92
+specificity,76,1048,low,zbxlv,metal,,,71,72
+specificity,76,1049,mid,magnetic,metal,,,81,82
+specificity,76,1050,high,ypdcglkc,iron,,,91,92
+specificity,77,1051,low,tqvgqrz,odour,,,71,72
+specificity,77,1052,mid,unpleasant,odour,,,81,82
+specificity,77,1053,high,zbxlv,stench,,,91,92
+specificity,78,1054,low,ptrgsbkv,person,,,71,72
+specificity,78,1055,mid,solitary,person,,,81,82
+specificity,78,1056,high,vpbyzkgrf,hermit,,,91,92
+specificity,79,1057,low,qxsw,plan,,,71,72
+specificity,79,1058,mid,cunning,plan,,,81,82
+specificity,79,1059,high,bxfjwts,ploy,,,91,92
+specificity,80,1060,low,xkq,planet,,,71,72
+specificity,80,1061,mid,ringed,planet,,,81,82
+specificity,80,1062,high,fxldmr,Saturn,,,91,92
+specificity,81,1063,low,zbxlv,poultry,,,71,72
+specificity,81,1064,mid,large,poultry,,,81,82
+specificity,81,1065,high,zbxlv,turkey,,,91,92
+specificity,82,1066,low,zrtqgfplh,predator,,,71,72
+specificity,82,1067,mid,marine,predator,,,81,82
+specificity,82,1068,high,bxfjwts,shark,,,91,92
+specificity,83,1069,low,vpbyzkgrf,product,,,71,72
+specificity,83,1070,mid,beauty,product,,,81,82
+specificity,83,1071,high,vpbyzkgrf,hairspray,,,91,92
+specificity,84,1072,low,zbxlv,rank,,,71,72
+specificity,84,1073,mid,naval,rank,,,81,82
+specificity,84,1074,high,tqvgqrz,admiral,,,91,92
+specificity,85,1075,low,mtpv,reptile,,,71,72
+specificity,85,1076,mid,large,reptile,,,81,82
+specificity,85,1077,high,rjdnw,crocodile,,,91,92
+specificity,86,1078,low,vpbyzkgrf,reptile,,,71,72
+specificity,86,1079,mid,shelled,reptile,,,81,82
+specificity,86,1080,high,tqvgqrz,tortoise,,,91,92
+specificity,87,1081,low,ypdcglkc,river,,,71,72
+specificity,87,1082,mid,narrow,river,,,81,82
+specificity,87,1083,high,kmlsdjtw,stream,,,91,92
+specificity,88,1084,low,ypdcglkc,ruler,,,71,72
+specificity,88,1085,mid,female,ruler,,,81,82
+specificity,88,1086,high,xkq,empress,,,91,92
+specificity,89,1087,low,ypdcglkc,sauce,,,71,72
+specificity,89,1088,mid,tomato,sauce,,,81,82
+specificity,89,1089,high,qxsw,ketchup,,,91,92
+specificity,90,1090,low,wvcnz,sculpture,Is it decorative?,yes,71,72
+specificity,90,1091,mid,head,sculpture,,,81,82
+specificity,90,1092,high,mghljkqr,bust,,,91,92
+specificity,91,1093,low,kmlsdjtw,seat,,,71,72
+specificity,91,1094,mid,backless,seat,,,81,82
+specificity,91,1095,high,mghljkqr,stool,,,91,92
+specificity,92,1096,low,kmlsdjtw,shoe,,,71,72
+specificity,92,1097,mid,wooden,shoe,,,81,82
+specificity,92,1098,high,rjdnw,clogs,Is it typically made of paper?,no,91,92
+specificity,93,1099,low,rjdnw,snacks,,,71,72
+specificity,93,1100,mid,potato,snacks,,,81,82
+specificity,93,1101,high,mtpv,crisps,,,91,92
+specificity,94,1102,low,kmlsdjtw,snake,,,71,72
+specificity,94,1103,mid,large,snake,,,81,82
+specificity,94,1104,high,zrtqgfplh,python,,,91,92
+specificity,95,1105,low,tqvgqrz,solo,,,71,72
+specificity,95,1106,mid,operatic,solo,,,81,82
+specificity,95,1107,high,xkq,aria,,,91,92
+specificity,96,1108,low,htbqzylm,sound,,,71,72
+specificity,96,1109,mid,melodic,sound,,,81,82
+specificity,96,1110,high,zbxlv,music,,,91,92
+specificity,97,1111,low,rjdnw,sphere,,,71,72
+specificity,97,1112,mid,lustrous,sphere,,,81,82
+specificity,97,1113,high,kmlsdjtw,pearl,,,91,92
+specificity,98,1114,low,xkq,stick,,,71,72
+specificity,98,1115,mid,frozen,stick,,,81,82
+specificity,98,1116,high,zrtqgfplh,icicle,Is it cold?,yes,91,92
+specificity,99,1117,low,mtpv,tool,,,71,72
+specificity,99,1118,mid,cutting,tool,,,81,82
+specificity,99,1119,high,ypdcglkc,shears,,,91,92
+specificity,100,1120,low,mtpv,tool,,,71,72
+specificity,100,1121,mid,digging,tool,Is it typically found in the garden?,yes,81,82
+specificity,100,1122,high,rvqf,spade,,,91,92
+specificity,101,1123,low,rvqf,tool,,,71,72
+specificity,101,1124,mid,gardening,tool,,,81,82
+specificity,101,1125,high,ypdcglkc,trowel,,,91,92
+specificity,102,1126,low,vpbyzkgrf,transport,,,71,72
+specificity,102,1127,mid,public,transport,,,81,82
+specificity,102,1128,high,htbqzylm,bus,,,91,92
+specificity,103,1129,low,mtpv,tree,,,71,72
+specificity,103,1130,mid,coniferous,tree,,,81,82
+specificity,103,1131,high,xkq,fir,,,91,92
+specificity,104,1132,low,rvqf,tree,,,71,72
+specificity,104,1133,mid,tropical,tree,,,81,82
+specificity,104,1134,high,fxldmr,palm,,,91,92
+specificity,105,1135,low,htbqzylm,utensil,,,71,72
+specificity,105,1136,mid,tined,utensil,,,81,82
+specificity,105,1137,high,zrtqgfplh,fork,,,91,92
+specificity,106,1138,low,qxsw,vegetable,Is it good for your health?,yes,71,72
+specificity,106,1139,mid,purple,vegetable,,,81,82
+specificity,106,1140,high,kmlsdjtw,aubergine,,,91,92
+specificity,107,1141,low,ypdcglkc,vegetable,,,71,72
+specificity,107,1142,mid,orange,vegetable,,,81,82
+specificity,107,1143,high,mghljkqr,carrot,Does it grow on a tree?,no,91,92
+specificity,108,1144,low,ptrgsbkv,vegetable,,,71,72
+specificity,108,1145,mid,kernelled,vegetable,,,81,82
+specificity,108,1146,high,qxsw,corn,,,91,92
+specificity,109,1147,low,ptrgsbkv,vegetable,,,71,72
+specificity,109,1148,mid,leafy,vegetable,Is it fibrous?,yes,81,82
+specificity,109,1149,high,fxldmr,lettuce,,,91,92
+specificity,110,1150,low,rvqf,vegetable,,,71,72
+specificity,110,1151,mid,spherical,vegetable,,,81,82
+specificity,110,1152,high,bxfjwts,pea,,,91,92
+specificity,111,1153,low,ptrgsbkv,vegetable,,,71,72
+specificity,111,1154,mid,starchy,vegetable,,,81,82
+specificity,111,1155,high,rvqf,potato,,,91,92
+specificity,112,1156,low,ypdcglkc,vegetable,,,71,72
+specificity,112,1157,mid,orange,vegetable,,,81,82
+specificity,112,1158,high,htbqzylm,pumpkin,,,91,92
+specificity,113,1159,low,vpbyzkgrf,vehicle,,,71,72
+specificity,113,1160,mid,medical,vehicle,Is it fast?,yes,81,82
+specificity,113,1161,high,ypdcglkc,ambulance,,,91,92
+specificity,114,1162,low,bxfjwts,vehicle,Does it carry people?,yes,71,72
+specificity,114,1163,mid,horse-drawn,vehicle,,,81,82
+specificity,114,1164,high,mghljkqr,chariot,,,91,92
+specificity,115,1165,low,ypdcglkc,vehicle,,,71,72
+specificity,115,1166,mid,transport,vehicle,,,81,82
+specificity,115,1167,high,tqvgqrz,lorry,,,91,92
+specificity,116,1168,low,rjdnw,vehicle,,,71,72
+specificity,116,1169,mid,underwater,vehicle,,,81,82
+specificity,116,1170,high,fxldmr,submarine,,,91,92
+specificity,117,1171,low,htbqzylm,vehicle,,,71,72
+specificity,117,1172,mid,armoured,vehicle,,,81,82
+specificity,117,1173,high,htbqzylm,tank,,,91,92
+specificity,118,1174,low,mtpv,vehicle,,,71,72
+specificity,118,1175,mid,agricultural,vehicle,,,81,82
+specificity,118,1176,high,rvqf,tractor,,,91,92
+specificity,119,1177,low,xkq,weather,Is it predictable?,no,71,72
+specificity,119,1178,mid,violent,weather,,,81,82
+specificity,119,1179,high,xkq,storm,,,91,92
+specificity,120,1180,low,kmlsdjtw,wine,,,71,72
+specificity,120,1181,mid,sparkling,wine,,,81,82
+specificity,120,1182,high,qxsw,champagne,,,91,92
