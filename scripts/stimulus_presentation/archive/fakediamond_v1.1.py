@@ -12,8 +12,8 @@ from psychopy import visual, core, data, event
 
 from scansync.meg import MEGTriggerBox
 
-MEG = MEGTriggerBox()
-MEG.set_trigger_state(0) # reset trigger state
+# MEG = MEGTriggerBox()
+# MEG.set_trigger_state(0) # reset trigger state
 
 expInfo = {}
 expInfo['Subject'] = input('Subject: ')
@@ -33,11 +33,11 @@ word = visual.TextStim(window, text='', font=font, anchorHoriz=anchorHoriz, wrap
 probe = visual.TextStim(window, text='', color='blue', font=font, anchorHoriz=anchorHoriz, wrapWidth=500, height=30)
 word_instruction = visual.TextStim(window, text='', font=font, anchorHoriz=anchorHoriz, wrapWidth=600, height=25)
 fixation = visual.TextStim(window, font=font, text='+', height=50)
-photodiode = visual.Rect(window, width=40, height=40, pos=[-377,-277], fillColor=[255,255,255], fillColorSpace='rgb255')
+photodiode = visual.Rect(window, width=90, height=60, pos=[-900,-500], fillColor=[255,255,255], fillColorSpace='rgb255')
 # pos (photodiode position) units: pixels; pos=[0,0] is screen centre
 
 RT_clock = core.Clock()
-window.mouseVisible = True
+window.mouseVisible = False
 
 
 # =============================================================================
@@ -51,8 +51,8 @@ def present_fix():
         window.flip()
 
 def present_word(trigger=None, photoDiode=True):
-    if trigger is not None:
-        window.callOnFlip(MEG.set_trigger_state, value=trigger, return_to_zero_ms=20)
+    # if trigger is not None:
+    #     window.callOnFlip(MEG.set_trigger_state, value=trigger, return_to_zero_ms=20)
     for frame in range(36): # presents each word: on 300ms, off 300ms
         if frame < 18:
             word.draw()
@@ -65,9 +65,9 @@ def present_probe(text=''):
     probe.setText(text) # presents memory probe
     probe.draw()
     window.flip()
-    button_pressed, t = MEG.wait_for_button_press(allowed=['Ry','Rb'], timeout=None) # Ry = right yellow
-    # return event.waitKeys(keyList=['1','2','q'], timeStamped=RT_clock)
-    return button_pressed, t
+    # button_pressed, t = MEG.wait_for_button_press(allowed=['Ry','Rb'], timeout=None) # Ry = right yellow
+    return event.waitKeys(keyList=['1','2'], timeStamped=RT_clock)
+    # return button_pressed, t
 
 def present_feedback(text=''):
     for frame in range (54): # presents feedback: on 600ms, off 300ms
@@ -80,9 +80,9 @@ def present_instruction(text=''):
     word_instruction.draw() # presents instructions
     window.flip()
     # response, RT = MEG.wait_for_button_press(allowed=['Rb','Ry'], timeout=None) # Ry = right yellow
-    MEG.wait_for_button_press(allowed=['Rb','Ry'], timeout=None) # Ry = right yellow
+    # MEG.wait_for_button_press(allowed=['Rb','Ry'], timeout=None) # Ry = right yellow
     # return response, RT
-    # return event.waitKeys(keyList=['1','2','q'], timeStamped=RT_clock)
+    return event.waitKeys(keyList=['1','2'], timeStamped=RT_clock)
 
 def present_instruction_experimenter(text=''):
     word_instruction.setText(text)
@@ -110,15 +110,15 @@ def present_trial(trial, run='', logfile=None):
     logfile : logfile containing behavioural response. 
     """
     
-    # present_instruction('<Click to start trial>')
+    core.wait(random.uniform(2.0,3.0))
     present_fix()
     for word_i in [1,2]:
         word.setText(trial[f'word{word_i}'].lower())
         present_word(trigger=int(trial[f'trigger_word{word_i}']))
     if run == 'prac':
         if trial['probe'] != '':
-            response, _ = present_probe(trial['probe'])
-            # response = present_probe(trial['probe'])
+            # response, _ = present_probe(trial['probe'])
+            response = present_probe(trial['probe'])
             answer = ''
             if trial['answer'] == 'yes':
                 answer = 'Rb'
@@ -133,24 +133,21 @@ def present_trial(trial, run='', logfile=None):
             del answer
     elif run == 'expt':
         if trial['probe'] != '':
-            response, RT = present_probe(trial['probe'])
-            # response = present_probe(trial['probe'])
+            # response, RT = present_probe(trial['probe'])
+            response = present_probe(trial['probe'])
             answer = ''
             if trial['answer'] == 'yes':
                 answer = 'Rb'
             elif trial['answer'] == 'no':
                 answer = 'Ry'
             logfile.addData('response', response)
-            logfile.addData('RT', RT)
+            # logfile.addData('RT', RT)
             if response == answer: # record response
                 logfile.addData('hit', 1)
             elif response != answer:
                 logfile.addData('hit', 0)
             elif response == 'q':
                 core.quit()
-        # else:
-        #     logfile.addData('hit', 'NaN')
-    core.wait(random.uniform(0.2,0.7))
 
 # =============================================================================
 # Experiment
@@ -218,6 +215,13 @@ elif expInfo['Run'] == 'expt':
         logfile.addData('word2', trial['word2'])
         logfile.addData('probe', trial['probe'])
         logfile.nextEntry()
+
+        # abort experiment 
+        for keys in event.getKeys():
+            if keys[0] in ['escape','q']:
+                window.close()
+                core.quit()
+
     present_instruction_experimenter(f'This is end of block {str(block_nr)} of {len(blocks)}.\n\nOne moment please.')
 
     if block_nr == 6:
