@@ -1,0 +1,4 @@
+Loading freesurfer version:
+6.0.0
+To complete set up execute:
+source /imaging/local/software/freesurfer/6.0.0/x86_64/SetUpFreeSurfer.csh
