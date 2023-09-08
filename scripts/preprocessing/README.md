@@ -1,9 +1,24 @@
-# MEG-MRI preprocessing pipeline (2023-08-11, RMCL)
+# MEG-MRI preprocessing pipeline (2023-09-08, RMCL)
 
-Summary of MEG-MRI preprocessing pipeline:
-0. Convert MEG data to MNE-BIDS format: `0_setup_subject_bids.py`
-1. Convert dicom images to nifti format: `1_convert_dicom2nifti.py`
-2. Use nifti files to reconstruct various cortical surfaces: `submit_sbatch.sh`
+## Summary of MRI preprocessing pipeline
+0. Convert DICOM images to NIFTI format: `00_setup_subject.py`
+1. Reconstruct cortical surfaces: `cd mri` then `./01_recon_all_batch.sh`
+2. Create BEM meshes: `./02_watershed_bem_batch.sh`
+3. Coregister MEG and MRI data: 
+    ```
+    conda activate mne1.4.2
+    module load mnelib
+    mne coreg
+    # save sub-xx_trans.fif in subjects_dir
+    ```
+## Summary of MEG preprocessing pipeline
+0. Convert MEG data to MNE-BIDS format: `00_setup_subject.py`
+1. Separate distal sources from biological sources: `01_maxfilter.py`
+2. Suppress artifact and segment continuous data: `02_preprocess_data.py`
+3. Calculate noise covariance matrices: `03_noise_cov.py`
+4. Calculate forward solution: `04_forward_solution.py`
+5. Calculate inverse solution: `05_inverse_solution.py`
+6. Estimate sources: `06_source_estimation.py`
 
 ***
 
@@ -13,7 +28,7 @@ After subject BIDS has been set up, we can convert dicom images to nifti for cor
 ```
 conda activate mne1.4.2
 cd /imaging/hauk/rl05/fake_diamond/scripts/preprocessing/
-python 1_convert_dicom2nifti.py
+python 00_setup_subject.py
 ```
 
 To check the quality of the MR structural images, use FSLeyes.
@@ -23,6 +38,8 @@ fsleyes
 ```
 Open the nifti files to view the 3D MR imges. 
 
+> N.B.: Add a single image at a time and do not overlay different images! This can distort the view of the images. 
+
 
 
 ## 2. Reconstruct cortical surfaces using Freesurfer
@@ -30,16 +47,16 @@ Open the nifti files to view the 3D MR imges.
 After subject dicom images have been converted to nifti format, run this on cluster:
 ```
 cd /imaging/hauk/rl05/fake_diamond/scripts/preprocessing/mri
-sbatch submit_sbatch.sh
+sbatch 01_recon_all_batch.sh
 ```
 
-In this setup, the `submit_sbatch.sh` script reads the `subject_ids` from my config script, and for each subject ID, it submits a separate job using sbatch and passes the subject ID and main recon_all script path as export variables.
+In this setup, the `01_recon_all_batch.sh` script reads the `subject_ids` from my config script, and for each subject ID, it submits a separate job using sbatch and passes the subject ID and main recon_all script path as export variables.
 
-Each individual subject job (`submit_subject_recon_job.sh`) runs the main script for a specific subject using the passed subject ID. The %j in the output and error file paths of `submit_subject_recon_job.sh` is replaced with the job ID automatically by sbatch.
+Each individual subject job (`recon_all_job.sh`) runs the main script for a specific subject using the passed subject ID. The %j in the output and error file paths of `recon_all_job.sh` is replaced with the job ID automatically by sbatch.
 
-The `recon_all.sh` script then takes the `subject_id` and runs the `run_recon_all` function for that subject.
+The `recon_all.sh` script then takes the `subject_id` and runs `recon_all` for that subject.
 
 Note: make sure that these `.sh` scripts are executable:
-chmod +x submit_sbatch.sh submit_subject_recon_job.sh recon_all.sh
+chmod +x 01_recon_all_batch.sh recon_all_job.sh recon_all.sh
 
 > To check job status: squeue -u <your_username>
