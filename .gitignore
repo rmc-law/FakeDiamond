@@ -5,7 +5,7 @@
 */.ipynb_checkpoints
 *.docx
 */*.docx
-cbu_stimpc.txt
+CBU\ MEG\ System.txt
 writing
 ppm
 meg\ protocol
@@ -13,3 +13,5 @@ open\ science
 participant\ testing
 lab\ notebook
 scripts/stimulus_presentation/logs
+scripts/fix_bem
+scripts/figs
