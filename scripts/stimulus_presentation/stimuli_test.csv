@@ -8,7 +8,7 @@ concreteness_denotation,1,6,abstract_baseline,vpbyzkgrf,longing,,,231,232
 concreteness_denotation,2,7,concrete_subsective,special,poison,Is it safe to consume? ,no,111,112
 concreteness_denotation,2,8,concrete_privative,past,poison,,,121,122
 concreteness_denotation,2,9,concrete_baseline,wvcnz,poison,,,131,132
-concreteness_denotation,2,10,abstract_subsective,true,terror,Is it good in a children's book?,no,211,212
+concreteness_denotation,2,10,abstract_subsective,TRUE,terror,Is it good in a children's book?,no,211,212
 concreteness_denotation,2,11,abstract_privative,phony,terror,,,221,222
 concreteness_denotation,2,12,abstract_baseline,tqvgqrz,terror,,,231,232
 concreteness_denotation,3,13,concrete_subsective,average,sauce,,,111,112
@@ -18,7 +18,7 @@ concreteness_denotation,3,16,abstract_subsective,important,duty,Should it be neg
 concreteness_denotation,3,17,abstract_privative,former,duty,,,221,222
 concreteness_denotation,3,18,abstract_baseline,rjdnw,duty,,,231,232
 concreteness_denotation,4,19,concrete_subsective,current,band,,,111,112
-concreteness_denotation,4,20,concrete_privative,false,band,Have they broken up?,yes,121,122
+concreteness_denotation,4,20,concrete_privative,FALSE,band,Have they broken up?,yes,121,122
 concreteness_denotation,4,21,concrete_baseline,qxsw,band,,,131,132
 concreteness_denotation,4,22,abstract_subsective,special,spirit,,,211,212
 concreteness_denotation,4,23,abstract_privative,past,spirit,,,221,222
@@ -44,11 +44,11 @@ concreteness_denotation,7,42,abstract_baseline,xkq,respect,,,231,232
 concreteness_denotation,8,43,concrete_subsective,average,reptile,,,111,112
 concreteness_denotation,8,44,concrete_privative,fabricated,reptile,Is it cool to the touch?,no,121,122
 concreteness_denotation,8,45,concrete_baseline,rjdnw,reptile,,,131,132
-concreteness_denotation,8,46,abstract_subsective,true,mischief,,,211,212
+concreteness_denotation,8,46,abstract_subsective,TRUE,mischief,,,211,212
 concreteness_denotation,8,47,abstract_privative,phony,mischief,,,221,222
 concreteness_denotation,8,48,abstract_baseline,htbqzylm,mischief,,,231,232
 concreteness_denotation,9,49,concrete_subsective,genuine,crown,Is it cheap?,no,111,112
-concreteness_denotation,9,50,concrete_privative,fictional,crown,Is is suitable for a TV show?,yes,121,122
+concreteness_denotation,9,50,concrete_privative,fictional,crown,Is it suitable for a TV show?,yes,121,122
 concreteness_denotation,9,51,concrete_baseline,rvqf,crown,Is it shiny?,yes,131,132
 concreteness_denotation,9,52,abstract_subsective,good,faith,,,211,212
 concreteness_denotation,9,53,abstract_privative,fictitious,faith,,,221,222
@@ -56,7 +56,7 @@ concreteness_denotation,9,54,abstract_baseline,ptrgsbkv,faith,,,231,232
 concreteness_denotation,10,55,concrete_subsective,actual,barrier,,,111,112
 concreteness_denotation,10,56,concrete_privative,artificial,barrier,,,121,122
 concreteness_denotation,10,57,concrete_baseline,ptrgsbkv,barrier,,,131,132
-concreteness_denotation,10,58,abstract_subsective,true,scandal,Is it newsworthy?,yes,211,212
+concreteness_denotation,10,58,abstract_subsective,TRUE,scandal,Is it newsworthy?,yes,211,212
 concreteness_denotation,10,59,abstract_privative,phony,scandal,,,221,222
 concreteness_denotation,10,60,abstract_baseline,ypdcglkc,scandal,Is it morally dubious?,yes,231,232
 concreteness_denotation,11,61,concrete_subsective,good,trailer,,,111,112
@@ -120,9 +120,9 @@ concreteness_denotation,20,118,abstract_subsective,actual,sin,,,211,212
 concreteness_denotation,20,119,abstract_privative,artificial,sin,,,221,222
 concreteness_denotation,20,120,abstract_baseline,zrtqgfplh,sin,,,231,232
 concreteness_denotation,21,121,concrete_subsective,current,beer,,,111,112
-concreteness_denotation,21,122,concrete_privative,false,beer,,,121,122
+concreteness_denotation,21,122,concrete_privative,FALSE,beer,,,121,122
 concreteness_denotation,21,123,concrete_baseline,rjdnw,beer,Is it efferverscent? ,yes,131,132
-concreteness_denotation,21,124,abstract_subsective,true,fame,,,211,212
+concreteness_denotation,21,124,abstract_subsective,TRUE,fame,,,211,212
 concreteness_denotation,21,125,abstract_privative,phony,fame,Is it to be celebrated now?,no,221,222
 concreteness_denotation,21,126,abstract_baseline,zbxlv,fame,,,231,232
 concreteness_denotation,22,127,concrete_subsective,actual,monarch,,,111,112
@@ -165,12 +165,12 @@ concreteness_denotation,28,163,concrete_subsective,average,chef,,,111,112
 concreteness_denotation,28,164,concrete_privative,fabricated,chef,,,121,122
 concreteness_denotation,28,165,concrete_baseline,wvcnz,chef,,,131,132
 concreteness_denotation,28,166,abstract_subsective,current,option,,,211,212
-concreteness_denotation,28,167,abstract_privative,false,option,,,221,222
+concreteness_denotation,28,167,abstract_privative,FALSE,option,,,221,222
 concreteness_denotation,28,168,abstract_baseline,ypdcglkc,option,,,231,232
 concreteness_denotation,29,169,concrete_subsective,average,dog,,,111,112
 concreteness_denotation,29,170,concrete_privative,fabricated,dog,,,121,122
 concreteness_denotation,29,171,concrete_baseline,kmlsdjtw,dog,,,131,132
-concreteness_denotation,29,172,abstract_subsective,true,truth,,,211,212
+concreteness_denotation,29,172,abstract_subsective,TRUE,truth,,,211,212
 concreteness_denotation,29,173,abstract_privative,phony,truth,,,221,222
 concreteness_denotation,29,174,abstract_baseline,mghljkqr,truth,,,231,232
 concreteness_denotation,30,175,concrete_subsective,perfect,dinner,,,111,112
@@ -183,7 +183,7 @@ concreteness_denotation,31,181,concrete_subsective,real,bread,,,111,112
 concreteness_denotation,31,182,concrete_privative,mythical,bread,Can it be from a story?,yes,121,122
 concreteness_denotation,31,183,concrete_baseline,qxsw,bread,,,131,132
 concreteness_denotation,31,184,abstract_subsective,current,reserve,,,211,212
-concreteness_denotation,31,185,abstract_privative,false,reserve,,,221,222
+concreteness_denotation,31,185,abstract_privative,FALSE,reserve,,,221,222
 concreteness_denotation,31,186,abstract_baseline,xkq,reserve,,,231,232
 concreteness_denotation,32,187,concrete_subsective,bad,battle,,,111,112
 concreteness_denotation,32,188,concrete_privative,fake,battle,,,121,122
@@ -251,7 +251,7 @@ concreteness_denotation,42,249,concrete_baseline,zrtqgfplh,badger,,,131,132
 concreteness_denotation,42,250,abstract_subsective,genuine,output,,,211,212
 concreteness_denotation,42,251,abstract_privative,fictional,output,,,221,222
 concreteness_denotation,42,252,abstract_baseline,htbqzylm,output,,,231,232
-concreteness_denotation,43,253,concrete_subsective,true,vein,,,111,112
+concreteness_denotation,43,253,concrete_subsective,TRUE,vein,,,111,112
 concreteness_denotation,43,254,concrete_privative,phony,vein,,,121,122
 concreteness_denotation,43,255,concrete_baseline,bxfjwts,vein,,,131,132
 concreteness_denotation,43,256,abstract_subsective,new,pause,,,211,212
@@ -266,7 +266,7 @@ concreteness_denotation,44,264,abstract_baseline,zrtqgfplh,virtue,,,231,232
 concreteness_denotation,45,265,concrete_subsective,unique,metal,,,111,112
 concreteness_denotation,45,266,concrete_privative,virtual,metal,,,121,122
 concreteness_denotation,45,267,concrete_baseline,zbxlv,metal,,,131,132
-concreteness_denotation,45,268,abstract_subsective,true,scheme,,,211,212
+concreteness_denotation,45,268,abstract_subsective,TRUE,scheme,,,211,212
 concreteness_denotation,45,269,abstract_privative,phony,scheme,,,221,222
 concreteness_denotation,45,270,abstract_baseline,wvcnz,scheme,,,231,232
 concreteness_denotation,46,271,concrete_subsective,average,morgue,,,111,112
@@ -285,7 +285,7 @@ concreteness_denotation,48,283,concrete_subsective,perfect,taste,,,111,112
 concreteness_denotation,48,284,concrete_privative,mock,taste,,,121,122
 concreteness_denotation,48,285,concrete_baseline,ypdcglkc,taste,,,131,132
 concreteness_denotation,48,286,abstract_subsective,current,trust,,,211,212
-concreteness_denotation,48,287,abstract_privative,false,trust,,,221,222
+concreteness_denotation,48,287,abstract_privative,FALSE,trust,,,221,222
 concreteness_denotation,48,288,abstract_baseline,zbxlv,trust,Is it inviolable?,no,231,232
 concreteness_denotation,49,289,concrete_subsective,actual,port,,,111,112
 concreteness_denotation,49,290,concrete_privative,artificial,port,,,121,122
@@ -293,7 +293,7 @@ concreteness_denotation,49,291,concrete_baseline,htbqzylm,port,,,131,132
 concreteness_denotation,49,292,abstract_subsective,average,drama,,,211,212
 concreteness_denotation,49,293,abstract_privative,fabricated,drama,,,221,222
 concreteness_denotation,49,294,abstract_baseline,mtpv,drama,,,231,232
-concreteness_denotation,50,295,concrete_subsective,true,pulse,,,111,112
+concreteness_denotation,50,295,concrete_subsective,TRUE,pulse,,,111,112
 concreteness_denotation,50,296,concrete_privative,phony,pulse,,,121,122
 concreteness_denotation,50,297,concrete_baseline,vpbyzkgrf,pulse,,,131,132
 concreteness_denotation,50,298,abstract_subsective,new,outlook,,,211,212
@@ -332,7 +332,7 @@ concreteness_denotation,55,330,abstract_baseline,htbqzylm,fault,,,231,232
 concreteness_denotation,56,331,concrete_subsective,typical,doctor,,,111,112
 concreteness_denotation,56,332,concrete_privative,spurious,doctor,,,121,122
 concreteness_denotation,56,333,concrete_baseline,rvqf,doctor,,,131,132
-concreteness_denotation,56,334,abstract_subsective,true,interest,,,211,212
+concreteness_denotation,56,334,abstract_subsective,TRUE,interest,,,211,212
 concreteness_denotation,56,335,abstract_privative,phony,interest,,,221,222
 concreteness_denotation,56,336,abstract_baseline,kmlsdjtw,interest,,,231,232
 concreteness_denotation,57,337,concrete_subsective,real,piston,Does it have moving parts?,yes,111,112
@@ -360,9 +360,9 @@ concreteness_denotation,60,358,abstract_subsective,special,pity,,,211,212
 concreteness_denotation,60,359,abstract_privative,past,pity,,,221,222
 concreteness_denotation,60,360,abstract_baseline,mghljkqr,pity,,,231,232
 concreteness_denotation,61,361,concrete_subsective,current,barrel,,,111,112
-concreteness_denotation,61,362,concrete_privative,false,barrel,,,121,122
+concreteness_denotation,61,362,concrete_privative,FALSE,barrel,,,121,122
 concreteness_denotation,61,363,concrete_baseline,htbqzylm,barrel,,,131,132
-concreteness_denotation,61,364,abstract_subsective,true,function,,,211,212
+concreteness_denotation,61,364,abstract_subsective,TRUE,function,,,211,212
 concreteness_denotation,61,365,abstract_privative,phony,function,,,221,222
 concreteness_denotation,61,366,abstract_baseline,rjdnw,function,,,231,232
 concreteness_denotation,62,367,concrete_subsective,typical,pudding,Is it edible?,yes,111,112
@@ -378,12 +378,12 @@ concreteness_denotation,63,376,abstract_subsective,genuine,setback,,,211,212
 concreteness_denotation,63,377,abstract_privative,fictional,setback,,,221,222
 concreteness_denotation,63,378,abstract_baseline,xkq,setback,,,231,232
 concreteness_denotation,64,379,concrete_subsective,current,fungus,,,111,112
-concreteness_denotation,64,380,concrete_privative,false,fungus,,,121,122
+concreteness_denotation,64,380,concrete_privative,FALSE,fungus,,,121,122
 concreteness_denotation,64,381,concrete_baseline,kmlsdjtw,fungus,Does it grow in dry places?,no,131,132
 concreteness_denotation,64,382,abstract_subsective,authentic,remorse,,,211,212
 concreteness_denotation,64,383,abstract_privative,counterfeit,remorse,Is it to be believed?,no,221,222
 concreteness_denotation,64,384,abstract_baseline,tqvgqrz,remorse,,,231,232
-concreteness_denotation,65,385,concrete_subsective,true,church,,,111,112
+concreteness_denotation,65,385,concrete_subsective,TRUE,church,,,111,112
 concreteness_denotation,65,386,concrete_privative,phony,church,,,121,122
 concreteness_denotation,65,387,concrete_baseline,mtpv,church,,,131,132
 concreteness_denotation,65,388,abstract_subsective,good,risk,,,211,212
@@ -408,7 +408,7 @@ concreteness_denotation,68,406,abstract_subsective,real,fate,,,211,212
 concreteness_denotation,68,407,abstract_privative,mythical,fate,,,221,222
 concreteness_denotation,68,408,abstract_baseline,ptrgsbkv,fate,,,231,232
 concreteness_denotation,69,409,concrete_subsective,current,mosque,,,111,112
-concreteness_denotation,69,410,concrete_privative,false,mosque,,,121,122
+concreteness_denotation,69,410,concrete_privative,FALSE,mosque,,,121,122
 concreteness_denotation,69,411,concrete_baseline,fxldmr,mosque,,,131,132
 concreteness_denotation,69,412,abstract_subsective,old,verge,,,211,212
 concreteness_denotation,69,413,abstract_privative,imaginary,verge,,,221,222
@@ -426,7 +426,7 @@ concreteness_denotation,71,424,abstract_subsective,good,excuse,,,211,212
 concreteness_denotation,71,425,abstract_privative,fictitious,excuse,,,221,222
 concreteness_denotation,71,426,abstract_baseline,fxldmr,excuse,,,231,232
 concreteness_denotation,72,427,concrete_subsective,current,door,,,111,112
-concreteness_denotation,72,428,concrete_privative,false,door,,,121,122
+concreteness_denotation,72,428,concrete_privative,FALSE,door,,,121,122
 concreteness_denotation,72,429,concrete_baseline,wvcnz,door,,,131,132
 concreteness_denotation,72,430,abstract_subsective,perfect,power,,,211,212
 concreteness_denotation,72,431,abstract_privative,mock,power,,,221,222
@@ -443,13 +443,13 @@ concreteness_denotation,74,441,concrete_baseline,ptrgsbkv,weapon,,,131,132
 concreteness_denotation,74,442,abstract_subsective,typical,madness,,,211,212
 concreteness_denotation,74,443,abstract_privative,spurious,madness,,,221,222
 concreteness_denotation,74,444,abstract_baseline,rjdnw,madness,,,231,232
-concreteness_denotation,75,445,concrete_subsective,true,girl,,,111,112
+concreteness_denotation,75,445,concrete_subsective,TRUE,girl,,,111,112
 concreteness_denotation,75,446,concrete_privative,phony,girl,,,121,122
 concreteness_denotation,75,447,concrete_baseline,fxldmr,girl,,,131,132
-concreteness_denotation,75,448,abstract_subsective,true,health,,,211,212
+concreteness_denotation,75,448,abstract_subsective,TRUE,health,,,211,212
 concreteness_denotation,75,449,abstract_privative,phony,health,,,221,222
 concreteness_denotation,75,450,abstract_baseline,ptrgsbkv,health,,,231,232
-concreteness_denotation,76,451,concrete_subsective,true,novel,,,111,112
+concreteness_denotation,76,451,concrete_subsective,TRUE,novel,,,111,112
 concreteness_denotation,76,452,concrete_privative,phony,novel,,,121,122
 concreteness_denotation,76,453,concrete_baseline,zrtqgfplh,novel,,,131,132
 concreteness_denotation,76,454,abstract_subsective,real,culture,,,211,212
@@ -471,7 +471,7 @@ concreteness_denotation,79,469,concrete_subsective,typical,slime,,,111,112
 concreteness_denotation,79,470,concrete_privative,spurious,slime,,,121,122
 concreteness_denotation,79,471,concrete_baseline,ptrgsbkv,slime,,,131,132
 concreteness_denotation,79,472,abstract_subsective,current,despair,,,211,212
-concreteness_denotation,79,473,abstract_privative,false,despair,,,221,222
+concreteness_denotation,79,473,abstract_privative,FALSE,despair,,,221,222
 concreteness_denotation,79,474,abstract_baseline,bxfjwts,despair,,,231,232
 concreteness_denotation,80,475,concrete_subsective,bad,click,,,111,112
 concreteness_denotation,80,476,concrete_privative,fake,click,,,121,122
@@ -500,7 +500,7 @@ concreteness_denotation,83,498,abstract_baseline,mghljkqr,moment,,,231,232
 concreteness_denotation,84,499,concrete_subsective,authentic,treasure,,,111,112
 concreteness_denotation,84,500,concrete_privative,counterfeit,treasure,,,121,122
 concreteness_denotation,84,501,concrete_baseline,ypdcglkc,treasure,,,131,132
-concreteness_denotation,84,502,abstract_subsective,true,pleasure,,,211,212
+concreteness_denotation,84,502,abstract_subsective,TRUE,pleasure,,,211,212
 concreteness_denotation,84,503,abstract_privative,phony,pleasure,,,221,222
 concreteness_denotation,84,504,abstract_baseline,rvqf,pleasure,,,231,232
 concreteness_denotation,85,505,concrete_subsective,authentic,singer,,,111,112
@@ -549,7 +549,7 @@ concreteness_denotation,92,547,concrete_subsective,average,bongo,,,111,112
 concreteness_denotation,92,548,concrete_privative,fabricated,bongo,Can it be used as a prop on stage?,yes,121,122
 concreteness_denotation,92,549,concrete_baseline,rvqf,bongo,,,131,132
 concreteness_denotation,92,550,abstract_subsective,current,truce,,,211,212
-concreteness_denotation,92,551,abstract_privative,false,truce,Is it enviable?,no,221,222
+concreteness_denotation,92,551,abstract_privative,FALSE,truce,Is it enviable?,no,221,222
 concreteness_denotation,92,552,abstract_baseline,rvqf,truce,,,231,232
 concreteness_denotation,93,553,concrete_subsective,new,hug,,,111,112
 concreteness_denotation,93,554,concrete_privative,hypothetical,hug,,,121,122
@@ -698,7 +698,7 @@ specificity,32,696,high,kmlsdjtw,Chihuahua,,,91,92
 specificity,33,697,low,wvcnz,dog,,,71,72
 specificity,33,698,mid,guide,dog,Is it disobedient? ,no,81,82
 specificity,33,699,high,zrtqgfplh,Labrador,,,91,92
-specificity,34,700,low,fxldmr,fish,Does it have fins,yes,71,72
+specificity,34,700,low,fxldmr,fish,Does it have fins?,yes,71,72
 specificity,34,701,mid,flat,fish,,,81,82
 specificity,34,702,high,ypdcglkc,flounder,,,91,92
 specificity,35,703,low,ypdcglkc,flower,,,71,72
