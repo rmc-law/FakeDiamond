@@ -20,59 +20,61 @@ os.environ['SUBJECTS_DIR'] = subjects_dir
 subjects = config.subject_ids
 
 
-for subject in subjects:
+# for processing single subject
+subject = input('subject to process: ')
+
+
+subject = f'sub-{subject}'
+print(subject)
+print('======')
+
+# create two noise covariance matrices, one for just MEG, one for EEG & MEG
+ch_types = ['MEEG', 'MEG']
+conductivities = [[0.3, 0.006, 0.3], [0.3]]
+
+for ch_type, conductivity in zip(ch_types, conductivities):
+
+    bem_fname = op.join(subjects_dir, subject, 'bem', f'{subject}_{ch_type}-bem-sol.fif')
     
-    subject = f'sub-{subject}'
-    print(subject)
-    print('======')
+    if op.exists(bem_fname):
 
-    # create two noise covariance matrices, one for just MEG, one for EEG & MEG
-    ch_types = ['MEEG', 'MEG']
-    conductivities = [[0.3, 0.006, 0.3], [0.3]]
+        print(f'bem solution {ch_type} exists.')
+        pass
 
-    for ch_type, conductivity in zip(ch_types, conductivities):
-
-        bem_fname = op.join(subjects_dir, subject, 'bem', f'{subject}_{ch_type}-bem-sol.fif')
+    else:
         
-        if op.exists(bem_fname):
+        if op.exists(op.join(subjects_dir, subject)):
 
-            print(f'bem solution {ch_type} exists.')
-            pass
+            print(f'bem solution {ch_type} does not exist. Computing.')
+            os.makedirs(op.join(subjects_dir, subject, 'bem'), exist_ok=True)
 
-        else:
+            surfaces = make_bem_model(
+                subject, 
+                ico=4, 
+                conductivity=conductivity, 
+                verbose=True
+                )
             
-            if op.exists(op.join(subjects_dir, subject)):
+            bem = make_bem_solution(surfaces)
 
-                print(f'bem solution {ch_type} does not exist. Computing.')
-                os.makedirs(op.join(subjects_dir, subject, 'bem'), exist_ok=True)
+            write_bem_solution(bem_fname, bem)
+            
+        else:
+            print(f'{subject} recon perhaps not yet done. Skipping for now.')
 
-                surfaces = make_bem_model(
-                    subject, 
-                    ico=4, 
-                    conductivity=conductivity, 
-                    verbose=True
-                    )
-                
-                bem = make_bem_solution(surfaces)
-
-                write_bem_solution(bem_fname, bem)
-                
-            else:
-                print(f'{subject} recon perhaps not yet done. Skipping for now.')
-
-            del surfaces, bem
-        
-        del bem_fname
+        del surfaces, bem
+    
+    del bem_fname
 
 
-    # plot bem to visualise
-    plot_bem_kwargs = dict(
-        subject=subject,
-        subjects_dir=subjects_dir,
-        brain_surfaces="white",
-        orientation="coronal",
-        slices=[50, 100, 150, 200],
-    )
+# plot bem to visualise
+plot_bem_kwargs = dict(
+    subject=subject,
+    subjects_dir=subjects_dir,
+    brain_surfaces="white",
+    orientation="coronal",
+    slices=[50, 100, 150, 200],
+)
 
-    fig_bem = plot_bem(**plot_bem_kwargs, show=False)
-    fig_bem.savefig(op.join(subjects_dir, subject, 'bem', f'{subject}_bem.png'))
+fig_bem = plot_bem(**plot_bem_kwargs, show=False)
+fig_bem.savefig(op.join(subjects_dir, subject, 'bem', f'{subject}_bem.png'))
