@@ -13,8 +13,14 @@
     ```
 ## Summary of MEG preprocessing pipeline
 0. Convert MEG data to MNE-BIDS format: `00_setup_subject.py`
-1. Separate distal sources from biological sources: `01_maxfilter.py`
+1. Separate distal sources from biological sources: `01_maxfilter_batch.sh`
 2. Suppress artifact and segment continuous data: `02_preprocess_data.py`
+    - bandpass filter 0.1-40 Hz (FIR, Hamming window)
+    - ica to remove eye-related components (~2-3 componets) (not heart-related components)
+    - correct for delay between trigger and display via photodiode
+    - segment continuous data into epochs
+    - downsample to 250 Hz
+    - use `autoreject` to determine amplitude rejection threshold
 3. Calculate noise covariance matrices: `03_noise_cov.py`
 4. Calculate forward solution: `04_forward_solution.py`
 5. Calculate inverse solution: `05_inverse_solution.py`
