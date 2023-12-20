@@ -6,11 +6,14 @@ Created on Tue Aug 22 20:25:48 2023
 @author: rl05
 """
 
+import sys
 import os
 import os.path as op
+
 from mne import make_bem_model, make_bem_solution, write_bem_solution
 from mne.viz import plot_bem
 
+sys.path.append('/imaging/hauk/rl05/fake_diamond/scripts/preprocessing')
 import config 
 
 data_dir = op.join(config.project_repo, 'data')

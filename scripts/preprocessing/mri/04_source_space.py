@@ -6,12 +6,14 @@ Created on Tue Aug 22 20:21:50 2023
 @author: rl05
 """
 
+import sys
 import os
 import os.path as op
 
 from mne import (setup_source_space, write_source_spaces, read_source_spaces, 
                  compute_source_morph)
 
+sys.path.append('/imaging/hauk/rl05/fake_diamond/scripts/preprocessing')
 import config 
 
 data_dir = op.join(config.project_repo, 'data')
