@@ -21,29 +21,35 @@ preprocessed_data_path = op.join(data_dir, 'preprocessed')
 subjects_dir = op.join(data_dir, 'mri')
 os.environ['SUBJECTS_DIR'] = subjects_dir
 
-subjects_to_ignore = ['05', # bem problem
-                      '07', # no mri
+subjects_to_ignore = [
+                      # '07', # no mri
                       ]
 
 subjects = [subject for subject in subjects if subject not in subjects_to_ignore]
 print('subjects: ', subjects)
 
-ch_type = input('estimate sources using just MEG or MEEG: ')
+# for processing specific subject
+subject = input('subject to process: ')
 
-for subject in subjects:
         
-    subject = f'sub-{subject}'
-    print(subject)
-    print('======')
+subject = f'sub-{subject}'
+print(subject)
+print('======')
 
+stc_path = op.join(data_dir, 'stcs', subject)
+if op.exists(stc_path):
+    print(f'{subject} stc path exists.')
+else:
+    print(f'Making {subject} stc path.')
+    os.makedirs(stc_path, exist_ok=True)
+
+for ch_type in ['MEEG', 'MEG']:
+    
     epoch_path = op.join(preprocessed_data_path, subject, 'epoch')
     epoch_fname = op.join(epoch_path, f'{subject}_epo.fif')
     inv_fname = op.join(epoch_path, f'{subject}_{ch_type}_inv.fif')
     trans_fname = op.join(subjects_dir, subject, f'{subject}_trans.fif')
     morph_fname = op.join(subjects_dir, subject, f'{subject}-morph.h5')
-
-    stc_path = op.join(data_dir, 'stcs', subject)
-    os.makedirs(stc_path, exist_ok=True)
     
     # meg-mri coregistration
     if not op.exists(trans_fname):
@@ -86,44 +92,45 @@ for subject in subjects:
     evoked_all = epochs.average()
     _, res_all = apply_inverse(evoked_all, inv, lambda2=lambda2, method=method, return_residual=True)
     fig_residual = res_all.plot(show=False)
-    fig_residual.savefig(op.join(stc_path, f'fig_{subject}_residual_all_conditions-ave.png'))
+    fig_residual.savefig(op.join(stc_path, f'fig_{subject}_{ch_type}_residual_all_conditions-ave.png'))
 
     del evoked_all, res_all, fig_residual
 
 
-# epochs_single_word = concatenate_epochs([epochs['baseline'],
-#                                               epochs['low/word1'],
-#                                               epochs['high/word1']])
-# evoked_single_word = epochs_single_word.average()
-# stc_single_word, res_single_word = apply_inverse(evoked_single_word, inv, 
-#                                                   lambda2=lambda2, method=method, 
-#                                                   return_residual=True)
 
-# # inverse_methods = ['MNE', 'dSPM', 'eLORETA', 'sLORETA']
-# # for method in inverse_methods:
-# #     print()
-# #     print('Inverse method: ', method)
-# #     stc_single_word, res_single_word = apply_inverse(evoked_single_word, inv, 
-# #                                                      lambda2=lambda2, method=method, 
-# #                                                      return_residual=True)
+# inverse_methods = ['MNE', 'dSPM', 'eLORETA', 'sLORETA']
+# for method in inverse_methods:
+#     print()
+#     print('Inverse method: ', method)
+#     stc_single_word, res_single_word = apply_inverse(evoked_single_word, inv, 
+#                                                      lambda2=lambda2, method=method, 
+#                                                      return_residual=True)
 
 
-# # stc_single_word.plot(hemi='both', size=(1000, 500), smoothing_steps=10,time_viewer=True)
+# stc_single_word.plot(hemi='both', size=(1000, 500), smoothing_steps=10,time_viewer=True)
+# 
+# stc_concrete = mne.minimum_norm.apply_inverse(epochs['concrete'].average(), inv,
+#                                               lambda2=lambda2, method=method)
+# stc_abstract = mne.minimum_norm.apply_inverse(epochs['abstract'].average(), inv,
+#                                               lambda2=lambda2, method=method)
+# stc_concrete.plot(hemi='lh', smoothing_steps=5, size=(1000, 500), time_viewer=True)
+# stc_abstract.plot(hemi='lh', smoothing_steps=5, size=(1000, 500), time_viewer=True)
 
-# # stc_concrete = mne.minimum_norm.apply_inverse(epochs['concrete'].average(), inv,
-# #                                               lambda2=lambda2, method=method)
-# # stc_abstract = mne.minimum_norm.apply_inverse(epochs['abstract'].average(), inv,
-# #                                               lambda2=lambda2, method=method)
-# # stc_concrete.plot(hemi='lh', smoothing_steps=5, size=(1000, 500), time_viewer=True)
-# # stc_abstract.plot(hemi='lh', smoothing_steps=5, size=(1000, 500), time_viewer=True)
+from mne import concatenate_epochs
+epochs_single_word = concatenate_epochs([epochs['baseline'],
+                                              epochs['low/word1'],
+                                              epochs['high/word1']])
+evoked_single_word = epochs_single_word.average()
+stc_single_word = apply_inverse(evoked_single_word, inv,lambda2=lambda2, method=method)
+stc_single_word.plot(hemi='lh', smoothing_steps=10, size=(1000, 500), time_viewer=True)
 
-# epochs_compose = concatenate_epochs([epochs['subsective'],
-#                                           epochs['privative'],
-#                                           epochs['mid']])
-# stc_compose = apply_inverse(epochs_compose.average(), inv, lambda2=lambda2, method=method)
-# # stc_compose.plot(hemi='lh', smoothing_steps=10, size=(1000, 500), time_viewer=True)
+epochs_compose = concatenate_epochs([epochs['subsective'],
+                                          epochs['privative'],
+                                          epochs['mid']])
+stc_compose = apply_inverse(epochs_compose.average(), inv, lambda2=lambda2, method=method)
+stc_compose.plot(hemi='lh', smoothing_steps=10, size=(1000, 500), time_viewer=True)
 
-# t = stc_compose.data - stc_single_word.data
-# stc_dummy = stc_compose.copy()
-# stc_dummy.data = t
-# stc_dummy.plot(hemi='both', smoothing_steps=10, size=(1000, 500), time_viewer=True)
+t = stc_compose.data - stc_single_word.data
+stc_dummy = stc_compose.copy()
+stc_dummy.data = t
+stc_dummy.plot(hemi='both', smoothing_steps=10, size=(1000, 500), time_viewer=True)
