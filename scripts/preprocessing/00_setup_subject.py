@@ -87,7 +87,7 @@ def check_nifti_exists(directory):
     return len(nifti_files) > 0
 
 def find_dicom_images(directory):
-    possible_mri_endings = ['*anat-T1w', '*32chn']
+    possible_mri_endings = ['*anat-T1w', '*32chn','*T1w*']
     for ending in possible_mri_endings:
         try:
             dicoms_path = glob(op.join(directory, f'{mri_id}*/*', ending))
@@ -96,8 +96,7 @@ def find_dicom_images(directory):
                 return dicoms_path[0]
         except Exception as e:
             print(f'Error searching for dicom images: {e}')
-    print(f'Can\'t seem to find dicom images for MRI ID {mri_id}. Try looking manually.')
-    return None
+    raise FileNotFoundError(f'Can\'t seem to find dicom images for MRI ID {mri_id}. Try looking manually.')
 
 def convert_dicom2nifti(t1w_dir=''):
     if not op.isdir(t1w_dir):    
