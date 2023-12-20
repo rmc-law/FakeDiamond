@@ -10,17 +10,17 @@ import os
 import os.path as op
 import shutil
 import numpy as np
-import pandas as pd
+# import pandas as pd
 from glob import glob
 
-import matplotlib.pyplot as plt
-import seaborn as sns
+# import matplotlib.pyplot as plt
+# import seaborn as sns
 
 from mne import find_events, pick_events, concatenate_raws, Epochs, pick_types
 from mne.io import read_raw_fif
-from mne.viz import tight_layout
+# from mne.viz import tight_layout
 from autoreject import Ransac  # noqa
-from autoreject.utils import interpolate_bads  # noqa
+# from autoreject.utils import interpolate_bads  # noqa
 
 
 import config
@@ -60,7 +60,7 @@ def read_raws(preprocessed_data_path, subject, runs):
     print('Reading raws from all runs.')
     raws = []
     for run in runs:
-        print('run', run)
+        # print('run', run)
         raw_sss_fname = op.join(preprocessed_data_path, subject, 'maxfiltered', f'run-{run}', f'run{run}_sss_raw.fif')
         raw = read_raw_fif(raw_sss_fname, verbose=False)
         picks = pick_types(raw.info, meg=True, eeg=True, stim=True, eog=True, chpi=False)
@@ -103,95 +103,95 @@ def copy_log_files(project, subject):
             shutil.copy2(source, destination)
             
 
-def plot_noisy_channel_detection(auto_scores, ch_type):
-    # Your existing code here
-    ch_subset = auto_scores["ch_types"] == ch_type
-    ch_names = auto_scores["ch_names"][ch_subset]
-    scores = auto_scores["scores_noisy"][ch_subset]
-    limits = auto_scores["limits_noisy"][ch_subset]
-    bins = auto_scores["bins"]
-    bin_labels = [f"{start:3.3f} – {stop:3.3f}" for start, stop in bins]
-    data_to_plot = pd.DataFrame(
-        data=scores,
-        columns=pd.Index(bin_labels, name="Time (s)"),
-        index=pd.Index(ch_names, name="Channel"),
-    )
+# def plot_noisy_channel_detection(auto_scores, ch_type):
+#     # Your existing code here
+#     ch_subset = auto_scores["ch_types"] == ch_type
+#     ch_names = auto_scores["ch_names"][ch_subset]
+#     scores = auto_scores["scores_noisy"][ch_subset]
+#     limits = auto_scores["limits_noisy"][ch_subset]
+#     bins = auto_scores["bins"]
+#     bin_labels = [f"{start:3.3f} – {stop:3.3f}" for start, stop in bins]
+#     data_to_plot = pd.DataFrame(
+#         data=scores,
+#         columns=pd.Index(bin_labels, name="Time (s)"),
+#         index=pd.Index(ch_names, name="Channel"),
+#     )
 
-    fig, ax = plt.subplots(1, 2, figsize=(12, 8))
-    fig.suptitle(
-        f"Automated noisy channel detection: {ch_type}", fontsize=16, fontweight="bold"
-    )
-    sns.heatmap(data=data_to_plot, cmap="Reds", cbar_kws=dict(label="Score"), ax=ax[0])
-    [
-        ax[0].axvline(x, ls="dashed", lw=0.25, dashes=(25, 15), color="gray")
-        for x in range(1, len(bins))
-    ]
-    ax[0].set_title("All Scores", fontweight="bold")
+#     fig, ax = plt.subplots(1, 2, figsize=(12, 8))
+#     fig.suptitle(
+#         f"Automated noisy channel detection: {ch_type}", fontsize=16, fontweight="bold"
+#     )
+#     sns.heatmap(data=data_to_plot, cmap="Reds", cbar_kws=dict(label="Score"), ax=ax[0])
+#     [
+#         ax[0].axvline(x, ls="dashed", lw=0.25, dashes=(25, 15), color="gray")
+#         for x in range(1, len(bins))
+#     ]
+#     ax[0].set_title("All Scores", fontweight="bold")
 
-    sns.heatmap(
-        data=data_to_plot,
-        vmin=np.nanmin(limits),
-        cmap="Reds",
-        cbar_kws=dict(label="Score"),
-        ax=ax[1],
-    )
-    [
-        ax[1].axvline(x, ls="dashed", lw=0.25, dashes=(25, 15), color="gray")
-        for x in range(1, len(bins))
-    ]
-    ax[1].set_title("Scores > Limit", fontweight="bold")
+#     sns.heatmap(
+#         data=data_to_plot,
+#         vmin=np.nanmin(limits),
+#         cmap="Reds",
+#         cbar_kws=dict(label="Score"),
+#         ax=ax[1],
+#     )
+#     [
+#         ax[1].axvline(x, ls="dashed", lw=0.25, dashes=(25, 15), color="gray")
+#         for x in range(1, len(bins))
+#     ]
+#     ax[1].set_title("Scores > Limit", fontweight="bold")
 
-    fig.tight_layout(rect=[0, 0.03, 1, 0.95])
-    return fig
+#     fig.tight_layout(rect=[0, 0.03, 1, 0.95])
+#     return fig
 
 
-def filter_raw(raw):
-    # this section visualises the effects of filtering on sensor signals
-    # make a copy of the original channels
-    print ('Making a copy of raw data...')
-    x0 = raw.copy().pick(['MEG1113']).crop(tmin = 60., tmax = 120.) # unfiltered
+# def filter_raw(raw):
+#     # this section visualises the effects of filtering on sensor signals
+#     # make a copy of the original channels
+#     print ('Making a copy of raw data...')
+#     x0 = raw.copy().pick(['MEG1113']).crop(tmin = 60., tmax = 120.) # unfiltered
 
-    # apply band-pass filter to raw
-    l_freq = 0 # high-pass filter in Hz
-    h_freq = 40 # low-pass filter in Hz
-    raw_filtered = raw.filter(l_freq, h_freq, method='fir', fir_window='hamming', fir_design='firwin')
-    # the method argument is default to fir in MNE 0.17 but iir in previous versions
+#     # apply band-pass filter to raw
+#     l_freq = 0 # high-pass filter in Hz
+#     h_freq = 40 # low-pass filter in Hz
+#     raw_filtered = raw.filter(l_freq, h_freq, method='fir', fir_window='hamming', fir_design='firwin')
+#     # the method argument is default to fir in MNE 0.17 but iir in previous versions
 
-    # then make a copy of filtered channels
-    print ('Making a copy of filtered data...')
-    x1 = raw.copy().pick(['MEG1113']).crop(tmin = 60., tmax = 120.) # filtered
-    # plot these two copies using matplotlib
-    from scipy import fftpack
-    import matplotlib.pyplot as plt
-    print('Plotting comparison between filtered and unfiltered data...')
-    x0, times = x0[:,:]
-    x0 = x0[0]
-    x1, times = x1[:,:]
-    x1 = x1[0]
+#     # then make a copy of filtered channels
+#     print ('Making a copy of filtered data...')
+#     x1 = raw.copy().pick(['MEG1113']).crop(tmin = 60., tmax = 120.) # filtered
+#     # plot these two copies using matplotlib
+#     from scipy import fftpack
+#     import matplotlib.pyplot as plt
+#     print('Plotting comparison between filtered and unfiltered data...')
+#     x0, times = x0[:,:]
+#     x0 = x0[0]
+#     x1, times = x1[:,:]
+#     x1 = x1[0]
 
-    # you might need to use plt.ion() to turn on interactive mode
-    fig_filter_effect, axes = plt.subplots(1,3, figsize = (12,6))
-    axes[0].plot(times, x1)
-    axes[0].plot(times, x0 - 1e-12)
-    axes[0].set(xlabel = 'Time (sec)', xlim = [times[0], times[1000]])
-    X0 = fftpack.fft(x0)
-    X1 = fftpack.fft(x1)
-    freqs = fftpack.fftfreq(len(x0), 1./raw.info['sfreq'])
-    mask = freqs >= 0
-    X0 = X0[mask]
-    X1 = X1[mask]
-    freqs = freqs[mask]
-    axes[1].plot(freqs, 20 * np.log10(np.maximum(np.abs(X1), 1e-16)))
-    axes[1].plot(freqs, 20 * np.log10(np.maximum(np.abs(X0), 1e-16)))
-    axes[1].set(xlim = [0, 60], xlabel = 'Frequency (Hz)', ylabel = 'Magnitude (dB)')
-    angles = (np.angle(X1) - np.angle(X0)) / (2 * np.pi)
-    angles[np.absolute(angles) > 0.9] = angles[np.absolute(angles) > 0.9] + 1.
-    axes[2].plot(freqs, angles)
-    #axes[2].plot(freqs[1:], np.abs(np.remainder(np.angle(X1[1:]), 2. * np.pi) - np.remainder(np.angle(X0[1:]), 2 * np.pi)) / (2 * np.pi * freqs[1:]))
-    #axes[2].plot(freqs, np.angle(X0))
-    axes[2].set(xlim = [0, 60], xlabel = 'Frequency (Hz)', ylabel = 'Phase delay [cycle]')
-    tight_layout()
-    return raw_filtered, fig_filter_effect
+#     # you might need to use plt.ion() to turn on interactive mode
+#     fig_filter_effect, axes = plt.subplots(1,3, figsize = (12,6))
+#     axes[0].plot(times, x1)
+#     axes[0].plot(times, x0 - 1e-12)
+#     axes[0].set(xlabel = 'Time (sec)', xlim = [times[0], times[1000]])
+#     X0 = fftpack.fft(x0)
+#     X1 = fftpack.fft(x1)
+#     freqs = fftpack.fftfreq(len(x0), 1./raw.info['sfreq'])
+#     mask = freqs >= 0
+#     X0 = X0[mask]
+#     X1 = X1[mask]
+#     freqs = freqs[mask]
+#     axes[1].plot(freqs, 20 * np.log10(np.maximum(np.abs(X1), 1e-16)))
+#     axes[1].plot(freqs, 20 * np.log10(np.maximum(np.abs(X0), 1e-16)))
+#     axes[1].set(xlim = [0, 60], xlabel = 'Frequency (Hz)', ylabel = 'Magnitude (dB)')
+#     angles = (np.angle(X1) - np.angle(X0)) / (2 * np.pi)
+#     angles[np.absolute(angles) > 0.9] = angles[np.absolute(angles) > 0.9] + 1.
+#     axes[2].plot(freqs, angles)
+#     #axes[2].plot(freqs[1:], np.abs(np.remainder(np.angle(X1[1:]), 2. * np.pi) - np.remainder(np.angle(X0[1:]), 2 * np.pi)) / (2 * np.pi * freqs[1:]))
+#     #axes[2].plot(freqs, np.angle(X0))
+#     axes[2].set(xlim = [0, 60], xlabel = 'Frequency (Hz)', ylabel = 'Phase delay [cycle]')
+#     tight_layout()
+#     return raw_filtered, fig_filter_effect
 
 
 def shift_event_photodiode(events, target_triggers=None, photodiode_trigger=512):
@@ -211,6 +211,7 @@ def shift_event_photodiode(events, target_triggers=None, photodiode_trigger=512)
     print(f'Number of matches (total target triggers={len(events_semantic)}): {len(delay)}')
     print(f'Mean latency: {delay.mean():.3f} ms')
     print(f'SD latency: {delay.std():.3f} ms')
+    print('===')
     return delay
 
 def calculate_avg_sem(array):

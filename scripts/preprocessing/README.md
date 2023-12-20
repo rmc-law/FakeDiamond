@@ -28,6 +28,24 @@
 
 ***
 
+## Summary of behavioural preprocessing pipeline
+```
+cd /imaging/hauk/rl05/fake_diamond/scripts/preprocessing/
+python 00_organise_logfiles.py
+cd ../analysis/behavioural
+jupyter notebook -> lme_rt.ipynb
+```
+To access jupyter notebook within a VNC session:
+```
+conda activate mne1.4.2
+cd /imaging/hauk/rl05/fake_diamond/
+jupyter notebook
+```
+To access jupyter notebook outside VNC session (e.g., on a local browser):
+1. Find IP of login node locally: `ifconfig | grep 172.31.120 | awk '{print $2}'`
+2. Launch jupyter notebook within VNC `jupyter-notebook --ip [insert IP] --no-browser
+3. Access notebok `http://login-j02.mrc-cbu.cam.ac.uk:<port>` or `http://<IP address>:<port>` 
+
 ## 1. Convert dicom to nifti
 
 After subject BIDS has been set up, we can convert dicom images to nifti for cortical surface reconstruction.
