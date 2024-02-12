@@ -84,30 +84,42 @@ def extract_target_epochs(epochs, analysis=''):
     elif analysis == 'specificity_word': 
         epochs = epochs[(epochs.metadata.condition == 'low') | 
                         (epochs.metadata.condition == 'high')]
+    elif analysis == 'denotation_cross_condition':
+        epochs_word = epochs[(epochs.metadata.condition == 'concrete_baseline') | 
+                             (epochs.metadata.condition == 'abstract_baseline')]
+        epochs_subsective = epochs[(epochs.metadata.condition == 'concrete_subsective') | 
+                                   (epochs.metadata.condition == 'abstract_subsective')]
+        epochs_privative = epochs[(epochs.metadata.condition == 'concrete_privative') | 
+                                  (epochs.metadata.condition == 'abstract_privative')]
+        epochs = mne.concatenate_epochs([epochs_word, epochs_subsective, epochs_privative])
+        epochs.crop(tmin=0.6, tmax=1.4)
     return epochs
 
 
 
 # =============================================================================
-# Define key decoding functions
+# Decoding functions
 # =============================================================================
 
-def decode(X, y, analysis='', classifier=''):
+def choose_pipelines(classifier=''):
     if classifier == 'logistic':
         clf = make_pipeline(StandardScaler(), LinearModel(LogisticRegression(solver='liblinear')))
     elif classifier == 'svc':
         clf = make_pipeline(StandardScaler(), LinearModel(SVC(kernel='linear')))
+    elif classifier == 'naive_bayes':
+        clf = make_pipeline(StandardScaler(), GaussianNB())
+    return clf
+
+def choose_scorer(analysis=''):
     if analysis == 'specificity':
         scorer = 'roc_auc_ovo' # three class problem
     else:
         scorer = 'roc_auc'
+    return scorer
 
-    # # cross condition decoding
-    # if analysis == 'denotation_cross_condition':
-    #     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=0)
-    # # need to split the X into training datasets on one condition, then test on another.
-    # # e.g., train on baseline_concrete, test on subsective-concrete;
-
+def decode(X, y, analysis='', classifier=''):
+    clf = choose_pipelines(classifier=classifier)
+    scorer = choose_scorer(analysis=analysis)
     time_decod = SlidingEstimator(clf, scoring=scorer, verbose=False)
     cv = StratifiedKFold(shuffle=True, n_splits=5, random_state=42) # 5-fold cross validation, with random_state set for reproducibility
     scores = cross_val_multiscore(time_decod, X, y, cv=cv) 
@@ -115,19 +127,49 @@ def decode(X, y, analysis='', classifier=''):
     coef = get_coef(time_decod, 'patterns_', inverse_transform=True)
     return scores, coef
 
-def generalise(X, y, classifier=''):
-    if classifier == 'logistic':
-        clf = make_pipeline(StandardScaler(), LinearModel(LogisticRegression(solver='liblinear')))
-    elif classifier == 'svc':
-        clf = make_pipeline(StandardScaler(), LinearModel(SVC(kernel='linear')))
-    elif classifier == 'naive_bayes':
-        clf = make_pipeline(StandardScaler(), GaussianNB())
-    time_gen = GeneralizingEstimator(clf, scoring='roc_auc', verbose=False)
+def generalise(X, y, analysis='', classifier=''):
+    clf = choose_pipelines(classifier=classifier)
+    scorer = choose_scorer(analysis=analysis)
+    time_gen = GeneralizingEstimator(clf, scoring='scorer', verbose=False)
     cv = StratifiedKFold(shuffle=True, n_splits=5, random_state=42) # 5-fold cross validation, with random_state set for reproducibility
     scores = cross_val_multiscore(time_gen, X, y, cv=cv)
     return scores
 
+# cross condition decoding: train on condition A, test on condition B
+def train(X_train, y_train, classifier=''):
+    clf = choose_pipelines(classifier=classifier)
+    estimator = SlidingEstimator(clf, scoring='roc_auc', verbose=True)
+    estimator.fit(X_train, y_train)
+    return estimator
 
+def test(X_test, y_test, estimator=None):
+    scores = estimator.score(X_test, y_test)
+    coef = get_coef(estimator, 'patterns_', inverse_transform=True)
+    return scores, coef
+
+# =============================================================================
+# Plotting functions
+# =============================================================================
+
+def plot_scores(times=None, scores=None, analysis='', subject='', class_ratio=''):
+    print('Plotting decoding scores.')
+    fig, ax = plt.subplots()
+    ax.plot(times, scores, label='score')
+    ax.axhline(0.5, color='k', linestyle='--', label='chance')
+    ax.set_xlabel('Times')
+    ax.set_ylabel('AUC') 
+    ax.legend()
+    # ax.axvline(0.0, color='k', linestyle='-')
+    ax.set_title(f'Decoding {analysis} in {subject} (class ratio={class_ratio:.2f})')
+    plt.tight_layout()
+    return fig, ax
+
+def plot_patterns(coef=None, info=None, tmin=0., times=[]):
+    print('Plotting spatial patterns.')
+    evoked = mne.EvokedArray(coef, info, tmin=tmin)
+    joint_kwargs = dict(ts_args=dict(time_unit='s'), topomap_args=dict(time_unit='s'))
+    fig_evokeds = evoked.plot_joint(times=times, title='patterns', show=False, **joint_kwargs)
+    return fig_evokeds
 
 
 
@@ -141,9 +183,8 @@ def main():
     parser.add_argument('--subject', type=str, required=True, help='Run subject-specific analysis')
     parser.add_argument('--analysis', type=str, required=True, help='Specify analysis (see README for more)')
     parser.add_argument('--classifier', type=str, required=True, help='Specify classifier: logistic or svc')
-    parser.add_argument('--sensors', type=str, required=False, help='MEEG or just MEG?')
-    parser.add_argument('--generalise', action='store_true', help='Perform temporal generalisation')
-    # parser.add_argument('--spatial', action='store_true', help='Whether the analysis is in source space')
+    parser.add_argument('--data_type', type=str, required=True, help='Input feature (X) type: MEEG, MEG, or source?')
+    parser.add_argument('--generalise', action='store_true', help='Perform temporal generalisation?')
     args = parser.parse_args()
 
     subject = f'sub-{args.subject}'
@@ -151,11 +192,11 @@ def main():
     print(analysis)
     classifier = args.classifier
     print(classifier)
-    sensors = args.sensors
-    print(sensors)
+    data_type = args.data_type
+    print(data_type)
     generalise = args.generalise
     print('generalise: ', generalise)
-    analysis_output_dir = op.join(decoding_output_dir, f'{analysis}/{classifier}/{sensors}/{subject}')
+    analysis_output_dir = op.join(decoding_output_dir, f'{analysis}/{classifier}/{data_type}/{subject}')
     if not op.exists(analysis_output_dir):
         os.makedirs(analysis_output_dir, exist_ok=True)
 
@@ -177,57 +218,70 @@ def main():
     # set up decoder input
     epochs_target = extract_target_epochs(epochs, analysis=analysis)
     epochs_target.info['bads'] = [] # remove bads info for averaging spatial patterns later
-    if sensors == 'MEG':
+    if data_type == 'MEG':
         epochs_target = epochs_target.pick(picks='meg')
-    X = epochs_target.get_data()
-    y = epochs_target.events[:,2]
+    if analysis == 'denotation_cross_condition':
+        X_train = epochs_target['baseline'].get_data()
+        y_train = epochs_target['baseline'].events[:,2]
+        X_test = [epochs_target['subsective'].get_data(), epochs_target['privative'].get_data()]
+        y_test = [epochs_target['subsective'].events[:,2], epochs_target['privative'].events[:,2]]
+        class_ratios = [len(epochs_target['concrete/subsective']) / (len(epochs_target['subsective'])),
+                        len(epochs_target['concrete/privative']) / (len(epochs_target['privative'])),]
+        
+    else:
+        X = epochs_target.get_data()
+        y = epochs_target.events[:,2]
+        class_ratio = len(epochs_target[list(epochs_target.event_id.keys())[0]]) / (len(epochs_target))
 
+        
+    # some plotting-related parameters
+    if analysis == 'lexicality':
+        times = np.arange(0.0, 0.6, 0.2)
+    elif analysis == 'denotation_cross_condition':
+        times = np.arange(0.6, 1.4, 0.2)
+    else:
+        times = np.arange(-0.2, 1.4, 0.2)
 
+    if data_type == 'MEEG':
+        ch_types = ['eeg', 'mag', 'grad']
+    elif data_type == 'MEG':
+        ch_types = ['mag', 'grad']
 
-    # calculate class ratio
-    class_ratio = len(epochs_target[list(epochs_target.event_id.keys())[0]]) / (len(epochs_target))
 
     print('Fitting decoders.')
     if generalise:
         scores = generalise(X, y, classifier=classifier)
         scores = np.mean(scores, axis=0) # average scores across cross-validation splits
-        np.save(os.path.join(analysis_output_dir, f'scores_time_gen_{sensors}.npy'), scores)
+        np.save(os.path.join(analysis_output_dir, f'scores_time_gen_{data_type}.npy'), scores)
     else:
-        scores, coef = decode(X, y, analysis=analysis, classifier=classifier)
-        scores = np.mean(scores, axis=0) # average scores across cross-validation splits
-        np.save(os.path.join(analysis_output_dir, f'scores_time_decod_{sensors}.npy'), scores)
-        np.save(os.path.join(analysis_output_dir, f'scores_coef_{sensors}.npy'), coef)
+        if analysis == 'denotation_cross_condition':
+            time_decod = train(X_train, y_train, classifier=classifier)
+            for i, condition in enumerate(['subsective','privative']):
+                scores, coef = test(X_test[i], y_test[i], estimator=time_decod)
+                np.save(os.path.join(analysis_output_dir, f'scores_time_decod_{data_type}_test-on-{condition}.npy'), scores)
+                np.save(os.path.join(analysis_output_dir, f'scores_coef_{data_type}_test-on-{condition}.npy'), coef)
+                class_ratio = class_ratios[i]
 
-    print('Plotting decoding scores.')
-    fig, ax = plt.subplots()
-    ax.plot(epochs_target.times, scores, label='score')
-    ax.axhline(0.5, color='k', linestyle='--', label='chance')
-    ax.set_xlabel('Times')
-    ax.set_ylabel('AUC') 
-    ax.legend()
-    ax.axvline(0.0, color='k', linestyle='-')
-    ax.set_title(f'Decoding {analysis} in {subject} in sensor space (class ratio={class_ratio:.2f})')
-    fig.savefig(op.join(analysis_output_dir, 'fig_time_decod.png'))
-    plt.close(fig)
+                fig, _ = plot_scores(times=epochs_target.times, scores=scores, 
+                                      analysis=analysis, subject=subject, class_ratio=class_ratio)
+                fig.savefig(op.join(analysis_output_dir, f'fig_time_decod_test-on-{condition}.png'))
+                plt.close(fig)
+        else:
+            scores, coef = decode(X, y, analysis=analysis, classifier=classifier)
+            scores = np.mean(scores, axis=0) # average scores across cross-validation splits
+            np.save(os.path.join(analysis_output_dir, f'scores_time_decod_{data_type}.npy'), scores)
+            np.save(os.path.join(analysis_output_dir, f'scores_coef_{data_type}.npy'), coef)
 
-    print('Plotting spatial patterns.')
-    evoked_time_decod = mne.EvokedArray(coef, epochs_target.info, tmin=epochs_target.times[0])
-    joint_kwargs = dict(ts_args=dict(time_unit='s'), topomap_args=dict(time_unit='s'))
-    if analysis == 'lexicality':
-        times = np.arange(0.0, 0.6, 0.2)
-    else:
-        times = np.arange(-0.2, 1.4, 0.2)
-    fig_evokeds = evoked_time_decod.plot_joint(
-        times=times, title='patterns', show=False, **joint_kwargs
-    )
-    if sensors == 'MEEG':
-        ch_types = ['eeg', 'mag', 'grad']
-    elif sensors == 'MEG':
-        ch_types = ['mag', 'grad']
-    for fig_evoked, ch_type in zip(fig_evokeds, ch_types):
-        fig_evoked.savefig(op.join(analysis_output_dir, f'fig_patterns_{ch_type}.png'))
-        plt.close(fig_evoked)
+            fig, _ = plot_scores(times=epochs_target.times, scores=scores, 
+                                    analysis=analysis, subject=subject, class_ratio=class_ratio)
+            fig.savefig(op.join(analysis_output_dir, 'fig_time_decod.png'))
+            plt.close(fig)
 
+        fig_evokeds = plot_patterns(coef, info=epochs_target.info, tmin=epochs_target.times[0], times=times)
+        for fig_evoked, ch_type in zip(fig_evokeds, ch_types):
+            fig_evoked.savefig(op.join(analysis_output_dir, f'fig_patterns_{data_type}_{ch_type}.png'))
+            plt.close(fig_evoked)
+    
     print('Done.')
 
 if __name__ == '__main__':

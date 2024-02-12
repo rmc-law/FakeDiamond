@@ -13,10 +13,10 @@
 subject="$subject"
 analysis="$analysis" 
 classifier="$classifier"
-sensors="$sensors"
+data_type="$data_type"
 
 echo "Decoding $analysis for sub-$subject." 
 
 conda activate mne1.4.2
 
-python decoding.py --subject "$subject" --analysis "$analysis" --classifier "$classifier" --sensors "$sensors"
+python decoding.py --subject "$subject" --analysis "$analysis" --classifier "$classifier" --data_type "$data_type"
