@@ -51,7 +51,8 @@ coef_all = np.stack(coef_all, axis=0)
 print(coef_all.shape)
 avg, _ = helper.calculate_avg_sem(coef_all)
 print(avg.shape)
-    
+
+# plot group-level spatial patterns
 evoked_time_decod = EvokedArray(avg, epochs.info, tmin=epochs.times[0])
 joint_kwargs = dict(ts_args=dict(time_unit='s'), topomap_args=dict(time_unit='s'))
 times = np.arange(-0.2, 1.4, 0.2)
