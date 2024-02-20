@@ -21,8 +21,9 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 from sklearn.linear_model import LogisticRegression
 from sklearn.naive_bayes import GaussianNB
-from sklearn.model_selection import StratifiedKFold, train_test_split
-# from sklearn.metrics import roc_auc_score
+from sklearn.model_selection import StratifiedKFold
+from mne import read_source_morph
+from mne.minimum_norm import read_inverse_operator, apply_inverse_epochs
 from mne.decoding import (SlidingEstimator, GeneralizingEstimator,
                           cross_val_multiscore, LinearModel, get_coef)
 
@@ -46,6 +47,8 @@ def extract_target_epochs(epochs, analysis=''):
         epochs_nord = mne.epochs.combine_event_ids(epochs_nord, list(epochs_nord.event_id.keys()), {'nord': 100}, copy=True)
         epochs = mne.concatenate_epochs([epochs_word, epochs_nord])
         epochs.crop(tmin=-0.2, tmax=0.6)
+        return epochs
+
     elif analysis == 'composition':
         epochs_phrase = epochs[(epochs.metadata.condition == 'concrete_subsective') | 
                                (epochs.metadata.condition == 'concrete_privative') | 
@@ -56,6 +59,8 @@ def extract_target_epochs(epochs, analysis=''):
         epochs_phrase = mne.epochs.combine_event_ids(epochs_phrase, list(epochs_phrase.event_id.keys()), {'phrase': 99}, copy=True)
         epochs_word = mne.epochs.combine_event_ids(epochs_word, list(epochs_word.event_id.keys()), {'word': 100}, copy=True)
         epochs = mne.concatenate_epochs([epochs_phrase, epochs_word])
+        return epochs
+
     elif analysis == 'concreteness':
         epochs_concrete = epochs[(epochs.metadata.condition == 'concrete_subsective') | 
                                  (epochs.metadata.condition == 'concrete_privative') | 
@@ -66,9 +71,13 @@ def extract_target_epochs(epochs, analysis=''):
         epochs_concrete = mne.epochs.combine_event_ids(epochs_concrete, list(epochs_concrete.event_id.keys()), {'concrete': 99}, copy=True)
         epochs_abstract = mne.epochs.combine_event_ids(epochs_abstract, list(epochs_abstract.event_id.keys()), {'abstract': 100}, copy=True)
         epochs = mne.concatenate_epochs([epochs_concrete, epochs_abstract])
+        return epochs
+
     elif analysis == 'concreteness_word':
         epochs = epochs[(epochs.metadata.condition == 'concrete_baseline') | 
                         (epochs.metadata.condition == 'abstract_baseline')]
+        return epochs
+
     elif analysis == 'denotation':
         epochs_privative = epochs[(epochs.metadata.condition == 'abstract_privative') | 
                                   (epochs.metadata.condition == 'concrete_privative')]
@@ -77,6 +86,8 @@ def extract_target_epochs(epochs, analysis=''):
         epochs_privative = mne.epochs.combine_event_ids(epochs_privative, list(epochs_privative.event_id.keys()), {'privative': 99}, copy=True)
         epochs_subsective = mne.epochs.combine_event_ids(epochs_subsective, list(epochs_subsective.event_id.keys()), {'subsective': 100}, copy=True)
         epochs = mne.concatenate_epochs([epochs_privative, epochs_subsective])
+        return epochs
+
     elif analysis == 'specificity': 
         epochs = epochs[(epochs.metadata.condition == 'low') | 
                         (epochs.metadata.condition == 'mid') | 
@@ -84,16 +95,26 @@ def extract_target_epochs(epochs, analysis=''):
     elif analysis == 'specificity_word': 
         epochs = epochs[(epochs.metadata.condition == 'low') | 
                         (epochs.metadata.condition == 'high')]
+        return epochs
     elif analysis == 'denotation_cross_condition':
-        epochs_word = epochs[(epochs.metadata.condition == 'concrete_baseline') | 
-                             (epochs.metadata.condition == 'abstract_baseline')]
-        epochs_subsective = epochs[(epochs.metadata.condition == 'concrete_subsective') | 
-                                   (epochs.metadata.condition == 'abstract_subsective')]
-        epochs_privative = epochs[(epochs.metadata.condition == 'concrete_privative') | 
-                                  (epochs.metadata.condition == 'abstract_privative')]
-        epochs = mne.concatenate_epochs([epochs_word, epochs_subsective, epochs_privative])
-        epochs.crop(tmin=0.6, tmax=1.4)
-    return epochs
+        train_test_pairs = [(('baseline','privative'),('subsective')),
+                            (('baseline','subsective'),('privative'))]
+        epochs_train_test_pairs = []
+        for train_pair, test_target in train_test_pairs:
+            epochs_train_concrete = epochs[(epochs.metadata.condition == f'concrete_{train_pair[0]}') | 
+                                           (epochs.metadata.condition == f'concrete_{train_pair[1]}')]
+            epochs_train_abstract = epochs[(epochs.metadata.condition == f'abstract_{train_pair[0]}') |
+                                           (epochs.metadata.condition == f'abstract_{train_pair[1]}')]
+            epochs_train_concrete = mne.epochs.combine_event_ids(epochs_train_concrete, list(epochs_train_concrete.event_id.keys()), {'concrete': 99}, copy=True)
+            epochs_train_abstract = mne.epochs.combine_event_ids(epochs_train_abstract, list(epochs_train_abstract.event_id.keys()), {'abstract': 100}, copy=True)
+            epochs_train = mne.concatenate_epochs([epochs_train_concrete, epochs_train_abstract])
+            epochs_train.load_data().crop(tmin=0.6, tmax=1.4)
+            epochs_test = epochs[(epochs.metadata.condition == f'concrete_{test_target}') | 
+                                 (epochs.metadata.condition == f'abstract_{test_target}')]
+            epochs_test.load_data().crop(tmin=0.6, tmax=1.4)
+            epochs_train_test_pair = [epochs_train, epochs_test]
+            epochs_train_test_pairs.append(epochs_train_test_pair)
+    return epochs_train_test_pairs
 
 
 
@@ -129,7 +150,7 @@ def decode(X, y, analysis='', classifier=''):
 
 def generalise(X, y, analysis='', classifier=''):
     clf = choose_pipelines(classifier=classifier)
-    scorer = choose_scorer(analysis=analysis)
+    # scorer = choose_scorer(analysis=analysis)
     time_gen = GeneralizingEstimator(clf, scoring='scorer', verbose=False)
     cv = StratifiedKFold(shuffle=True, n_splits=5, random_state=42) # 5-fold cross validation, with random_state set for reproducibility
     scores = cross_val_multiscore(time_gen, X, y, cv=cv)
@@ -142,10 +163,13 @@ def train(X_train, y_train, classifier=''):
     estimator.fit(X_train, y_train)
     return estimator
 
-def test(X_test, y_test, estimator=None):
+def test(X_test, y_test, estimator=None, classifier=''):
     scores = estimator.score(X_test, y_test)
-    coef = get_coef(estimator, 'patterns_', inverse_transform=True)
-    return scores, coef
+    if classifier == 'naive_bayes':
+        return scores
+    else:
+        coef = get_coef(estimator, 'patterns_', inverse_transform=True)
+        return scores, coef
 
 # =============================================================================
 # Plotting functions
@@ -175,15 +199,15 @@ def plot_patterns(coef=None, info=None, tmin=0., times=[]):
 
 def main():
     
-    project_repo = config.project_repo
-    preprocessed_data_path = op.join(project_repo, 'data/preprocessed')
-    decoding_output_dir = op.join(project_repo, 'scripts/analysis/neural/decoding/output')
+    data_dir = op.join(config.project_repo, 'data')
+    preprocessed_data_path = op.join(data_dir, 'preprocessed')
+    decoding_output_dir = op.join(config.project_repo, 'scripts/analysis/neural/decoding/output')
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--subject', type=str, required=True, help='Run subject-specific analysis')
     parser.add_argument('--analysis', type=str, required=True, help='Specify analysis (see README for more)')
     parser.add_argument('--classifier', type=str, required=True, help='Specify classifier: logistic or svc')
-    parser.add_argument('--data_type', type=str, required=True, help='Input feature (X) type: MEEG, MEG, or source?')
+    parser.add_argument('--data_type', type=str, required=True, help='MEEG or MEG or source: ')
     parser.add_argument('--generalise', action='store_true', help='Perform temporal generalisation?')
     args = parser.parse_args()
 
@@ -203,7 +227,8 @@ def main():
     print(subject)
 
     print('Getting epochs.')
-    epoch_fname = op.join(preprocessed_data_path, subject, 'epoch', f'{subject}_epo.fif')
+    epoch_path = op.join(preprocessed_data_path, subject, 'epoch')
+    epoch_fname = op.join(epoch_path, f'{subject}_epo.fif')
     epochs = mne.read_epochs(epoch_fname, preload=False, verbose=False)
 
     # get subject trial info (logfile)
@@ -217,21 +242,60 @@ def main():
 
     # set up decoder input
     epochs_target = extract_target_epochs(epochs, analysis=analysis)
-    epochs_target.info['bads'] = [] # remove bads info for averaging spatial patterns later
-    if data_type == 'MEG':
-        epochs_target = epochs_target.pick(picks='meg')
     if analysis == 'denotation_cross_condition':
-        X_train = epochs_target['baseline'].get_data()
-        y_train = epochs_target['baseline'].events[:,2]
-        X_test = [epochs_target['subsective'].get_data(), epochs_target['privative'].get_data()]
-        y_test = [epochs_target['subsective'].events[:,2], epochs_target['privative'].events[:,2]]
-        class_ratios = [len(epochs_target['concrete/subsective']) / (len(epochs_target['subsective'])),
-                        len(epochs_target['concrete/privative']) / (len(epochs_target['privative'])),]
-        
+        for epochs in epochs_target:
+            for e in epochs:
+                e.info['bads']=list()    
+                e.resample(100)
     else:
-        X = epochs_target.get_data()
-        y = epochs_target.events[:,2]
-        class_ratio = len(epochs_target[list(epochs_target.event_id.keys())[0]]) / (len(epochs_target))
+        epochs_target.info['bads'] = [] # remove bads info for averaging spatial patterns later
+    if data_type == 'source':
+        meg_sensor_type = input('MEEG or MEG: ')
+        stc_path = op.join(data_dir, 'stcs', subject)
+        if op.exists(stc_path):
+            print(f'{subject} stc path exists.')
+        else:
+            print(f'Making {subject} stc path.')
+            os.makedirs(stc_path, exist_ok=True)
+        snr = 2.0 # SNR assumption for evoked; for epoch use 2
+        lambda2 = 1.0 / snr ** 2
+        method = 'MNE'
+        inv_fname = op.join(epoch_path, f'{subject}_{meg_sensor_type}_inv.fif')
+        inv = read_inverse_operator(inv_fname, verbose=False)
+        stcs = apply_inverse_epochs(epochs, inv, lambda2, method=method)
+        morph = read_source_morph(op.join(data_dir, f'mri/{subject}/{subject}-morph.h5'))
+        stcs = [morph.apply(stc) for stc in stcs]
+        X = np.stack([stc._data for stc in stcs])
+    else:
+        if data_type == 'MEG':
+            epochs_target = epochs_target.pick(picks='meg')
+        if analysis == 'denotation_cross_condition':
+            # train_pairs = [['baseline','privative'],['baseline','subsective']]
+            # test_targets = ['subsective','privative']
+            # for i, _ in enumerate(test_targets):
+            X_train = [epochs_target[0][0].get_data(), epochs_target[1][0].get_data()]
+            y_train = [epochs_target[0][0].events[:,2], epochs_target[1][0].events[:,2]]
+            X_test = [epochs_target[0][1].get_data(), epochs_target[1][1].get_data()]
+            y_test = [epochs_target[0][1].events[:,2], epochs_target[1][1].events[:,2]]
+            class_ratios = [len(epochs_target[0][1]['concrete/subsective']) / (len(epochs_target[0][1]['subsective'])),
+                            len(epochs_target[1][1]['concrete/privative']) / (len(epochs_target[1][1]['privative'])),]
+
+            # for train_pair, test_target in zip(train_pairs, test_targets):
+                # train on two conds, test on one that got left out
+                # X_train_pairs = [np.concatenate([epochs_target['baseline'].get_data(),
+                #                                  epochs_target['privative'].get_data()]),
+                #                  np.concatenate([epochs_target['baseline'].get_data(),
+                #                                  epochs_target['subsective'].get_data()])]
+                # y_train_pairs = [np.concatenate([epochs_target['baseline'].events[:,2],
+                #                                  epochs_target['privative'].events[:,2]]),
+                #                  np.concatenate([epochs_target['baseline'].events[:,2],
+                #                                  epochs_target['subsective'].events[:,2]])]
+                # X_test = [epochs_target['subsective'].get_data(), epochs_target['privative'].get_data()]
+                # y_test = [epochs_target['subsective'].events[:,2], epochs_target['privative'].events[:,2]]
+        else:
+            X = epochs_target.get_data()
+            y = epochs_target.events[:,2]
+            class_ratio = len(epochs_target[list(epochs_target.event_id.keys())[0]]) / (len(epochs_target))
 
         
     # some plotting-related parameters
@@ -255,14 +319,17 @@ def main():
         np.save(os.path.join(analysis_output_dir, f'scores_time_gen_{data_type}.npy'), scores)
     else:
         if analysis == 'denotation_cross_condition':
-            time_decod = train(X_train, y_train, classifier=classifier)
+            # train_pairs = [['baseline','privative'],['baseline','subsective']]
+            # test_targets = ['subsective','privative']
+            # for train_pair, test_target in zip(train_pairs, test_targets):
             for i, condition in enumerate(['subsective','privative']):
-                scores, coef = test(X_test[i], y_test[i], estimator=time_decod)
+                time_decod = train(X_train[i], y_train[i], classifier=classifier)
+                scores, coef = test(X_test[i], y_test[i], estimator=time_decod, classifier=classifier)
                 np.save(os.path.join(analysis_output_dir, f'scores_time_decod_{data_type}_test-on-{condition}.npy'), scores)
                 np.save(os.path.join(analysis_output_dir, f'scores_coef_{data_type}_test-on-{condition}.npy'), coef)
                 class_ratio = class_ratios[i]
 
-                fig, _ = plot_scores(times=epochs_target.times, scores=scores, 
+                fig, _ = plot_scores(times=epochs_target[0][1].times, scores=scores, 
                                       analysis=analysis, subject=subject, class_ratio=class_ratio)
                 fig.savefig(op.join(analysis_output_dir, f'fig_time_decod_test-on-{condition}.png'))
                 plt.close(fig)
