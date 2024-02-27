@@ -1,0 +1,213 @@
+---
+title: "lmer_roi"
+author: "Ryan Law"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(lme4)
+library(Matrix)
+library(rjson)
+library(afex)
+```
+
+# Mass univariate linear mixed effects models in region-of-interest activity
+Linear mixed effects models depended on the question, but included these fixed effects where possible/relevant: trial number, Zipf frequency of nouns and adjectives (i.e., log10(frequency/billion words) (z-scored).
+
+Analyses regressed MNE values at each timepoint using two nested models; reduced models always left out our variable(s) of interest. Model comparison produced timecourses of χ2-distributed statistics quantifying the model’s improvement due to variable(s) of interest.
+
+## Read in trial info
+
+```{r trial_info}
+analysis_path <- "U:\\ownCloud\\projects\\fake_diamond\\scripts\\analysis\\neural\\regression"
+input_path <- file.path(analysis_path, "input")
+output_path <- file.path(analysis_path, "output")
+
+# Load data from the specified file path
+trial_info <- read.csv(file.path(input_path, "lmer_trial_info_group_(n=36).csv"))
+columns_to_drop <- c("probe","response","RT","hit","Unnamed..0","Unnamed..10","participant") # analyse all trials, right or wrong
+trial_info <- trial_info %>% select(-one_of(columns_to_drop))
+
+# add word length
+trial_info$length_adj <- nchar(trial_info$word1)
+trial_info$length_noun <- nchar(trial_info$word2)
+
+
+# Explore the loaded data
+# head(trial_info, n=5)
+
+# make sure conditions and subjects are turned into factors, not just strings or integers
+columns_to_factor <- c("subject", "condition", "concreteness", "denotation", "composition", "specificity")
+for (col in columns_to_factor) {
+  trial_info[[col]] <- as.factor(trial_info[[col]])
+}
+str(trial_info)
+```
+
+## Check correlation matrix
+
+```{r correlation}
+item_properties_compose <- trial_info %>%
+  distinct(item_nr, .keep_all = TRUE) %>% # get each item only once, result in 900 rows 
+  arrange(item_nr) %>% 
+  filter(experiment == 'compose') %>%
+  mutate(condition = paste(concreteness, denotation, sep = '_')) %>%
+  select(item_nr, zipf_adj, zipf_noun, condition, length_adj, length_noun) %>%
+  group_by(condition)
+  # pivot_wider(names_from = denotation, values_from = zipf_adj)
+
+cor(item_properties_compose)
+
+item_properties_compose = item_properties[item_properties$experiment == 'compose', ]
+item_properties_compose <- item_properties_compose %>%
+    pivot_wider(names_from = denotation, values_from = zipf_adj)
+
+item_properties_specificity = item_properties[item_properties$experiment == 'specificity', ]
+  
+dplyr::summarize(item_properties, cor(zipf_adj, concreteness))
+
+
+group_a <- item_properties[item_properties$concreteness == 'concrete', "zipf_adj"]
+group_b <- item_properties[item_properties$concreteness == 'abstract', "zipf_adj"]
+
+cor_matrix <- cor(item_properties)
+
+corrplot(cor_matrix, method = "circle")
+```
+
+
+## Specify regions of interest
+
+```{r run_lmer, output=FALSE}
+
+get_predictor_pairs <- function(config_file_path, analysis) {
+  # Read the JSON file
+  analysis_config <- fromJSON(file = config_file_path)
+
+  # Check if the analysis type exists in the JSON data
+  if (!analysis %in% names(analysis_config$analysis)) {
+    stop("Invalid analysis option.")
+  }
+
+  # Access base and target values for the specified analysis type
+  base_predictor <- analysis_config$analysis[[analysis]]$base
+  target_predictor <- analysis_config$analysis[[analysis]]$target
+
+  return(list(base = base_predictor, target = target_predictor))
+}
+
+config_file_path <- file.path(analysis_path, "config.json")
+
+analyses <- c('length','concreteness', 'denotation', 'specificity', 'composition')
+
+for (analysis in analyses) {
+  
+  if (analysis == 'specificity') {
+    experiment <- 'specificity'
+  } else if (analysis == 'length') {
+    experiment <- 'both'
+  }else {
+    experiment <- 'compose'
+  }
+  
+  predictor_pairs <- get_predictor_pairs(config_file_path, analysis)
+  if (analysis == 'specificity' | analysis == 'length') {
+    base <- ""
+  } else {
+    base <- paste(" +", predictor_pairs$base)
+  }
+  target <- paste(" +", predictor_pairs$target)
+  
+  fixed_effects <- " + scale(zipf_adj) + scale(zipf_noun)"
+  random_effects <- " + (1 | subject)"
+  formula_base_model <- as.formula(paste("MNE ~ 1", base, fixed_effects, random_effects))
+  formula_target_model <- as.formula(paste("MNE ~ 1", target, fixed_effects, random_effects))
+  
+  rois <- c("anteriortemporal-lh", "posteriortemporal-lh", "inferiorfrontal-lh", 
+            "temporoparietal-lh", "lateraloccipital-lh")
+  for (roi in rois) {
+    
+    roi_data_group_fname <- sprintf("lmer_%s_data_group_(n=36)_word2only.csv", roi)
+  
+    if (endsWith(roi_data_group_fname, "_word2only.csv")) {
+        timepoints_per_trial <- 200
+    }
+    trial_info_repeated <- trial_info[rep(seq_len(nrow(trial_info)), each = timepoints_per_trial), ]
+  
+    output_fname <- sprintf("chisq_(%s)_%s_(n=36)_word2only.csv", analysis, roi)
+    
+    
+  
+    if (file.exists(file.path(output_path, output_fname))) {
+        cat(sprintf("Output file exists for analysis %s, roi %s\n", analysis, roi))
+    } else {
+        if (file.exists(file.path(input_path, roi_data_group_fname))) {
+            rois_group <- data.frame(chisq = numeric(0), timepoint = integer(0), roi = character(0))
+            print(paste("Processing ROI:", roi))
+            print("Reading in roi data.")
+            roi_data <- read.csv(file.path(input_path, roi_data_group_fname))
+  
+            # Perform a sanity check to ensure lengths match
+            stopifnot(nrow(roi_data) == nrow(trial_info_repeated))
+    
+            print("Combining trial info and data.")
+            data <- cbind(roi_data, trial_info_repeated)
+            if (experiment == 'compose' | experiment == 'specificity') {
+              data <- data[data$experiment == experiment, ]
+            }
+            
+            # Initialize a list to store results for each timepoint
+            chisq_group <- vector("list", timepoints_per_trial)
+            
+            for (timepoint in 1:timepoints_per_trial) {
+              # Subset data for the current timepoint
+              data_timepoint <- data[data$timepoint == timepoint, ]
+              
+              # Fit lmer model
+              base_model <- lmer(formula_base_model, data = data_timepoint)
+              target_model <- lmer(formula_target_model, data = data_timepoint)
+              
+              # Perform likelihood ratio test
+              lrt_result <- anova(base_model, target_model)
+              
+              # Store the result in the list
+              chisq_group[[timepoint]] <- lrt_result$Chisq[2]
+              print(paste("Timepoint: ", timepoint, " Chi-square: ", lrt_result$Chisq[2]))
+            }
+            
+            # Combine results for the current ROI into a dataframe
+            roi_group <- data.frame(
+              chisq = unlist(chisq_group),
+              timepoint = 1:timepoints_per_trial,
+              roi = rep(roi, each = timepoints_per_trial)
+            )
+            
+            # Append results for the current ROI to the overall dataframe
+            rois_group <- rbind(rois_group, roi_group)
+            
+            write.csv(rois_group, file = file.path(output_path, output_fname), row.names = FALSE)
+            rm(roi_data, data, chisq_group, data_timepoint)
+        } else {
+          cat(sprintf("Group data for %s does not exist.\n", roi_data_group_fname))
+        }
+    }
+  }
+}
+```
+
+```{r plot chi square, echo=FALSE}
+library(ggplot2)
+chisq_group_df = data.frame(
+  time = (seq_along(chisq_group) - 1) * (1000 / 250),
+  value = do.call(c, chisq_group)
+)
+
+ggplot(chisq_group_df, aes(x = time, y = value)) +
+  geom_line() +
+  labs(x = " (msec)", y = expression("Chi-square [" * chi^2 * "]"), title = sprintf("%s roi chi^2 statistics", roi))
+```
+
+
+

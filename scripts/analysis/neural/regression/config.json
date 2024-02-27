@@ -1,0 +1,25 @@
+{
+    "analysis": {
+      "length": {
+        "base": "",
+        "target": "length"
+      },
+      "composition": {
+        "base": "concreteness",
+        "target": "concreteness * composition"
+      },
+      "denotation": {
+        "base": "concreteness",
+        "target": "concreteness * denotation"
+      },
+      "concreteness": {
+        "base": "composition",
+        "target": "composition + concreteness"
+      },
+      "specificity": {
+        "base": "",
+        "target": "specificity"
+      }
+    }
+  }
+  
