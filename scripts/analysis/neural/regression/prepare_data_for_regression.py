@@ -7,6 +7,7 @@ Created on Fri Feb 16 17:07:13 2024
 """
 
 import os.path as op
+from glob import glob
 import sys
 import numpy as np
 import pandas as pd
@@ -68,42 +69,51 @@ trial_info_group.to_csv(op.join(analysis_input_dir, f'lmer_trial_info_group_(n={
 
 # prepare stc array
 rois = ['anteriortemporal-lh', 'posteriortemporal-lh',
-        'inferiorfrontal-lh', 'temporoparietal-lh']
+        'inferiorfrontal-lh', 'temporoparietal-lh', 'lateraloccipital-lh']
 
 for roi in rois:
 
     print(roi)
     data_group = []
+    
+    if word_two_only:
+        fname_ending = '_word2only.csv'
+    else:
+        fname_ending = '.csv'
+    
+    group_data_output_fname = glob(op.join(analysis_input_dir, f'lmer_{roi}_data_group_*'))
 
-    for subject_id in tqdm(subject_ids, unit='subject_id'):
-
-        subject = f'sub-{subject_id}'
-        stcs_epochs_path = op.join(data_dir, 'stcs_epochs', subject)
-        stcs_epochs_fname = op.join(stcs_epochs_path, f'stc_epochs_{roi}.stc.npy')
-        if not op.exists(stcs_epochs_fname):
-            pass
-        else:
-            stcs_roi = np.load(stcs_epochs_fname, allow_pickle=True)
-            if word_two_only:
-                stcs_roi = [stc.crop(tmin=0.6,tmax=1.4).data.mean(axis=0) for stc in stcs_roi] # average within roi
-                fname_ending = '_word2only.csv'
+    if group_data_output_fname != []:
+        print(f'{roi} group data computed. Skipping.')
+    else:
+    
+        for subject_id in tqdm(subject_ids, unit='subject_id'):
+    
+            subject = f'sub-{subject_id}'
+            stcs_epochs_path = op.join(data_dir, 'stcs_epochs', subject)
+            stcs_epochs_fname = op.join(stcs_epochs_path, f'stcs_epochs_{roi}.stc.npy')
+            if not op.exists(stcs_epochs_fname):
+                pass
             else:
-                stcs_roi = [stc.data.mean(axis=0) for stc in stcs_roi] # average within roi
-                fname_ending = '.csv'
+                stcs_roi = np.load(stcs_epochs_fname, allow_pickle=True)
+                if word_two_only:
+                    stcs_roi = [stc.crop(tmin=0.6,tmax=1.4).data.mean(axis=0) for stc in stcs_roi] # average within roi
+                else:
+                    stcs_roi = [stc.data.mean(axis=0) for stc in stcs_roi] # average within roi
+                
+                num_timepoints = stcs_roi[0].shape[0]
+                num_trials = len(stcs_roi)
+                timepoint = np.tile(np.arange(1, num_timepoints+1), num_trials)
+                trial_nr = np.repeat(np.arange(1, num_trials+1), num_timepoints)
+                stcs_roi = np.array(stcs_roi).flatten() # each element is a stc time point
+                subject = np.repeat(int(subject_id), len(stcs_roi))
+                data = pd.DataFrame({'MNE': stcs_roi,
+                                    'timepoint': timepoint,
+                                    'trial_nr': trial_nr,
+                                    'subject': subject})
+                data_group.append(data)
             
-            num_timepoints = stcs_roi[0].shape[0]
-            num_trials = len(stcs_roi)
-            timepoint = np.tile(np.arange(1, num_timepoints+1), num_trials)
-            trial_nr = np.repeat(np.arange(1, num_trials+1), num_timepoints)
-            stcs_roi = np.array(stcs_roi).flatten() # each element is a stc time point
-            subject = np.repeat(int(subject_id), len(stcs_roi))
-            data = pd.DataFrame({'MNE': stcs_roi,
-                                'timepoint': timepoint,
-                                'trial_nr': trial_nr,
-                                'subject': subject})
-            data_group.append(data)
-        
-    data_group = pd.concat(data_group)
-    data_group.to_csv(op.join(analysis_input_dir, f'lmer_{roi}_data_group_(n={len(np.unique(data_group["subject"]))})'+fname_ending)) 
+        data_group = pd.concat(data_group)
+        data_group.to_csv(op.join(analysis_input_dir, f'lmer_{roi}_data_group_(n={len(np.unique(data_group["subject"]))})'+fname_ending)) 
 
 print('Done.')
