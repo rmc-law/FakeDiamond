@@ -26,6 +26,7 @@ decoding_dir = op.join(config.project_repo, 'scripts/analysis/neural/decoding')
 analysis = input('analysis: ')
 classifier = input('classifier: ')
 sensors= input('sensors: ')
+data_type = input('MEEG or ROI: ')
 
 figures_dir = op.join(decoding_dir, f'figures/{analysis}')
 if not op.exists(figures_dir):
@@ -38,7 +39,7 @@ coef_all = []
 for subject in subjects:
     
     subject = f'sub-{subject}'
-    coef_dir = op.join(decoding_dir, f'output/{analysis}/{classifier}/{sensors}/{subject}')
+    coef_dir = op.join(decoding_dir, f'output/{analysis}/diagonal/{classifier}/{sensors}/{subject}')
     coef_file = op.join(coef_dir, f'scores_coef_{sensors}.npy')
     if op.exists(coef_file):
         coef = np.load(coef_file)

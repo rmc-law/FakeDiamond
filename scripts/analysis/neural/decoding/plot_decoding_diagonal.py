@@ -33,14 +33,19 @@ import config
 import helper
 from plot_decoding import *
 
-to_plot = input('denotation+concreteness, denotation_cross_condition, composition: ')
+to_plot = input('denotation+concreteness, denotation_cross_condition, composition, concreteness_cross_condition(_general): ')
+# to_plot='composition'
 classifier = 'logistic'
-data_type = 'MEEG'
-
+data_type = input('MEEG or ROI: ')
+# data_type='ROI'
+if data_type == 'ROI':
+    roi = input('roi: ')
+else:
+    roi = None
 
 subjects = config.subject_ids
 decoding_dir = op.join(config.project_repo, 'scripts/analysis/neural/decoding')
-figures_dir = op.join(config.project_repo, f'figures/decoding/{to_plot}')
+figures_dir = op.join(config.project_repo, f'figures/decoding/{to_plot}/{data_type}')
 if not op.exists(figures_dir):
     os.makedirs(figures_dir, exist_ok=True)
 
@@ -49,33 +54,31 @@ if to_plot == 'denotation+concreteness':
 elif to_plot == 'composition':
     analyses = ['composition']
 elif to_plot == 'denotation_cross_condition':
-    analyses = ['subsective','privative']
+    analyses = ['denotation_cross_condition_test_on_subsective','denotation_cross_condition_test_on_privative']
 elif to_plot == 'specificity':
     analyses = ['specificity']
 elif to_plot == 'specificity_word':
     analyses = ['specificity_word']
 elif to_plot == 'concreteness_word':
     analyses = ['concreteness_word']
-    
+elif to_plot == 'concreteness_cross_condition':
+    analyses = ['concreteness_trainWord_testSub','concreteness_trainWord_testPri']
+elif to_plot == 'concreteness_cross_condition_general':
+    analyses = ['concreteness_general_testSub','concreteness_general_testPri']
+
 # read in decoding scores
 scores_group = []
-if to_plot == 'denotation_cross_condition':
-    for analysis in analyses:
-        scores = read_decoding_scores(subjects, to_plot, classifier, data_type, evaluation=analysis, timegen=False)
-        scores_group.append(scores)
-        del scores
-else:
-    for analysis in analyses:
-        scores = read_decoding_scores(subjects, analysis, classifier, data_type, timegen=False)
-        scores_group.append(scores)
-        del scores
+for analysis in analyses:
+    scores = read_decoding_scores(subjects, analysis, classifier, data_type, roi=roi, timegen=False)
+    scores_group.append(scores)
+    del scores
 
-#%% draw fig
+# %% draw fig
 
 if to_plot == 'denotation+concreteness':
     fig, axes = plt.subplots(2, 1, figsize=(10,6), sharey=True, sharex=True)
     gs = GridSpec(2, 1)
-elif to_plot == 'denotation_cross_condition':
+elif to_plot == 'denotation_cross_condition' or to_plot.startswith('concreteness_cross_condition'):
     fig, axes = plt.subplots(1, 3, figsize=(14,3), sharey=True, sharex=True)
     gs = GridSpec(1, 3, width_ratios=[6,6,2])
 else:
@@ -114,7 +117,8 @@ for i, analysis in enumerate(analyses):
     
         axis.text(text_x_early, text_y_early, 'adjective', ha='center', va='center', color='black', fontsize=10.5)
         axis.text(text_x_late, text_y_late, 'noun', ha='center', va='center', color='black', fontsize=10.5)
-    elif to_plot == 'denotation_cross_condition':
+    elif to_plot == 'denotation_cross_condition' or to_plot.startswith('concreteness_cross_condition'):
+
         rect_height = 0.005
         rect_y = 0.48
         rect_x_early = 0.9
@@ -154,7 +158,7 @@ for i, analysis in enumerate(analyses):
         model = ols('scores ~ evaluations * windows', data=averaged_data).fit()
         anova_results = anova_lm(model, typ=2)
         print(anova_results)
-        anova_results.to_csv(op.join(figures_dir, 'anova_results_window*evaluation.csv'), sep=',')
+        anova_results.to_csv(op.join(figures_dir, f'stats_interaction_{roi}.csv'), sep=',')
 
         # tukey follow up 
         pairwise_scores = []
@@ -167,11 +171,12 @@ for i, analysis in enumerate(analyses):
                 pairwise_scores.append(group)
                 k += 1
         posthoc_results = tukey_hsd(pairwise_scores[0],pairwise_scores[1],pairwise_scores[2],pairwise_scores[3])
-        print(posthoc_results)
+        f = open(op.join(figures_dir, f'stats_interaction_{roi}_follow-up.txt'), 'w')
+        print(posthoc_results, file = f)
         # posthoc_results.to_csv(op.join(figures_dir, 'followup_pairwise_results_window*evaluation.txt'), sep='\t')
         
-        color_palette = [plt.get_cmap(color_scheme['subsective'])(0.7),
-                         plt.get_cmap(color_scheme['privative'])(0.7)]
+        color_palette = [plt.get_cmap(color_scheme['denotation_cross_condition_test_on_subsective'])(0.7),
+                         plt.get_cmap(color_scheme['denotation_cross_condition_test_on_privative'])(0.7)]
         axis = plt.subplot(gs[2], sharey=fig.get_axes()[0])
         sns.stripplot(
             data=averaged_data,
@@ -228,7 +233,8 @@ for i, ax in enumerate(fig.get_axes()):
         axis.set_yticks([0.5, 0.52, 0.54])
         gs.update(wspace=0, hspace=-0.05)
 
-    elif to_plot == 'denotation_cross_condition':
+    elif to_plot == 'denotation_cross_condition' or to_plot.startswith('concreteness_cross_condition'):
+
 
         # remove y labels apart from the first subplot
         if i > 0:
@@ -257,4 +263,7 @@ plt.tight_layout()
 
 #%% save fig 
 
-plt.savefig(op.join(figures_dir, f'fig_time_decod_group_{classifier}_{data_type}.png'))
+if roi:
+    plt.savefig(op.join(figures_dir, f'fig_time_decod_group_{classifier}_{data_type}_{roi}.png'))
+else:
+    plt.savefig(op.join(figures_dir, f'fig_time_decod_group_{classifier}_{data_type}.png'))

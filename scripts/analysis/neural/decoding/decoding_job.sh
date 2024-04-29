@@ -15,19 +15,34 @@ analysis="$analysis"
 classifier="$classifier"
 data_type="$data_type"
 generalise="$generalise"
+roi="$roi"
 
 echo "Decoding $analysis for sub-$subject." 
 
 conda activate mne1.4.2
 
+if [ "$data_type" = "ROI" ]; then
 
-if [ "$generalise" = "generalise" ]; then
+    if [ "$generalise" = "generalise" ]; then
 
-    python decoding.py -s "$subject" --analysis "$analysis" --classifier "$classifier" --data_type "$data_type" --generalise
+        python decoding.py -s "$subject" --analysis "$analysis" --classifier "$classifier" --data_type "$data_type" --generalise --roi "$roi"
+
+    else
+
+        python decoding.py -s "$subject" --analysis "$analysis" --classifier "$classifier" --data_type "$data_type" --roi "$roi"
+
+    fi
 
 else
 
-    python decoding.py -s "$subject" --analysis "$analysis" --classifier "$classifier" --data_type "$data_type"
+    if [ "$generalise" = "generalise" ]; then
+
+        python decoding.py -s "$subject" --analysis "$analysis" --classifier "$classifier" --data_type "$data_type" --generalise
+
+    else
+
+        python decoding.py -s "$subject" --analysis "$analysis" --classifier "$classifier" --data_type "$data_type"
+
+    fi
 
 fi
-
