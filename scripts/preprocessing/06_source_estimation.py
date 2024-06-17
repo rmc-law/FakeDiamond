@@ -9,32 +9,29 @@ Created on Fri Aug 18 18:03:53 2023
 import os
 import os.path as op
 
-from mne import read_epochs, compute_source_morph
+from mne import read_epochs, compute_source_morph, read_source_spaces
 from mne.minimum_norm import read_inverse_operator, apply_inverse
 
 import config 
 
-subjects = config.subject_ids
+subjects = [f'sub-{subject}' for subject in config.subject_ids]
 data_dir = op.join(config.project_repo, 'data')
 
 preprocessed_data_path = op.join(data_dir, 'preprocessed')
 subjects_dir = op.join(data_dir, 'mri')
 os.environ['SUBJECTS_DIR'] = subjects_dir
 
-subjects_to_ignore = [
-                      # '07', # no mri
-                      ]
-
-subjects = [subject for subject in subjects if subject not in subjects_to_ignore]
-print('subjects: ', subjects)
+print(f'subjects (n={len(subjects)}): ', subjects)
 
 # for processing specific subject
 subject = input('subject to process: ')
 
         
-subject = f'sub-{subject}'
 print(subject)
 print('======')
+
+fsaverage_src_fname = op.join(data_dir, 'mri', 'fsaverage_src', 'fsaverage_src_oct6_src.fif')
+src_to = read_source_spaces(fsaverage_src_fname) 
 
 stc_path = op.join(data_dir, 'stcs', subject)
 if op.exists(stc_path):
@@ -73,16 +70,16 @@ for ch_type in ['MEEG', 'MEG']:
     for condition in conditions:
         evoked = epochs[condition].average()
         stc = apply_inverse(evoked, inv, lambda2=lambda2, method=method,
-                            return_residual=False)
+                            return_residual=False, verbose=True)
         morph = compute_source_morph(
             src=stc,
             subject_from=subject,
-            subject_to='fsaverage', 
-            spacing=4
+            subject_to='fsaverage_src', 
+            src_to=src_to
             )        
         stc_morph = morph.apply(stc)
         del stc
-        condition = condition.replace('/','-')
+        condition = '-'.join(condition.replace('/','-').split('-')[:-1]) # a bit of formatting for saving fname
         stc_morph.save(op.join(stc_path, f'{subject}_{condition}_{ch_type}'), 
                        overwrite=True)
         del stc_morph
@@ -90,7 +87,7 @@ for ch_type in ['MEEG', 'MEG']:
     
     # save residual as quality assurance of source estimation
     evoked_all = epochs.average()
-    _, res_all = apply_inverse(evoked_all, inv, lambda2=lambda2, method=method, return_residual=True)
+    _, res_all = apply_inverse(evoked_all, inv, lambda2=lambda2, method=method, return_residual=True, verbose=True)
     fig_residual = res_all.plot(show=False)
     fig_residual.savefig(op.join(stc_path, f'fig_{subject}_{ch_type}_residual_all_conditions-ave.png'))
 
@@ -98,23 +95,7 @@ for ch_type in ['MEEG', 'MEG']:
 
 
 
-# inverse_methods = ['MNE', 'dSPM', 'eLORETA', 'sLORETA']
-# for method in inverse_methods:
-#     print()
-#     print('Inverse method: ', method)
-#     stc_single_word, res_single_word = apply_inverse(evoked_single_word, inv, 
-#                                                      lambda2=lambda2, method=method, 
-#                                                      return_residual=True)
-
-
-# stc_single_word.plot(hemi='both', size=(1000, 500), smoothing_steps=10,time_viewer=True)
-# 
-# stc_concrete = mne.minimum_norm.apply_inverse(epochs['concrete'].average(), inv,
-#                                               lambda2=lambda2, method=method)
-# stc_abstract = mne.minimum_norm.apply_inverse(epochs['abstract'].average(), inv,
-#                                               lambda2=lambda2, method=method)
-# stc_concrete.plot(hemi='lh', smoothing_steps=5, size=(1000, 500), time_viewer=True)
-# stc_abstract.plot(hemi='lh', smoothing_steps=5, size=(1000, 500), time_viewer=True)
+#%% 
 
 from mne import concatenate_epochs
 epochs_single_word = concatenate_epochs([epochs['baseline'],

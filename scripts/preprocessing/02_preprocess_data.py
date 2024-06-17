@@ -41,10 +41,7 @@ raw = helper.read_raws(preprocessed_data_path, subject, runs=runs)
 raw.load_data(verbose=False)
 
 
-
-# =============================================================================
-# Suppress artifacts
-# =============================================================================
+#%% filter & ica
 
 # filter 
 print(f'Applying bandpass filter: {l_freq}-{h_freq} Hz')
@@ -110,7 +107,7 @@ else:
     
     # visual inspection after ICA component rejection
     for ch_type in ['eeg','meg']:
-        ica_overlay = ica.plot_overlay(raw, picks=ch_type, start=8., stop=10.)
+        ica_overlay = ica.plot_overlay(raw, picks=ch_type, start=30., stop=32.)
         ica_overlay_fname = op.join(ica_path, f'ica_overlay_{ch_type}.png')
         ica_overlay.savefig(ica_overlay_fname)
     
@@ -121,9 +118,7 @@ ica.apply(raw)
 
 
 
-# =============================================================================
-# Epoch data and reject bad epochs
-# =============================================================================
+#%% segment data and reject bad epochs
 
 # help find bad channels using butterfly mode
 # raw.plot(butterfly=True)
@@ -159,8 +154,12 @@ epochs = Epochs(raw, events_semantic_corrected, event_id=config.event_id_semanti
                 verbose=False)
 print('Number of epochs found: ', len(epochs))
 
-print('Resampling epochs to 250Hz for speed.')
-epochs = epochs.resample(sfreq=epochs.info['sfreq']/4)
+if subject == 'sub-09':
+    epochs.drop([0,1], reason='bad segment during experiment', verbose=True)
+
+sfreq = epochs.info['sfreq']/4
+print(f'Resampling epochs to {sfreq} Hz for speed.')
+epochs = epochs.resample(sfreq=sfreq)
 
 # automatic rejection of bad epochs
 autoreject_threshold_fname = op.join(epoch_path, 'autoreject_threshold.json')
@@ -173,11 +172,10 @@ else:
     print('The rejection dictionary is %s' % autoreject_thresholds)
     with open(autoreject_threshold_fname, 'w') as file:
         json.dump(autoreject_thresholds, file)
-        
-epochs.drop_bad(reject=autoreject_thresholds)
+
 
 # if automatic rejection did not drop any epochs, use hardcoded threshold
-if len(epochs) == 900: 
+if len(epochs) == 900:
     composite_rejection_thresholds = helper.compare_reject_thresholds(autoreject_thresholds, config.hardcoded_thresholds)
     epochs.drop_bad(reject=composite_rejection_thresholds)
     
@@ -190,7 +188,7 @@ figs_plot_drop_log = epochs.plot_drop_log(show=False)
 figs_plot_drop_log.savefig(op.join(epoch_path, 'epochs_drop_log_stats.png'))
 
 # plot joint to see if it's quite clean
-figs_evoked = epochs.average().plot_joint(times=[0, 0.17, 0.6, 0.77, 1.0],
+figs_evoked = epochs['low'].average().plot_joint(times=[0, 0.17, 0.6, 0.77, 1.0],
                                           exclude='bads',
                                           show=False)
 for fig_evoked, ch_type in zip(figs_evoked, ['eeg', 'mag', 'grad']):
@@ -198,7 +196,8 @@ for fig_evoked, ch_type in zip(figs_evoked, ['eeg', 'mag', 'grad']):
 
 
 # visually inspect epochs
-epochs.plot(butterfly=True)
+# epochs.plot(butterfly=True)
 
+#%% save epo to disk
 
 epochs.save(epoch_fname, overwrite=True)
