@@ -1,0 +1,153 @@
+analyses:
+  - name: composition
+    contrasts:
+      - name: phrase
+        conditions:
+          - concrete_subsective
+          - concrete_privative
+          - abstract_subsective
+          - abstract_privative
+      - name: word
+        conditions:
+          - concrete_baseline
+          - abstract_baseline
+  - name: denotation
+    contrasts:
+      - name: subsective
+        conditions:
+          - concrete_subsective
+          - abstract_subsective
+      - name: privative
+        conditions:
+          - concrete_privative
+          - abstract_privative
+  - name: concreteness
+    contrasts:
+      - name: concrete
+        conditions:
+          - concrete_subsective
+          - concrete_privative
+          - concrete_baseline
+      - name: abstract
+        conditions:
+          - abstract_subsective
+          - abstract_privative
+          - abstract_baseline
+  - name: concreteness_trainWord_testSub
+    contrasts:
+      - name: concrete
+        conditions:
+          - concrete_subsective
+          - concrete_privative
+          - concrete_baseline
+      - name: abstract
+        conditions:
+          - abstract_subsective
+          - abstract_privative
+          - abstract_baseline
+  - name: concreteness_trainWord_testPri
+    contrasts:
+      - name: concrete
+        conditions:
+          - concrete_subsective
+          - concrete_privative
+          - concrete_baseline
+      - name: abstract
+        conditions:
+          - abstract_subsective
+          - abstract_privative
+          - abstract_baseline
+  - name: concreteness_general_testSub
+    contrasts:
+      - name: concrete
+        conditions:
+          - concrete_subsective
+          - concrete_privative
+          - concrete_baseline
+      - name: abstract
+        conditions:
+          - abstract_subsective
+          - abstract_privative
+          - abstract_baseline
+  - name: concreteness_general_testPri
+    contrasts:
+      - name: concrete
+        conditions:
+          - concrete_subsective
+          - concrete_privative
+          - concrete_baseline
+      - name: abstract
+        conditions:
+          - abstract_subsective
+          - abstract_privative
+          - abstract_baseline
+  - name: concreteness_trainSub_testSub
+    contrasts:
+      - name: concrete
+        conditions:
+          - concrete_subsective
+          - concrete_privative
+          - concrete_baseline
+      - name: abstract
+        conditions:
+          - abstract_subsective
+          - abstract_privative
+          - abstract_baseline
+  - name: concreteness_trainSub_testPri
+    contrasts:
+      - name: concrete
+        conditions:
+          - concrete_subsective
+          - concrete_privative
+          - concrete_baseline
+      - name: abstract
+        conditions:
+          - abstract_subsective
+          - abstract_privative
+          - abstract_baseline
+  - name: concreteness_trainPri_testSub
+    contrasts:
+      - name: concrete
+        conditions:
+          - concrete_subsective
+          - concrete_privative
+          - concrete_baseline
+      - name: abstract
+        conditions:
+          - abstract_subsective
+          - abstract_privative
+          - abstract_baseline
+  - name: concreteness_trainPri_testPri
+    contrasts:
+      - name: concrete
+        conditions:
+          - concrete_subsective
+          - concrete_privative
+          - concrete_baseline
+      - name: abstract
+        conditions:
+          - abstract_subsective
+          - abstract_privative
+          - abstract_baseline
+  - name: specificity
+    contrasts:
+      - name: low
+        conditions:
+          - low
+      - name: mid
+        conditions:
+          - mid
+      - name: high
+        conditions:
+          - high
+  - name: specificity_word
+    contrasts:
+      - name: low
+        conditions:
+          - low
+      - name: mid
+        conditions:
+          - mid
+      - name: high
+        conditions:
+          - high

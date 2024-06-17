@@ -23,7 +23,6 @@ import mne
 from mne.decoding import (SlidingEstimator, GeneralizingEstimator,
                           cross_val_multiscore, LinearModel, get_coef)
 
-
 decoding_dir = '/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding'
 # read in analysis config
 with open(op.join(decoding_dir, 'analysis_config.yaml'), 'r') as f:
@@ -58,7 +57,33 @@ def merge_contrast_events(events, target_contrasts, conditions_to_merge):
         events = mne.merge_events(events, map_event_ids(trigger_scheme, conditions_to_merge[i]), i)
     return events
 
-def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False):
+def sliding_window_average(X, window_size, step, sfreq):
+    """
+    Applies sliding window averaging to the input data along its last axis (time axis), calculating the average within each window.
+
+    Parameters:
+        data (numpy.ndarray): The input data with shape (..., time_samples).
+        window_size_ms (float): The size of the sliding window in milliseconds.
+        step_size_ms (float): The step size for sliding the window in milliseconds.
+        sampling_freq (int): The sampling frequency of the input data in Hz.
+
+    Returns:
+        numpy.ndarray: A 3D array containing the averaged values within each sliding window.
+    """
+    window_size = int(window_size * sfreq / 1000) # convert from ms to samples
+    step = int(step * sfreq / 1000) # convert from ms to samples
+    num_samples = X.shape[-1] # last axis is time
+    num_windows = int((num_samples - window_size) / step) + 1
+    output = np.zeros((X.shape[0], X.shape[1], num_windows))
+    
+    for i in range(num_windows):
+        start_idx = i * step
+        end_idx = start_idx + window_size
+        output[..., i] = np.mean(X[..., start_idx:end_idx], axis=-1)
+    
+    return output
+
+def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False, window='single'):
     # input data and events both contain all trials
     
     if spatial:
@@ -67,19 +92,22 @@ def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False):
             if X[0].shape[1] == 160:
                 X = X[:,:,80:] # only analyse second word for this analysis
     else:
-        if analysis_name.startswith('denotation_cross_condition') or analysis_name.startswith('concreteness_'):
-            if not trials.preload:
-                trials.load_data()
+        if not trials.preload:
+            trials.load_data()
+        if analysis_name.startswith('denotation_cross_condition') or analysis_name.startswith('concreteness_') or analysis_name.startswith('specificity_'):
             trials.crop(tmin=0.6, tmax=1.4)
-            if trials.info['sfreq'] != 100: 
-                trials.resample(100)
+        if trials.info['sfreq'] != 100: 
+            trials.resample(100)
         X = trials.get_data()
+        
+    if window == 'sliding': # implement sliding window analysis
+        X = sliding_window_average(X, window_size=50, step=10, sfreq=100)
         
     target_contrasts, conditions_to_merge = get_contrasts(config, analysis_name)
     events = merge_contrast_events(events, target_contrasts, conditions_to_merge)        
     y = events[:,2]
     
-    if analysis_name == 'specificity':
+    if analysis_name in ['specificity','specificity_word']:
         experiment = 'specificity'
     else:
         experiment = 'compose'
@@ -89,40 +117,26 @@ def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False):
     y = np.array(list(compress(y, mask_experiment)))
     assert len(X) == len(y)
 
-    if analysis_name == 'denotation':
+    if analysis_name == 'composition':
+        mask_remove_privative = [not t for t in (metadata.denotation=='privative').values] # define composition as subsective>baseline
+        X = X[mask_remove_privative]
+        y = y[mask_remove_privative]     
+    elif analysis_name == 'denotation':
         mask_remove_baseline = [not t for t in (metadata.denotation=='baseline').values] # remove baseline (single word) trials
         X = X[mask_remove_baseline]
-        y = [y[i] for i, include in enumerate(mask_remove_baseline) if include]
-    elif analysis_name == 'denotation_cross_condition_test_on_subsective':
-        mask_get_subsective = (metadata.denotation=='subsective').values # get subsective trials
-        mask_remove_subsective = [not t for t in mask_get_subsective] # then negate that, leaving subsective trials for testing
-        X_train = X[mask_remove_subsective]
-        y_train = [y[i] for i, include in enumerate(mask_remove_subsective) if include]
-        X_test = X[mask_get_subsective]
-        y_test = [y[i] for i, include in enumerate(mask_get_subsective) if include]
-        X = (X_train, X_test)
-        y = (y_train, y_test)
-    elif analysis_name == 'denotation_cross_condition_test_on_privative':
-        mask_get_privative = (metadata.denotation=='privative').values # get private trials
-        mask_remove_privative = [not t for t in mask_get_privative] # then negate that, leaving privative trials for testing
-        X_train = X[mask_remove_privative]
-        y_train = [y[i] for i, include in enumerate(mask_remove_privative) if include]
-        X_test = X[mask_get_privative]
-        y_test = [y[i] for i, include in enumerate(mask_get_privative) if include]
-        X = (X_train, X_test)
-        y = (y_train, y_test)
+        y = y[mask_remove_baseline]
     elif analysis_name.startswith('concreteness_trainWord'):
         mask_get_word = (metadata.denotation=='baseline').values # get single words only for training
         X_train = X[mask_get_word]
-        y_train = [y[i] for i, include in enumerate(mask_get_word) if include]
+        y_train = y[mask_get_word]
         if analysis_name.endswith('testSub'):
             mask_get_subsective = (metadata.denotation=='subsective').values # get subsective trials
             X_test = X[mask_get_subsective]
-            y_test = [y[i] for i, include in enumerate(mask_get_subsective) if include]
+            y_test = y[mask_get_subsective]
         elif analysis_name.endswith('testPri'):
             mask_get_privative = (metadata.denotation=='privative').values # get private trials
             X_test = X[mask_get_privative]
-            y_test = [y[i] for i, include in enumerate(mask_get_privative) if include]
+            y_test = y[mask_get_privative]
         X = (X_train, X_test)
         y = (y_train, y_test)
     elif analysis_name.startswith('concreteness_general'):
@@ -179,6 +193,72 @@ def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False):
         print(y_test)
         X = (X_train, X_test)
         y = (y_train, y_test)
+    elif analysis_name.endswith(('trainSub_testSub','trainSub_testPri','trainPri_testSub','trainPri_testPri')):
+        # mask_get_word = (metadata.denotation=='baseline').values # get single words
+        # X_word = X[mask_get_word]
+        # y_word = y[mask_get_word]
+        n_splits = 10
+        cv = StratifiedKFold(shuffle=True, n_splits=n_splits, random_state=42)
+        # get train-test splits for subsective trials
+        mask_get_subsective = (metadata.denotation=='subsective').values # get subsective trials
+        X_sub = X[mask_get_subsective]
+        y_sub = y[mask_get_subsective]
+        X_sub_train, X_sub_test = [], []
+        y_sub_train, y_sub_test = [], []
+        for train_index, test_index in cv.split(X_sub, y_sub):
+            X_sub_train_split, X_sub_test_split = X_sub[train_index], X_sub[test_index]
+            X_sub_train.append(X_sub_train_split)
+            X_sub_test.append(X_sub_test_split)
+            y_sub_train_split, y_sub_test_split = y_sub[train_index], y_sub[test_index]
+            y_sub_train.append(y_sub_train_split)
+            y_sub_test.append(y_sub_test_split)
+        # get train-test splits for privative trials
+        mask_get_privative = (metadata.denotation=='privative').values # get private trials
+        X_pri = X[mask_get_privative]
+        y_pri = y[mask_get_privative]
+        X_pri_train, X_pri_test = [], []
+        y_pri_train, y_pri_test = [], []
+        for train_index, test_index in cv.split(X_pri, y_pri):
+            X_pri_train_split, X_pri_test_split = X_pri[train_index], X_pri[test_index]
+            y_pri_train_split, y_pri_test_split = y_pri[train_index], y_pri[test_index]
+            X_pri_train.append(X_pri_train_split)
+            X_pri_test.append(X_pri_test_split)
+            y_pri_train.append(y_pri_train_split)
+            y_pri_test.append(y_pri_test_split)
+        X_train, X_test = [], []
+        y_train, y_test = [], []
+        if analysis_name.startswith('concreteness_trainSub'):
+            for i in range(n_splits):
+                print('split', i+1)
+                # X_train.append(np.concatenate((X_word, X_sub_train[i]), axis=0))
+                # y_train.append(np.concatenate((y_word, y_sub_train[i]), axis=0))
+                X_train.append(X_sub_train[i])
+                y_train.append(y_sub_train[i])
+                if analysis_name.endswith('testSub'):
+                    X_test.append(X_sub_test[i])
+                    y_test.append(y_sub_test[i])
+                elif analysis_name.endswith('testPri'):
+                    X_test.append(X_pri_test[i])
+                    y_test.append(y_pri_test[i])    
+        elif analysis_name.startswith('concreteness_trainPri'):
+            for i in range(n_splits):
+                print('split', i+1)
+                # X_train.append(np.concatenate((X_word, X_pri_train[i]), axis=0))
+                # y_train.append(np.concatenate((y_word, y_pri_train[i]), axis=0))
+                X_train.append(X_pri_train[i])
+                y_train.append(y_pri_train[i])
+                if analysis_name.endswith('testSub'):
+                    X_test.append(X_sub_test[i])
+                    y_test.append(y_sub_test[i])
+                elif analysis_name.endswith('testPri'):
+                    X_test.append(X_pri_test[i])
+                    y_test.append(y_pri_test[i])        
+        X = (X_train, X_test)
+        y = (y_train, y_test)
+    elif analysis_name == 'specificity_word':
+        mask_remove_mid = [not t for t in (metadata.specificity=='mid').values]
+        X = X[mask_remove_mid]
+        y = y[mask_remove_mid]
     return X, y
 
 
@@ -267,7 +347,7 @@ def plot_scores(times=None, scores=None, analysis='', subject=''):
     plt.tight_layout()
     return fig, ax
 
-def plot_patterns(coef=None, info=None, tmin=0., times=[]):
+def plot_patterns(coef=None, info=None, tmin=0., times='peaks'):
     print('Plotting spatial patterns.')
     evoked = mne.EvokedArray(coef, info, tmin=tmin)
     joint_kwargs = dict(ts_args=dict(time_unit='s'), topomap_args=dict(time_unit='s'))

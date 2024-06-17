@@ -32,6 +32,7 @@ def main():
     parser.add_argument('--analysis', type=str, required=True, default=None, help='Specify analysis (see README for more)')
     parser.add_argument('--classifier', type=str, required=True, default='logistic', help='Specify classifier: logistic or svc')
     parser.add_argument('--data_type', type=str, required=True, default='MEEG', help='MEEG or MEG or ROI (source space)')
+    parser.add_argument('--window', type=str, required=True, default='temporal', help='Perform analysis on each time point, sliding, or open windows')
     parser.add_argument('--generalise', action='store_true', default=False, help='Perform temporal generalisation')
     parser.add_argument('--roi', type=str, required=False, default=None, help='Perform ROI decoding in this ROI')
     args = parser.parse_args()
@@ -46,6 +47,8 @@ def main():
     print('data_type: ', data_type)
     generalise = args.generalise
     print('generalise: ', generalise)
+    window = args.window
+    print('window: ', window)
     roi = args.roi
     print('roi: ', roi)
     print()
@@ -54,8 +57,8 @@ def main():
 
     print('Getting epochs and metadata.')
     epoch_path = op.join(preprocessed_data_path, subject, 'epoch')
-    epochs = mne.read_epochs(op.join(epoch_path, f'{subject}_epo.fif'), preload=False, verbose=False)
-    epochs.info['bads'] = [] # remove bads info for averaging spatial patterns later
+    epochs = mne.read_epochs(op.join(epoch_path, f'{subject}_epo.fif'), preload=False, verbose=True)
+    epochs.info['bads'] = [] # bads already interpolated during preprocessing; remove bads info for averaging spatial patterns later
     trial_info = pd.read_csv(op.join(data_dir, 'logs', f'{subject}_logfile.csv'))
 
     # get epochs drop log as a mask, then apply it to trial info as epochs.metadata
@@ -71,15 +74,14 @@ def main():
             print(subject, ' stcs in ', roi, ' not found.')
         else:
             stcs = list(np.load(stcs_epochs_fname, allow_pickle=True)) # stc of a given roi
-            X, y = get_analysis_X_y(stcs, epochs.events, epochs.metadata, analysis_name=analysis, spatial=True)
-            
+            X, y = get_analysis_X_y(stcs, epochs.events, epochs.metadata, analysis_name=analysis, spatial=True, window=window) 
     else:
-        X, y = get_analysis_X_y(epochs, epochs.events, epochs.metadata, analysis_name=analysis, spatial=False)
-        
+        X, y = get_analysis_X_y(epochs, epochs.events, epochs.metadata, analysis_name=analysis, spatial=False, window=window)
+                
     # some plotting-related parameters
-    if analysis.startswith('denotation_cross_condition') or analysis.startswith('concreteness_trainWord'):
+    if analysis.startswith('concreteness_trainWord'):
         times = np.linspace(0.6, 1.4, X[0].shape[2])
-    elif analysis.startswith('concreteness_general'):
+    elif analysis.startswith(('concreteness_general','concreteness_train')):
         times = np.linspace(0.6, 1.4, X[0][0].shape[2])
     else:
         times = np.linspace(-0.2, 1.4, X.shape[2])
@@ -97,19 +99,19 @@ def main():
         roi_infix = ''
     if generalise:
         if roi:
-            analysis_output_dir = op.join(decoding_output_dir, f'{analysis}/timegen/{classifier}/{data_type}/{subject}/{roi}')
+            analysis_output_dir = op.join(decoding_output_dir, f'{analysis}/timegen/{classifier}/{data_type}/{window}/{subject}/{roi}')
         else:
-            analysis_output_dir = op.join(decoding_output_dir, f'{analysis}/timegen/{classifier}/{data_type}/{subject}')
+            analysis_output_dir = op.join(decoding_output_dir, f'{analysis}/timegen/{classifier}/{data_type}/{window}/{subject}')
         if not op.exists(analysis_output_dir):
             os.makedirs(analysis_output_dir, exist_ok=True)
-        if analysis.startswith('denotation_cross_condition') or analysis.startswith('concreteness_trainWord'):
+        if analysis.startswith('concreteness_trainWord'):
             X_train = X[0]
             y_train = y[0]
             X_test = X[1]
             y_test = y[1]                
             time_gen = decode_generalise_train(X_train, y_train, classifier=classifier)
             scores = decode_generalise_test(X_test, y_test, estimator=time_gen)
-        elif analysis.startswith('concreteness_general'):
+        elif analysis.startswith(('concreteness_general','concreteness_train')):
             n_splits = 10
             scores_splits = []
             for j in range(n_splits):
@@ -127,20 +129,20 @@ def main():
         np.save(os.path.join(analysis_output_dir, f'scores_time_gen_{data_type}{roi_infix}.npy'), scores)
     else:
         if roi:
-            analysis_output_dir = op.join(decoding_output_dir, f'{analysis}/diagonal/{classifier}/{data_type}/{subject}/{roi}')
+            analysis_output_dir = op.join(decoding_output_dir, f'{analysis}/diagonal/{classifier}/{data_type}/{window}/{subject}/{roi}')
         else:
-            analysis_output_dir = op.join(decoding_output_dir, f'{analysis}/diagonal/{classifier}/{data_type}/{subject}')
+            analysis_output_dir = op.join(decoding_output_dir, f'{analysis}/diagonal/{classifier}/{data_type}/{window}/{subject}')
         if not op.exists(analysis_output_dir):
             os.makedirs(analysis_output_dir, exist_ok=True)
             
-        if analysis.startswith('denotation_cross_condition') or analysis.startswith('concreteness_trainWord'):
+        if analysis.startswith('concreteness_trainWord'):
             X_train = X[0]
             y_train = y[0]
             X_test = X[1]
             y_test = y[1]
             time_decod = decode_diagonal_train(X_train, y_train, classifier=classifier)
             scores, coef = decode_diagonal_test(X_test, y_test, estimator=time_decod, classifier=classifier)
-        elif analysis.startswith('concreteness_general'):
+        elif analysis.startswith(('concreteness_general','concreteness_train')):
             n_splits = 10
             scores_splits = []
             coef_splits = []
@@ -167,7 +169,7 @@ def main():
         plt.close(fig)
 
         if not roi:
-            fig_evokeds = plot_patterns(coef, info=epochs.info, tmin=epochs.times[0], times=[0.6,0.8,1.0,1.2])
+            fig_evokeds = plot_patterns(coef, info=epochs.info, tmin=epochs.times[0], times='peaks')
             for fig_evoked, ch_type in zip(fig_evokeds, ch_types):
                 fig_evoked.savefig(op.join(analysis_output_dir, f'fig_patterns_{data_type}_{ch_type}.png'))
                 plt.close(fig_evoked)

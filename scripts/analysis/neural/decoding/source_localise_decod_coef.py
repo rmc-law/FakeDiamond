@@ -19,17 +19,19 @@ sys.path.append('/imaging/hauk/rl05/fake_diamond/scripts/preprocessing')
 import config 
 
 
-subjects = config.subject_ids
+subjects = [f'sub-{subject_id}' for subject_id in config.subject_ids]
+print(f'subjects (n={len(subjects)}): ', subjects)
+
 decoding_dir = op.join(config.project_repo, 'scripts/analysis/neural/decoding')
 data_dir = op.join(config.project_repo, 'data')
 preprocessed_data_path = op.join(data_dir, 'preprocessed')
 subjects_dir = op.join(data_dir, 'mri')
 os.environ['SUBJECTS_DIR'] = subjects_dir
-
+window = 'single'
 analyses = [
-    # 'denotation','concreteness','composition',
-            'denotation_cross_condition_test_on_subsective',
-            'denotation_cross_condition_test_on_privative']
+    'denotation','concreteness','composition']
+            # 'denotation_cross_condition_test_on_subsective',
+            # 'denotation_cross_condition_test_on_privative']
 
 
 fsaverage_src_fname = op.join(data_dir, 'mri', 'fsaverage_src', 'fsaverage_src_oct6_src.fif')
@@ -39,8 +41,7 @@ for analysis in analyses:
         
     for subject in subjects:
         
-        subject = f'sub-{subject}'
-        coef_dir = op.join(decoding_dir, f'output/{analysis}/diagonal/logistic/MEEG/{subject}')
+        coef_dir = op.join(decoding_dir, f'output/{analysis}/diagonal/logistic/MEEG/{window}/{subject}')
         coef_fname = op.join(coef_dir, 'scores_coef_MEEG.npy')
         
         coef_projection_fname = op.join(coef_dir, f'source_projection_coef_{analysis}-lh.stc')
@@ -48,23 +49,25 @@ for analysis in analyses:
             print(subject, 'done. skipping.')
             pass
         else:
-            if (subject == 'sub-12') or (subject == 'sub-13'):
+            if subject in ['sub-07','sub-12','sub-13']:
                 continue
-            print(subject, 'processing.')
+            print('Processing ', subject)
             epoch_path = op.join(preprocessed_data_path, subject, 'epoch')
             epoch_fname = op.join(epoch_path, f'{subject}_epo.fif')
             epochs = read_epochs(epoch_fname, preload=False, verbose=False)
-            if epochs.info['bads'] != []:
-                epochs.info['bads'] = []
+            # if epochs.info['bads'] != []:
+            #     epochs.info['bads'] = []
             inv_fname = op.join(epoch_path, f'{subject}_MEEG_inv.fif')
             inv = read_inverse_operator(inv_fname, verbose=False)
             
-            snr = 3.0
+            snr = 2.0
             lambda2 = 1.0 / snr ** 2
             
             if op.exists(coef_fname):
                 print('load backprojected coef.')
                 coef = np.load(coef_fname)
+            else:
+                print('backprojected coef does not exist. compute it first.')
             
             evoked_time_decod = EvokedArray(coef, epochs.info, tmin=epochs.times[0])
             

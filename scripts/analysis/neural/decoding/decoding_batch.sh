@@ -11,9 +11,8 @@
 analysis="$1"
 classifier="$2"
 data_type="$3"
-generalise="$4"
-# spatial="$5"
-
+window="$4"
+generalise="$5"
 
 
 # read in subjects 
@@ -32,24 +31,24 @@ for subject in "${subjects[@]}"; do
 
             if [ "$generalise" = "generalise" ]; then
             
-                timegen_output_dir="/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding/output/${analysis}/timegen/${classifier}/${data_type}/sub-${subject}/${roi}"
+                timegen_output_dir="/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding/output/${analysis}/timegen/${classifier}/${data_type}/${window}/sub-${subject}/${roi}"
                 
                 if [ ! -e "$timegen_output_dir" ]; then
                     echo "Timegen $data_type $roi output of $analysis does not exist for sub-$subject. Decoding."
                     # sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",generalise="$generalise",spatial="$spatial" decoding_job.sh
-                    sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",generalise="$generalise",roi="$roi" decoding_job.sh
+                    sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",window="$window",generalise="$generalise",roi="$roi" decoding_job.sh
                 else
                     echo "Timegen $data_type output of $analysis exists for sub-$subject. Skipping."
                 fi
                 
             else
             
-                timedecod_output_dir="/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding/output/${analysis}/diagonal/${classifier}/${data_type}/sub-${subject}/${roi}"
+                timedecod_output_dir="/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding/output/${analysis}/diagonal/${classifier}/${data_type}/${window}/sub-${subject}/${roi}"
                 
                 if [ ! -e "$timedecod_output_dir" ]; then
                     echo "Diagonal $data_type $roi decod output of $analysis does not exist for sub-$subject. Decoding."
                     # sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",spatial="$spatial" decoding_job.sh
-                    sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",roi="$roi" decoding_job.sh
+                    sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",window="$window",roi="$roi" decoding_job.sh
                 else
                     echo "Diagonal $data_type decod output of $analysis exists for sub-$subject. Skipping."
                 fi
@@ -62,26 +61,27 @@ for subject in "${subjects[@]}"; do
 
         if [ "$generalise" = "generalise" ]; then
         
-            timegen_output_dir="/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding/output/${analysis}/timegen/${classifier}/${data_type}/sub-${subject}"
+            timegen_output_dir="/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding/output/${analysis}/timegen/${classifier}/${data_type}/${window}/sub-${subject}"
             
             if [ ! -e "$timegen_output_dir" ]; then
                 echo "Timegen $data_type output of $analysis does not exist for sub-$subject. Decoding."
                 # sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",generalise="$generalise",spatial="$spatial" decoding_job.sh
-                sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",generalise="$generalise" decoding_job.sh
+                sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",window="$window",generalise="$generalise" decoding_job.sh
             else
                 echo "Timegen $data_type output of $analysis exists for sub-$subject. Skipping."
             fi
             
         else
         
-            timedecod_output_dir="/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding/output/${analysis}/diagonal/${classifier}/${data_type}/sub-${subject}"
+            timedecod_output_dir="/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding/output/${analysis}/diagonal/${classifier}/${data_type}/${window}/sub-${subject}"
             
             if [ ! -e "$timedecod_output_dir" ]; then
-                echo "Diagonal $data_type decod output of $analysis does not exist for sub-$subject. Decoding."
+                echo "sub-$subject diagonal decod output-$data_type $analysis $window-does not exist. Decoding."
                 # sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",spatial="$spatial" decoding_job.sh
-                sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type" decoding_job.sh
+                sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type,window="$window"" decoding_job.sh
             else
-                echo "Diagonal $data_type decod output of $analysis exists for sub-$subject. Skipping."
+                echo "sub-$subject diagonal decod output-$data_type $analysis $window-exists. Skipping."
+                echo "sub-$subject diagonal decod output - $data_type - $analysis - $window - exists. Skipping."
             fi
             
         fi
