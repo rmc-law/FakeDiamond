@@ -29,11 +29,12 @@ def demo_locatable_axes_easy(ax, ticks, im):
     fig.add_axes(ax_cb)
 
     cb = plt.colorbar(im, cax=ax_cb, ticks=ticks)
-    cb.set_label('AUC', labelpad=-30, rotation=270)
+    cb.outline.set_visible(False)
+    cb.set_label('AUC', labelpad=-20, rotation=270)
     ax_cb.yaxis.tick_right()
     ax_cb.yaxis.set_tick_params(labelright=True)
 
-to_plot = 'concreteness_xcond_full'
+to_plot = 'concreteness_xcond'
 classifier = 'logistic'
 data_type = 'MEEG'
 window = 'single'
@@ -52,6 +53,8 @@ elif to_plot == 'composition':
     analyses = ['composition']
 elif to_plot == 'specificity':
     analyses = ['specificity']
+elif to_plot == 'specificity_word':
+    analyses = ['specificity_word']
 elif to_plot == 'concreteness_xcond':
     analyses = ['concreteness_trainWord_testSub','concreteness_trainWord_testPri']
 elif to_plot == 'concreteness_xcond_general':
@@ -76,10 +79,10 @@ print('sfreq:',sfreq)
 #%% set figure style 
 FONT = 'Arial'
 FONT_SIZE = 15
-LINEWIDTH = 1.5
+LINEWIDTH = 1
 EDGE_COLOR = 'grey'
 plt.rcParams.update({
-    'figure.dpi': 150,
+    'figure.dpi': 300,
     'savefig.dpi': 300,
     'savefig.transparent': False,
     'axes.labelsize': FONT_SIZE,
@@ -88,10 +91,9 @@ plt.rcParams.update({
     'xtick.labelsize': FONT_SIZE,
     'ytick.labelsize': FONT_SIZE,
     'xtick.color': EDGE_COLOR,
-    
     'ytick.color': EDGE_COLOR,
-    'xtick.major.size': 8,
-    'ytick.major.size': 8,
+    'xtick.major.size': 6,
+    'ytick.major.size': 6,
     'xtick.major.width': LINEWIDTH,
     'ytick.major.width': LINEWIDTH
 })
@@ -102,19 +104,23 @@ if to_plot in ['denotation+concreteness']:
     fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(3.85, 6.), sharex=True, sharey=True)
     gs = GridSpec(2, 1, height_ratios=[1,1])
 elif to_plot in ['concreteness_xcond','concreteness_xcond_general']:
-    fig, axes = plt.subplots(nrows=1, ncols=2, figsize=(8., 4.), sharex=True, sharey=True)
-    gs = GridSpec(1, 2, width_ratios=[1,1])
+    fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(3.85, 6.), sharex=True, sharey=True)
+    gs = GridSpec(2, 1, height_ratios=[1,1])
 elif to_plot == 'composition':
     fig, axes = plt.subplots(nrows=1, ncols=1, figsize=(5., 5.))
 elif to_plot == 'concreteness_xcond_full':
     fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(8., 6.), sharex=True, sharey=True)
     gs = GridSpec(2, 2, height_ratios=[1,1])
+elif to_plot == 'specificity_word':
+    fig, axes = plt.subplots(nrows=1, ncols=1, figsize=(5., 5.))
 
 vmaxs = []
 
 for i, analysis in enumerate(analyses):
         
     if to_plot == 'composition':    
+        axis = axes
+    if to_plot == 'specificity_word':
         axis = axes
     else:
         axis = plt.subplot(gs[i])
@@ -146,7 +152,7 @@ for i, analysis in enumerate(analyses):
             axis.axvline(onset, color='lightgrey', linewidth=1, linestyle='--')
     # add labels
     axis.tick_params(axis='both', direction='in')
-    if (to_plot == 'denotation+concreteness'):
+    if to_plot in ['denotation+concreteness', 'concreteness_xcond']:
         axis.set_ylabel('Train Time (s)')
         if i == 1:
             axis.set_xlabel('Test Time (s)') 
@@ -175,7 +181,6 @@ for i, analysis in enumerate(analyses):
     good_clusters, cluster_pv = permutation_tests(scores_group[i], timegen=True, against_chance=True, t_threshold=None)
     print(f'subplot {i+1}')
 
-    color = plt.get_cmap(color_scheme[analysis])(0.7)
     for cluster, pval in zip(good_clusters, cluster_pv):
         # axis.contour(X, Y, cluster, colors=[color])
         if pval < 0.05:

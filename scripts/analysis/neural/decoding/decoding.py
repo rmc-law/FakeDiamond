@@ -29,11 +29,13 @@ def main():
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-s', '--subject', type=str, required=True, help='Run subject-specific analysis')
-    parser.add_argument('--analysis', type=str, required=True, default=None, help='Specify analysis (see README for more)')
-    parser.add_argument('--classifier', type=str, required=True, default='logistic', help='Specify classifier: logistic or svc')
-    parser.add_argument('--data_type', type=str, required=True, default='MEEG', help='MEEG or MEG or ROI (source space)')
-    parser.add_argument('--window', type=str, required=True, default='temporal', help='Perform analysis on each time point, sliding, or open windows')
+    parser.add_argument('-a', '--analysis', type=str, required=True, default=None, help='Specify analysis (see README for more)')
+    parser.add_argument('-clas', '--classifier', type=str, required=True, default='logistic', help='Specify classifier: logistic or svc')
+    parser.add_argument('-data', '--data_type', type=str, required=True, default='MEEG', help='MEEG or MEG or ROI (source space)')
+    parser.add_argument('-win', '--window', type=str, required=True, default='temporal', help='Perform analysis on each time point, sliding, or open windows')
+    parser.add_argument('--micro_ave', action='store_true', default=False, help='Perform micro-averaging')
     parser.add_argument('--generalise', action='store_true', default=False, help='Perform temporal generalisation')
+    # parser.add_argument('--freq', type='store_true', default=False, help='Decompose data into separate frequency bands')
     parser.add_argument('--roi', type=str, required=False, default=None, help='Perform ROI decoding in this ROI')
     args = parser.parse_args()
 
@@ -45,6 +47,8 @@ def main():
     print('classifier: ', classifier)
     data_type = args.data_type
     print('data_type: ', data_type)
+    micro_averaging = args.micro_ave
+    print('micro_ave: ', micro_averaging)
     generalise = args.generalise
     print('generalise: ', generalise)
     window = args.window
@@ -61,6 +65,9 @@ def main():
     epochs.info['bads'] = [] # bads already interpolated during preprocessing; remove bads info for averaging spatial patterns later
     trial_info = pd.read_csv(op.join(data_dir, 'logs', f'{subject}_logfile.csv'))
 
+    epochs.load_data()
+    # epochs.filter(l_freq=None, h_freq=4.0)
+    
     # get epochs drop log as a mask, then apply it to trial info as epochs.metadata
     epochs_drop_mask = [not bool(epoch) for epoch in epochs.drop_log]
     assert(epochs_drop_mask.count(True) == len(epochs.events)) # sanity
@@ -76,13 +83,17 @@ def main():
             stcs = list(np.load(stcs_epochs_fname, allow_pickle=True)) # stc of a given roi
             X, y = get_analysis_X_y(stcs, epochs.events, epochs.metadata, analysis_name=analysis, spatial=True, window=window) 
     else:
-        X, y = get_analysis_X_y(epochs, epochs.events, epochs.metadata, analysis_name=analysis, spatial=False, window=window)
+        X, y = get_analysis_X_y(epochs, epochs.events, epochs.metadata, analysis_name=analysis, spatial=False, window=window, micro_averaging=micro_averaging)
                 
+    # 1/0
+
     # some plotting-related parameters
     if analysis.startswith('concreteness_trainWord'):
         times = np.linspace(0.6, 1.4, X[0].shape[2])
     elif analysis.startswith(('concreteness_general','concreteness_train')):
         times = np.linspace(0.6, 1.4, X[0][0].shape[2])
+    elif analysis.startswith('specificity_'):
+        times = np.linspace(0.6, 1.4, X.shape[2])
     else:
         times = np.linspace(-0.2, 1.4, X.shape[2])
 

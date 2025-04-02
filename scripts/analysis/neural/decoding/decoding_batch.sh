@@ -12,7 +12,8 @@ analysis="$1"
 classifier="$2"
 data_type="$3"
 window="$4"
-generalise="$5"
+micro_ave="$5"
+generalise="$6"
 
 
 # read in subjects 
@@ -36,7 +37,7 @@ for subject in "${subjects[@]}"; do
                 if [ ! -e "$timegen_output_dir" ]; then
                     echo "Timegen $data_type $roi output of $analysis does not exist for sub-$subject. Decoding."
                     # sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",generalise="$generalise",spatial="$spatial" decoding_job.sh
-                    sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",window="$window",generalise="$generalise",roi="$roi" decoding_job.sh
+                    sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",window="$window",micro_ave="$micro_ave",generalise="$generalise",roi="$roi" decoding_job.sh
                 else
                     echo "Timegen $data_type output of $analysis exists for sub-$subject. Skipping."
                 fi
@@ -48,7 +49,7 @@ for subject in "${subjects[@]}"; do
                 if [ ! -e "$timedecod_output_dir" ]; then
                     echo "Diagonal $data_type $roi decod output of $analysis does not exist for sub-$subject. Decoding."
                     # sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",spatial="$spatial" decoding_job.sh
-                    sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",window="$window",roi="$roi" decoding_job.sh
+                    sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",window="$window",micro_ave="$micro_ave",roi="$roi" decoding_job.sh
                 else
                     echo "Diagonal $data_type decod output of $analysis exists for sub-$subject. Skipping."
                 fi
@@ -66,7 +67,7 @@ for subject in "${subjects[@]}"; do
             if [ ! -e "$timegen_output_dir" ]; then
                 echo "Timegen $data_type output of $analysis does not exist for sub-$subject. Decoding."
                 # sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",generalise="$generalise",spatial="$spatial" decoding_job.sh
-                sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",window="$window",generalise="$generalise" decoding_job.sh
+                sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",window="$window",micro_ave="$micro_ave",generalise="$generalise" decoding_job.sh
             else
                 echo "Timegen $data_type output of $analysis exists for sub-$subject. Skipping."
             fi
@@ -78,7 +79,7 @@ for subject in "${subjects[@]}"; do
             if [ ! -e "$timedecod_output_dir" ]; then
                 echo "sub-$subject diagonal decod output-$data_type $analysis $window-does not exist. Decoding."
                 # sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",spatial="$spatial" decoding_job.sh
-                sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type,window="$window"" decoding_job.sh
+                sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",window="$window",micro_ave="$micro_ave" decoding_job.sh
             else
                 echo "sub-$subject diagonal decod output-$data_type $analysis $window-exists. Skipping."
                 echo "sub-$subject diagonal decod output - $data_type - $analysis - $window - exists. Skipping."

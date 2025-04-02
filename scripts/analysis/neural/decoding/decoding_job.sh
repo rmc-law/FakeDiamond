@@ -15,6 +15,7 @@ analysis="$analysis"
 classifier="$classifier"
 data_type="$data_type"
 window="$window"
+micro_ave="$micro_ave"
 generalise="$generalise"
 roi="$roi"
 
@@ -24,25 +25,57 @@ conda activate mne1.4.2
 
 if [ "$data_type" = "ROI" ]; then
 
-    if [ "$generalise" = "generalise" ]; then
+    if [ "$micro_ave" = "micro_ave" ]; then
 
-        python decoding.py -s "$subject" --analysis "$analysis" --classifier "$classifier" --data_type "$data_type" --window "$window" --generalise --roi "$roi"
+        if [ "$generalise" = "generalise" ]; then
+
+            python decoding.py -s "$subject" -a "$analysis" -clas "$classifier" -data "$data_type" -win "$window" --micro_ave --generalise --roi "$roi"
+
+        else
+
+            python decoding.py -s "$subject" -a "$analysis" -clas "$classifier" -data "$data_type" -win "$window" --micro_ave --roi "$roi"
+
+        fi
 
     else
 
-        python decoding.py -s "$subject" --analysis "$analysis" --classifier "$classifier" --data_type "$data_type" --window "$window" --roi "$roi"
+        if [ "$generalise" = "generalise" ]; then
 
+            python decoding.py -s "$subject" -a "$analysis" -clas "$classifier" -data "$data_type" -win "$window" --generalise  --roi "$roi"
+
+        else
+
+            python decoding.py -s "$subject" -a "$analysis" -clas "$classifier" -data "$data_type" -win "$window"  --roi "$roi"
+
+        fi
+    
     fi
 
 else
 
-    if [ "$generalise" = "generalise" ]; then
+    if [ "$micro_ave" = "micro_ave" ]; then
 
-        python decoding.py -s "$subject" --analysis "$analysis" --classifier "$classifier" --data_type "$data_type" --window "$window" --generalise
+        if [ "$generalise" = "generalise" ]; then
+
+            python decoding.py -s "$subject" -a "$analysis" -clas "$classifier" -data "$data_type" -win "$window" --micro_ave --generalise
+
+        else
+
+            python decoding.py -s "$subject" -a "$analysis" -clas "$classifier" -data "$data_type" -win "$window" --micro_ave
+
+        fi
 
     else
 
-        python decoding.py -s "$subject" --analysis "$analysis" --classifier "$classifier" --data_type "$data_type" --window "$window"
+        if [ "$generalise" = "generalise" ]; then
+
+            python decoding.py -s "$subject" -a "$analysis" -clas "$classifier" -data "$data_type" -win "$window" --generalise
+
+        else
+
+            python decoding.py -s "$subject" -a "$analysis" -clas "$classifier" -data "$data_type" -win "$window"
+
+        fi
 
     fi
 
