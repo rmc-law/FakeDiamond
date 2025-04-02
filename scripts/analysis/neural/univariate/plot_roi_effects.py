@@ -12,19 +12,15 @@ import os
 import os.path as op
 import pickle
 import numpy as np
-import math
 import matplotlib.pyplot as plt
 from matplotlib.lines import Line2D
-from matplotlib.patches import Patch
 
-
-from eelbrain import Dataset, load, Factor, test, plot
+from eelbrain import Dataset, load, Factor, plot
 from eelbrain._stats.stats import variability
-from mne import (read_epochs, read_source_spaces, read_labels_from_annot,
-                 read_source_estimate)
+from mne import read_source_spaces, read_source_estimate
 
 import config 
-from helper import calculate_avg_sem
+from config_plotting import *
 
 subjects = [f'sub-{subject_id}' for subject_id in config.subject_ids if subject_id not in ['16']]
 print(f'subjects (n={len(subjects)}): ', subjects)
@@ -36,27 +32,24 @@ os.environ['SUBJECTS_DIR'] = subjects_dir
 fsaverage_src_fname = op.join(subjects_dir, 'fsaverage_src', 'fsaverage_src_oct6_src.fif')
 src_fsaverage = read_source_spaces(fsaverage_src_fname, verbose=False)
 stc_path = op.join(data_dir, 'stcs')
-analysis = input('analysis? (replicate, composition, denotation, specificity(_word)): ')
 
-# label annot
+
+analysis = input('analysis? (replicate, composition, denotation, specificity(_word)): ')
+# analysis = 'composition'
+
 parc = 'semantics'
-# annot = read_labels_from_annot('fsaverage_src', parc=parc, hemi='lh')[:-1] # + read_labels_from_annot('fsaverage_src',parc='ventral_ATL')[:2]
-# # del annot[2] # to delete visual sources
-# assert len(annot) == 4 # should be four rois
 
 results_dir = '/imaging/hauk/rl05/fake_diamond/results/neural/roi/anova/'
 times = np.linspace(0., 0.8, 200)
 
 
-
-
 #%% set figure style 
 FONT = 'Arial'
 FONT_SIZE = 15
-LINEWIDTH = 1.5
+LINEWIDTH = 1
 EDGE_COLOR = 'grey'
 plt.rcParams.update({
-    'figure.dpi': 150,
+    'figure.dpi': 300,
     'savefig.dpi': 300,
     'savefig.transparent': False,
     'axes.labelsize': FONT_SIZE,
@@ -66,8 +59,8 @@ plt.rcParams.update({
     'ytick.labelsize': FONT_SIZE,
     'xtick.color': EDGE_COLOR,
     'ytick.color': EDGE_COLOR,
-    'xtick.major.size': 8,
-    'ytick.major.size': 8,
+    'xtick.major.size': 6,
+    'ytick.major.size': 6,
     'xtick.major.width': LINEWIDTH,
     'ytick.major.width': LINEWIDTH
 })
@@ -77,16 +70,14 @@ plt.rcParams.update({
 if analysis in ['composition','replicate']:
     conditions = ['concrete-baseline','concrete-subsective','abstract-baseline','abstract-subsective']
     roi_to_plot = input('ATL or all: ')
-    colors = plt.cm.Greys([0.4, 0.8])
-    # colors_bar = [plt.cm.Blues(0.4),plt.cm.Blues(0.8),plt.cm.Reds(0.4),plt.cm.Reds(0.8)]
-    colors_bar = plt.cm.Greys([0.4, 0.8, 0.4, 0.8]).tolist()
+    colors_tc = plt.cm.Greys([0.4, 0.7])
+    colors_bar = [color_scheme[condition] for condition in conditions]
     relevant_conditions = ['baseline','subsective']
 elif analysis == 'denotation': 
     conditions = ['concrete-subsective','concrete-privative','abstract-subsective','abstract-privative']
     roi_to_plot = input('ATL or all: ')
-    # colors = plt.cm.YlGn([0.4, 0.8])
-    colors = [plt.cm.Purples(0.7),plt.cm.Oranges(0.7)]
-    colors_bar = [plt.cm.Purples(0.7),plt.cm.Oranges(0.7),plt.cm.Purples(0.7),plt.cm.Oranges(0.7)]
+    colors_tc = plt.cm.Greys([0.5, 0.8])
+    colors_bar = [color_scheme[condition] for condition in conditions]
     relevant_conditions = ['subsective','privative']
 elif analysis == 'specificity': 
     conditions = ['low','mid','high']
@@ -147,7 +138,9 @@ stc_reset = ds['stcs']
 
 #%% plot figures
     
-fig_dir = op.join(config.project_repo, 'figures', 'univariate')
+fig_dir = op.join(config.project_repo, 'figures', 'univariate', analysis)
+if not os.path.exists(fig_dir):
+    os.makedirs(fig_dir, exist_ok=True)
 
 if analysis == 'replicate':
     roi = 'anteriortemporal-lh'
@@ -190,10 +183,10 @@ else:
     if n_subplots == 2:
         fig_height = 2.5
         fig_width = 10 # for two subplots sidebyside
-        fig, axes = plt.subplots(1, n_subplots, sharex=True, sharey=True)
+        fig, axes = plt.subplots(1, n_subplots, sharex=True, sharey=True, dpi=300)
         fig.set_size_inches(fig_width, fig_height)
     else:
-        fig, axes = plt.subplots(int(n_subplots/2), 2, sharex=True, sharey='row')
+        fig, axes = plt.subplots(int(n_subplots/2), 2, sharex=True, sharey='row', dpi=300)
         fig.set_size_inches(10, 8)
     # fig.subplots_adjust(hspace=0.45)
 
@@ -220,35 +213,40 @@ else:
         output_dir = op.join(results_dir, roi, analysis)
 
         # plot condition time courses with 1 within-subjects sem
-        for relevant_condition, color in zip(relevant_conditions,colors):
+        for relevant_condition, color in zip(relevant_conditions,colors_tc):
             data = ds['stcs'][ds[analysis].isin([relevant_condition])]
             data_group_avg = data.mean('case') # average over subjects
             error = variability(y=data.x[:,:], x=ds['condition'], match=ds['subject'], pool=True, spec='sem')
-            axis.plot(times, data_group_avg.x, color=color, lw=2.5)
-            axis.fill_between(times, data_group_avg.x-error, data_group_avg.x+error, alpha=0.1, color=color)
+            axis.plot(times, data_group_avg.x, color=color, lw=3)
+            axis.fill_between(times, data_group_avg.x-error, data_group_avg.x+error, alpha=0.2, color=color)
             if roi_to_plot == 'all':
                 axis.title.set_text(roi)
+        
         axis.set_xlim(0., 0.8)
-
-        xticks = [0., 0.2, 0.4, 0.6, 0.8]
-        plt.xticks(xticks)
-        axis.set_xlabel('Time (s)')
+        axis.set_xticks([0., 0.2, 0.4, 0.6, 0.8])
+        if (analysis in ['composition','denotation']) and (roi_to_plot == 'ATL'):
+            axis.set_xlabel('Time (s)')
+        if (analysis in ['composition','denotation']) and (roi_to_plot == 'all'):
+            if roi.startswith('temporo'):
+                axis.set_xlabel('Time (s)')
         if roi_to_plot == 'ATL':
             axis.spines['top'].set_visible(False)
             axis.spines['right'].set_visible(False)
             axis.spines['left'].set_visible(False)
             axis.spines['bottom'].set_visible(True)
         if i_roi == 0:
-            axis.set_ylabel('Activity (MNE)')
+            axis.set_ylabel('Current (Am)')
+        # if roi_to_plot == 'all':
+        #     plt.suptitle(f'Source-localized ROI activity for the {analysis} contrast', fontsize=16)
             
         # add custom legend
-        legend_elements = [Line2D([0], [0], color=color, lw=3) for color in colors]
+        legend_elements = [Line2D([0], [0], color=color, lw=3) for color in colors_tc]
         if analysis in ['composition','replicate']:
-            fig.get_axes()[1].legend(legend_elements, ['word', 'phrase'], loc='upper right')
+            fig.get_axes()[1].legend(legend_elements, ['word', 'phrase'], loc='upper right', frameon=False)
         elif analysis == 'denotation': 
-            fig.get_axes()[1].legend(legend_elements, ['subsective', 'privative'], loc='upper right')
+            fig.get_axes()[1].legend(legend_elements, ['subsective', 'privative'], loc='upper right', frameon=False)
         elif analysis == 'specificity_word': 
-            fig.get_axes()[0].legend(legend_elements, ['low', 'high'], loc='upper right')
+            fig.get_axes()[0].legend(legend_elements, ['low', 'high'], loc='upper right', frameon=False)
 
         # read in permutation test pickle file
         print('unloading pickle: ', roi)
@@ -271,10 +269,14 @@ else:
                     continue
                 if cluster_pval < 0.05:
                     alpha = 0.3
+                    # color_cluster = color_scheme['significant']
+                    color_cluster = 'yellow'
                 else:
-                    alpha = 0.15
+                    alpha = 0.2
+                    # color_cluster = color_scheme['marginal']
+                    color_cluster = 'grey'
                 # axis.axhline(data_group_avg.x.min(), cluster_tstart, cluster_tstop, color='yellow', alpha=alpha, linewidth=3)#, zorder=-50)
-                axis.axvspan(cluster_tstart, cluster_tstop, color='yellow', alpha=alpha)#, zorder=-50)
+                axis.axvspan(cluster_tstart, cluster_tstop, color=color_cluster, zorder=-100, alpha=alpha)
 
                 output_dir = op.join(results_dir, roi, 'replicateB&P')
                 if not op.exists(output_dir):
@@ -367,6 +369,7 @@ else:
                     axis_bar.spines['right'].set_visible(False)
                     axis_bar.spines['left'].set_visible(False)
                     axis_bar.spines['bottom'].set_visible(True)
+                    axis_bar.set_ylabel('Current (Am)')
                 fig_bar.tight_layout()
                 fig_bar.savefig(op.join(fig_dir, f'{cluster_effect}_{roi_names[i_roi]}_c{i+1}_split-bars.png'))
                 plt.close(fig_bar)
