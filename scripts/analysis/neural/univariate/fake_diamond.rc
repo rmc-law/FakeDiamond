@@ -1,0 +1,20 @@
+# Custom Matplotlib style
+
+figure.dpi: 300
+savefig.dpi: 300
+savefig.transparent: False
+
+axes.labelsize: 15
+axes.edgecolor: grey
+axes.linewidth: 1
+
+xtick.labelsize: 15
+ytick.labelsize: 15
+xtick.color: grey
+ytick.color: grey
+xtick.major.size: 6
+ytick.major.size: 6
+xtick.major.width: 1
+ytick.major.width: 1
+
+font.family: Arial
