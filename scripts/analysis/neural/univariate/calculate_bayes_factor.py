@@ -36,8 +36,10 @@ data_dir = '/imaging/hauk/rl05/fake_diamond/data/stcs'
 # Tell MNE where to find the MRI source space (for label reading/morphing)
 os.environ['SUBJECTS_DIR'] = '/imaging/hauk/rl05/fake_diamond/data/mri'
 
+analysis = input('Which analysis (composition or denotation): ')
+
 # Output directory: where CSVs and plots will be written
-output_dir = '/imaging/hauk/rl05/fake_diamond/results/neural/bayes'
+output_dir = f'/imaging/hauk/rl05/fake_diamond/results/neural/bayes/{analysis}'
 os.makedirs(output_dir, exist_ok=True)
 
 # Participants: exclude '16' per existing workflow
@@ -46,30 +48,54 @@ subjects = [f'sub-{subj_id}'
             if subj_id != '16']
 print(f'Subjects (n={len(subjects)}): {subjects}')
 
-# Conditions (2×2 design):
-#   Factor A: 'concrete' (A1) vs 'abstract' (A2)
-#   Factor B: 'baseline' (B1) vs 'subsective' (B2)
-conditions = [
-    'concrete-baseline',
-    'concrete-subsective',
-    'abstract-baseline',
-    'abstract-subsective'
-]
+if analysis == 'composition':
+    # Conditions (2×2 design):
+    #   Factor A: 'concrete' (A1) vs 'abstract' (A2)
+    #   Factor B: 'baseline' (B1) vs 'subsective' (B2)
+    conditions = [
+        'concrete-baseline',
+        'concrete-subsective',
+        'abstract-baseline',
+        'abstract-subsective'
+    ]
 
-# Map condition → A‐level and condition → B‐level
-cond2A = {
-    'concrete-baseline':   'A1',
-    'concrete-subsective': 'A1',
-    'abstract-baseline':    'A2',
-    'abstract-subsective':  'A2',
-}
-cond2B = {
-    'concrete-baseline':   'B1',
-    'concrete-subsective': 'B2',
-    'abstract-baseline':    'B1',
-    'abstract-subsective':  'B2',
-}
+    # Map condition → A‐level and condition → B‐level
+    cond2A = {
+        'concrete-baseline':   'A1',
+        'concrete-subsective': 'A1',
+        'abstract-baseline':    'A2',
+        'abstract-subsective':  'A2',
+    }
+    cond2B = {
+        'concrete-baseline':   'B1',
+        'concrete-subsective': 'B2',
+        'abstract-baseline':    'B1',
+        'abstract-subsective':  'B2',
+    }
+elif analysis == 'denotation':
+    # Conditions (2×2 design):
+    #   Factor A: 'concrete' (A1) vs 'abstract' (A2)
+    #   Factor B: 'baseline' (B1) vs 'subsective' (B2)
+    conditions = [
+        'concrete-subsective',
+        'concrete-privative',
+        'abstract-subsective',
+        'abstract-privative'
+    ]
 
+    # Map condition → A‐level and condition → B‐level
+    cond2A = {
+        'concrete-subsective':   'A1',
+        'concrete-privative': 'A1',
+        'abstract-subsective':    'A2',
+        'abstract-privative':  'A2',
+    }
+    cond2B = {
+        'concrete-subsective':   'B1',
+        'concrete-privative': 'B2',
+        'abstract-subsective':    'B1',
+        'abstract-privative':  'B2',
+    }
 # Time window of interest (in seconds)
 tmin, tmax = 0.6, 1.4
 
@@ -243,8 +269,7 @@ def plot_bayes_factor_timeseries(
     save_path=None
 ):
     '''
-    Plot BF10 and BF01 time series for main effects of A (purple) and B (black),
-    making segments with moderate evidence (BF ≥ 3 or BF ≤ 1/3) thicker.
+    Plot BF10 and BF01 time series for main effects of A (purple) and B (black)
 
     Parameters:
     - times: numpy array, shape (n_times,)
@@ -308,12 +333,22 @@ def plot_bayes_factor_timeseries(
 # Optionally, define your permutation‐test clusters (for both hemis).
 # Example format: clusters_lh = [(0.72, 0.85), (1.02, 1.10)], clusters_rh = [...]
 # If you don't have clusters yet, set clusters_lh = clusters_rh = None.
-clusters_lh = (0.990,1.260)
-clusters_rh = (1.020,1.050)
+
+if analysis == 'composition':
+    clusters_lh = (0.990,1.260)
+    clusters_rh = (1.020,1.050)
+elif analysis == 'denotation':
+    clusters_lh = (0.980,1.040)
 
 for hemi in ['lh', 'rh']:
     # Select the correct cluster list for this hemi
-    clusters = clusters_lh if hemi == 'lh' else clusters_rh
+    if analysis == 'composition':
+        clusters = clusters_lh if hemi == 'lh' else clusters_rh
+    elif analysis == 'denotation':
+        if hemi == 'lh':
+            clusters = clusters_lh
+        if hemi == 'rh':
+            continue
 
     # Compute BF time series and save CSV
     times, BF10_A, BF01_A, BF10_B, BF01_B = compute_and_save_bf_for_hemi(hemi, clusters)
