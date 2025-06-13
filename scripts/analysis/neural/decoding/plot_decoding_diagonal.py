@@ -1,387 +1,294 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu Mar  7 16:46:57 2024
+Generates and saves plots and statistical results of neural decoding.
+
+This script is interactive and performs the following steps:
+1.  Loads specified decoding scores for a group of subjects.
+2.  Plots the time-series of decoding accuracy.
+3.  Performs permutation cluster tests and saves the p-values to disk.
+4.  For cross-condition analyses, it builds a dataframe, runs an ANOVA,
+    saves the results, and creates a corresponding bar plot.
+5.  Saves all figures to the project's 'figures' directory.
 
 @author: rl05
-
-Plot decoding time courses of concreteness in subsective vs. privative trials,
-and perform statistical tests for early vs. late effects.
 """
 
-
+# --- 1. IMPORTS ---
 import sys
 import os
 import os.path as op
+import argparse
 import numpy as np
 import pandas as pd
-
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
 from matplotlib.lines import Line2D
 import matplotlib.patches as patches
 import seaborn as sns
-
-from scipy.stats import tukey_hsd
 from statsmodels.formula.api import ols
-import statsmodels.formula.api as smf
 from statsmodels.stats.anova import anova_lm
 from mne.stats import permutation_cluster_1samp_test
 
+# Add custom script paths
 sys.path.append('/imaging/hauk/rl05/fake_diamond/scripts/preprocessing')
 sys.path.append('/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding')
-import config 
+import config
 from plot_decoding import *
 
-# to_plot = input('denotation+concreteness, concreteness_xcond(_general/_full): ')
-to_plot = 'concreteness_xcond'
+mpl.rc_file('fake_diamond.rc')
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Parse CLI arguments
+# ─────────────────────────────────────────────────────────────────────────────
+parser = argparse.ArgumentParser(description="Plot time-generalisation decoding results")
+parser.add_argument('--to_plot', type=str, default='denotation+concreteness')
+parser.add_argument('--data_type', type=str, default='ROI')
+args = parser.parse_args()
+to_plot = args.to_plot
+data_type = args.data_type
+
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Helper function
+# ─────────────────────────────────────────────────────────────────────────────
+def add_time_window_annotation(axis, x, y, width, height, label, facecolor, alpha, **kwargs):
+    """Adds a labeled rectangle patch to an axes object."""
+    rect = patches.Rectangle((x, y), width, height, linewidth=0., facecolor=facecolor, alpha=alpha)
+    axis.add_patch(rect)
+    text_x = x + width / 2
+    text_y = y + height / 2
+    axis.text(text_x, text_y, label, ha='center', va='center', **kwargs)
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+# Map user-friendly input names to the backend analysis names
+ANALYSIS_MAPPING = {
+    'denotation+concreteness': ['denotation', 'concreteness'],
+    'composition': ['composition'],
+    'specificity': ['specificity'],
+    'specificity_word': ['specificity_word'],
+    'concreteness_xcond': ['concreteness_trainWord_testSub', 'concreteness_trainWord_testPri'],
+    'concreteness_xcond_general': ['concreteness_general_testSub', 'concreteness_general_testPri'],
+    'concreteness_xcond_full': [
+        'concreteness_trainSub_testSub', 'concreteness_trainSub_testPri',
+        'concreteness_trainPri_testSub', 'concreteness_trainPri_testPri'
+    ]
+}
+
+# Define time windows for statistical analysis [in samples]
+# This cleans up the large if/elif block for time windows
+ANOVA_TIME_WINDOWS = {
+    'single': {
+        100: {'early': slice(30, 50), 'late': slice(50, 80)},
+        250: {'early': slice(75, 125), 'late': slice(125, 200)}
+    },
+    'sliding': {
+        47: {'early': slice(14, 24), 'late': slice(24, 38)},
+        50: {'early': slice(15, 25), 'late': slice(25, 40)},
+        95: {'early': slice(29, 48), 'late': slice(48, 76)},
+        97: {'early': slice(29, 49), 'late': slice(49, 78)},
+        118: {'early': slice(36, 60), 'late': slice(60, 95)}
+    }
+}
+
+layout_config = {
+    'denotation+concreteness': (2, 1, (10, 6), True, True),
+    'concreteness_xcond': (2, 1, (6, 6), False, True),
+    'concreteness_xcond_general': (2, 1, (6, 6), False, True),
+    'concreteness_xcond_full': (2, 2, (12, 6), True, True),
+    # fallback/default
+    'default': (1, 1, (10, 3), False, False),
+}
+
+# --- 3. USER INPUT & PATHS ---
+
 classifier = 'logistic'
-data_type = 'MEEG'
 window = 'single'
-# window = 'sliding'
-if data_type == 'ROI':
-    roi = input('roi: ')
-else:
-    roi = None
-
+micro_ave = True
+if micro_ave:
+    micro_averaging = 'micro_ave'
+roi = input(f'For "{to_plot}", enter ROI: ') if data_type == 'ROI' else None
 subjects = [f'sub-{subject_id}' for subject_id in config.subject_ids]
-print(f'subjects (n={len(subjects)}): ', subjects)
+print(f'Subjects (n={len(subjects)}): {subjects}')
+
+# Figure output directory
 decoding_dir = op.join(config.project_repo, 'scripts/analysis/neural/decoding')
-figures_dir = op.join(config.project_repo, f'figures/decoding/{to_plot}/{data_type}/{window}')
-if not op.exists(figures_dir):
-    os.makedirs(figures_dir, exist_ok=True)
+figures_dir = op.join(config.project_repo, f'figures/decoding/{to_plot}/diagonal/{classifier}/{data_type}/{window}/{micro_averaging}')
+os.makedirs(figures_dir, exist_ok=True)
 
-if to_plot == 'denotation+concreteness':
-    analyses = ['denotation','concreteness']
-elif to_plot == 'composition':
-    analyses = ['composition']
-elif to_plot == 'specificity':
-    analyses = ['specificity']
-elif to_plot == 'specificity_word':
-    analyses = ['specificity_word']
-elif to_plot == 'concreteness_xcond':
-    analyses = ['concreteness_trainWord_testSub','concreteness_trainWord_testPri']
-elif to_plot == 'concreteness_xcond_general':
-    analyses = ['concreteness_general_testSub','concreteness_general_testPri']
-elif to_plot == 'concreteness_xcond_full':
-    analyses = ['concreteness_trainSub_testSub','concreteness_trainSub_testPri',
-                'concreteness_trainPri_testSub','concreteness_trainPri_testPri']
-    
-# read in decoding scores
-scores_group = []
-for analysis in analyses:
-    scores = read_decoding_scores(subjects, analysis, classifier, data_type, window=window, roi=roi, timegen=False)
-    scores_group.append(scores)
-    del scores
+# ─────────────────────────────────────────────────────────────────────────────
+# Load decoding scores
+# ─────────────────────────────────────────────────────────────────────────────
+analyses = ANALYSIS_MAPPING.get(to_plot, [])
+scores_group = [
+    read_decoding_scores(subjects, analysis, classifier, data_type, window=window, roi=roi, micro_ave=micro_ave)
+    for analysis in analyses
+]
 
-if to_plot in ['denotation+concreteness', 'specificity']:
-    sfreq = int(scores_group[0].shape[1] / 1.9)
-else:
-    sfreq = int(scores_group[0].shape[1] / 0.8)
-print('sfreq:',sfreq)
+# Infer sampling frequency from data shape
+sfreq = int(scores_group[0].shape[1] / 1.6) if to_plot in ['denotation+concreteness', 'specificity'] else int(scores_group[0].shape[1] / 0.8)
+print('Inferred sfreq:', sfreq)
 
+# --- 5. PLOTTING: TIME-SERIES DECODING ---
+# Define figure layout based on plot type
+nrows, ncols, figsize, sharey, sharex = layout_config.get(to_plot, layout_config['default'])
+fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=figsize, sharey=sharey, sharex=sharex)
+axes = np.array(axes).reshape(-1)  # flatten in case of multiple plots
+# gs = GridSpec(2, 2 if to_plot.endswith('_full') else 1) # Adjust GridSpec for multi-plots
+gs = GridSpec(nrows, ncols)
 
-#%% set figure style 
-FONT = 'Arial'
-FONT_SIZE = 15
-LINEWIDTH = 1
-EDGE_COLOR = 'grey'
-plt.rcParams.update({
-    'figure.dpi': 300,
-    'savefig.dpi': 300,
-    'savefig.transparent': False,
-    'axes.labelsize': FONT_SIZE,
-    'axes.edgecolor': EDGE_COLOR,
-    'axes.linewidth': LINEWIDTH,
-    'xtick.labelsize': FONT_SIZE,
-    'ytick.labelsize': FONT_SIZE,
-    'xtick.color': EDGE_COLOR,
-    'ytick.color': EDGE_COLOR,
-    'xtick.major.size': 6,
-    'ytick.major.size': 6,
-    'xtick.major.width': LINEWIDTH,
-    'ytick.major.width': LINEWIDTH
-})
-
-# %% draw fig
-
-if to_plot == 'denotation+concreteness':
-    fig, axes = plt.subplots(2, 1, figsize=(10,6), sharey=True, sharex=True, dpi=300)
-    gs = GridSpec(2, 1)
-elif to_plot.endswith('_full'):
-    fig, axes = plt.subplots(2, 2, figsize=(12,6), sharey=True, sharex=True, dpi=300)
-    gs = GridSpec(2, 2, width_ratios=[6,6])
-elif to_plot.startswith('concreteness_xcond'):
-    # fig, axes = plt.subplots(1, 2, figsize=(12,3), sharey=True, sharex=True, dpi=300)
-    # gs = GridSpec(1, 2, width_ratios=[6,6])
-    fig, axes = plt.subplots(2, 1, figsize=(6,6), sharey=False, sharex=True, dpi=300)
-    gs = GridSpec(2, 1)
-elif to_plot.startswith('specificity_word'):
-    fig, axes = plt.subplots(1, 1, figsize=(6,3), dpi=300)
-    gs = GridSpec(1, 1)
-else:
-    fig, axes = plt.subplots(1, 1, figsize=(10,3), dpi=300)
-    gs = GridSpec(1, 1)
-
+# --- Main plotting loop ---
 for i, analysis in enumerate(analyses):
-    
-    axis = plt.subplot(gs[i], sharey=fig.get_axes()[0])
-    # axis.set_title(analysis)
-        
-    # color = plt.get_cmap(color_scheme[analysis])(0.9)
-    # plot_scores(axis, scores_group[i], analysis=analysis, color=color, chance=0.5)
+    axis = plt.subplot(gs[i])
     plot_scores(axis, scores_group[i], analysis=analysis, chance=0.5)
 
-    # permutation cluster test for sig. effects
+    # Perform permutation cluster test
     good_clusters, cluster_pvals = permutation_tests(scores_group[i], timegen=False, against_chance=True)
-    print(f'subplot {i+1}')
-    # plot_clusters(good_clusters, scores=scores_group[i], analysis=analysis, ax=axis, color=color, cluster_pvals=cluster_pvals)
     plot_clusters(good_clusters, scores=scores_group[i], analysis=analysis, ax=axis, cluster_pvals=cluster_pvals)
 
-    if (to_plot == 'denotation+concreteness') & (i > 0): # this is to add the adjective noun timing indicators
-        rect_height = 0.02
-        rect_y = 0.56
-        rect_x_early = 0.0
-        rect_width_early = 0.3
-        rect_x_late = 0.6
-        rect_width_late = 0.3
-        rect = patches.Rectangle((rect_x_early, rect_y), rect_width_early, rect_height,
-                             linewidth=0., edgecolor=None, facecolor='lightgrey')
-        axis.add_patch(rect)
-        rect = patches.Rectangle((rect_x_late, rect_y), rect_width_late, rect_height,
-                             linewidth=0., edgecolor=None, facecolor='lightgrey')
-        axis.add_patch(rect)
-        
-        text_x_early = rect_x_early + rect_width_early / 2
-        text_y_early = rect_y + rect_height / 2
-        text_x_late = rect_x_late + rect_width_late / 2
-        text_y_late = rect_y + rect_height / 2
+    # --- SAVE P-VALUES TO DISK ---
+    # if cluster_pvals: # Check if the list of p-values is not empty
+    #     pval_filename = op.join(figures_dir, f'stats_p-values_{analysis}_{roi}.txt')
+    #     np.savetxt(pval_filename, cluster_pvals, fmt='%.4f', header=f'Cluster p-values for {analysis} in {roi}')
+    #     print(f"Saved cluster p-values to {pval_filename}")
 
-        fontsize = 15
-        color_text = 'black'
-        axis.text(text_x_early, text_y_early, 'adjective', ha='center', va='center', color=color_text, fontsize=fontsize)
-        axis.text(text_x_late, text_y_late, 'noun', ha='center', va='center', color=color_text, fontsize=fontsize)
-    elif to_plot.startswith('concreteness_xcond') & (i == 1):
 
-        rect_height = 0.0075
-        rect_y = 0.46
-        rect_x_early = 0.3
-        rect_width_early = 0.2
-        rect_x_late = 0.5
-        rect_width_late = 0.3
-        rect = patches.Rectangle((rect_x_early, rect_y), rect_width_early, rect_height,
-                             linewidth=0., edgecolor=None, facecolor='lightgrey')
-        axis.add_patch(rect)
-        rect = patches.Rectangle((rect_x_late, rect_y), rect_width_late, rect_height,
-                             linewidth=0., edgecolor=None, facecolor='grey')
-        axis.add_patch(rect)
-        
-        text_x_early = rect_x_early + rect_width_early / 2
-        text_y_early = rect_y + rect_height / 2
-        text_x_late = rect_x_late + rect_width_late / 2
-        text_y_late = rect_y + rect_height / 2
-    
-        fontsize = 9
-        color_text = 'black'
-        axis.text(text_x_early, text_y_early, 'early', ha='center', va='center', color=color_text, fontsize=fontsize)
-        axis.text(text_x_late, text_y_late, 'late', ha='center', va='center', color=color_text, fontsize=fontsize)
-        
-for i, analysis in enumerate(analyses):
-    
-    axis = plt.subplot(gs[i])
+    if cluster_pvals: # Check if the list of p-values is not empty
+        cluster_stats = []
+        for cluster, p_val in zip(good_clusters, cluster_pvals):
+            if analysis.split('_')[-1] in ['subsective','privative','testSub','testPri']:
+                times = np.linspace(0., 0.8, scores_group[i].shape[1])
+            else:
+                times = np.linspace(-0.2, 1.4, scores_group[i].shape[1])            
+            cluster_start = cluster[0].start
+            cluster_stop = cluster[0].stop
+            cluster_stats.append([p_val, round(times[cluster_start],3), round(times[cluster_stop],3)])
+            print(f"  Found significant cluster for '{analysis}': p={p_val:.4f}, extent={cluster_start:.3f}s - {cluster_stop:.3f}s")
 
-    # get rid of spines
+        # Save all cluster stats for this analysis to a single file
+        stats_filename = op.join(figures_dir, f'stats_clusters_{analysis}_{roi}')
+        if micro_ave:
+            stats_filename += '_micro-ave.txt'
+        else:
+            stats_filename += '.txt'
+        header = f'Cluster statistics for {analysis} in {roi}\nColumns: p-value, start_time (s), end_time (s)'
+        np.savetxt(stats_filename, cluster_stats, fmt='%.4f', header=header)
+        print(f"Saved cluster stats to {stats_filename}.")
+
+
+    # --- Add annotations and style axes within the same loop ---
     axis.spines['top'].set_visible(False)
     axis.spines['right'].set_visible(False)
     axis.spines['left'].set_visible(False)
 
-    if to_plot in ['denotation+concreteness', 'concreteness_xcond']:
-        
-        # x axis 
-        if to_plot == 'denotation+concreteness':
-            axis.set_xlim(-0.2, 1.4)
-        elif to_plot == 'concreteness_xcond':
-            axis.set_xlim(0, 0.8)
-            axis.set_xticks([0,0.2,0.4,0.6,0.8])
+    if to_plot == 'denotation+concreteness':
+        axis.set_xlim(-0.2, 1.4)
+        if data_type == 'ROI':
+            axis.set_yticks([0.5, 0.52, 0.54])
+        else:
+            axis.set_yticks([0.5, 0.52, 0.54, 0.56])
+        if i == 0: # Top plot
+            axis.set_xlabel('')
+            axis.set_xticks([])
+            axis.spines['bottom'].set_visible(False)
+            # Add legend
+            legend_elements = [Line2D([0], [0], color=plt.get_cmap(color_scheme[an])(0.7), lw=3) for an in analyses]
+            axis.legend(legend_elements, ['denotation', 'concreteness'], frameon=False)
+        if i > 0: # Bottom plot, add time indicators
+            if data_type == 'ROI':
+                y = 0.54
+            else:
+                y = 0.56
+            add_time_window_annotation(axis, x=0.0, y=y, width=0.3, height=0.02, label='adjective', color='black', fontsize=15, facecolor='lightgrey', alpha=0.5)
+            add_time_window_annotation(axis, x=0.6, y=y, width=0.3, height=0.02, label='noun', color='black', fontsize=15, facecolor='lightgrey', alpha=0.5)
 
-        # remove x labels apart from the first subplot
+    elif to_plot.startswith('concreteness_xcond'):
+        axis.set_xlim(0, 0.8)
+        # Add transparent vertical spans to highlight time windows
+        axis.axvspan(0.3, 0.5, alpha=0.50, color='lightgrey', zorder=0)
+        axis.axvspan(0.5, 0.8, alpha=0.75, color='lightgrey', zorder=0)
         if i == 0:
             axis.set_xlabel('')
             axis.set_xticks([])
-            plt.setp(axis.get_xticklabels(), visible=False)
             axis.spines['bottom'].set_visible(False)
-        
-        # y axis
-        if to_plot == 'denotation+concreteness':
-            axis.set_yticks([0.5,0.52,0.54, 0.56])
-        elif (to_plot == 'concreteness_xcond') & (i == 0):
-            axis.set_yticks([0.5,0.52,0.54])
-        elif (to_plot == 'concreteness_xcond') & (i == 1):
-            axis.set_yticks([0.48,0.5,0.52])
-            
+            axis.set_yticks([0.5, 0.52, 0.54])
+            # Add legend
+            legend_elements = [Line2D([0], [0], color=plt.get_cmap(color_scheme[an])(0.7), lw=3) for an in analyses]
+            axis.legend(legend_elements, ['test on subsective', 'test on privative'], frameon=False, loc='upper left')
+        elif i == 1:
+            axis.set_yticks([0.48, 0.5, 0.52])
+            # Add time indicators only to the second plot
+            add_time_window_annotation(axis, x=0.30, y=0.47, width=0.2, height=0.0075, label='early', color='black', fontsize=9, facecolor='lightgrey', alpha=0.75)
+            add_time_window_annotation(axis, x=0.50, y=0.47, width=0.3, height=0.0075, label='late', color='black', fontsize=9, facecolor='lightgrey', alpha=1)
 
-        # add vspan to highlight time windows
-        if to_plot == 'concreteness_xcond':
-            axis.axvspan(0.3, 0.5, alpha=0.3, color='lightgrey') # N4 window
-            # axis.axvline(0.3, alpha=0.5, color='lightgrey') # N4 window
-            axis.axvspan(0.5, 0.8, alpha=0.65, color='lightgrey') # N/P6 window
-
-        # if i == 1:
-        #     axis.set_xticks(np.arange(-0.2, 1.6, 0.2))
-    
-        # add custom legend
-        legend_elements = []
-        for analysis in analyses:
-            color = plt.get_cmap(color_scheme[analysis])(0.7)
-            legend_elements.append(Line2D([0], [0], color=color, lw=3))
-        
-        if to_plot == 'denotation+concreteness':
-            fig.get_axes()[0].legend(legend_elements, ['denotation', 'concreteness'], frameon=False)
-        elif to_plot == 'concreteness_xcond':
-            fig.get_axes()[0].legend(legend_elements, ['test on subsective', 'test on privative'], 
-                                     loc='upper left', frameon=False)
-
-        # axis.set_yticks([0.5, 0.54, 0.58])
-        gs.update(wspace=0., hspace=0.)
-
-    # elif to_plot.startswith('concreteness_xcond'):
-
-    #     if to_plot.endswith('full') and i in [0, 1]:
-    #         axis.spines['bottom'].set_visible(False)
-    #         axis.set_xlabel('')
-    #         plt.setp(axis.get_xticklabels(), visible=False)
-    #         axis.tick_params(bottom=False)
-    #         axis.set_yticks([0.48, 0.5, 0.52, 0.54])
-    #     elif to_plot.endswith('general'):
-    #         axis.set_yticks([0.48, 0.5, 0.52, 0.54])
-        
-    #     if i in [1,3]:
-            
-    #         axis.set_ylabel('')
-    #         plt.setp(axis.get_yticklabels(), visible=False)
-
-    #         # axis.set_ylim(0.47, 0.53)
-
-    #     axis.set_xticks(np.arange(0., 1.0, 0.2))
-    #     axis.set_xlim(0., 0.8)
-    elif to_plot.startswith('specificity_word'):
-        axis.set_xlim(0., 0.8)
-    else:
-        axis.set_xlim(-0.2, 1.4)
-        
 plt.tight_layout()
-
-if roi:
-    plt.savefig(op.join(figures_dir, f'fig_time_decod_group_{classifier}_{data_type}_{window}_{roi}_{sfreq}Hz.png'))
+decoding_fig_fname = op.join(figures_dir, f'decode_diagonal_{roi}_{sfreq}Hz')
+if micro_ave:
+    decoding_fig_fname += '_micro-ave.png'
 else:
-    plt.savefig(op.join(figures_dir, f'fig_time_decod_group_{classifier}_{data_type}_{window}_{sfreq}Hz.png'))
-
+    decoding_fig_fname += '.png'
+plt.savefig(decoding_fig_fname)
 plt.close()
-    
-#%% plot interaction in cross condition decoding
+print(f"Saved decoding scores to {decoding_fig_fname}.")
 
-if to_plot.startswith('concreteness_x'):
-    averaged_data = pd.DataFrame(columns=['timewindow','evaluation','score','subject','train_on'])
-    list_timewindows, list_evaluations, list_scores, list_train_on = [], [], [], []
-    if window == 'single':
-        if sfreq == 100:
-            timewindow_early = dict(start=30,stop=50)
-            timewindow_late = dict(start=50,stop=80)
-        elif sfreq == 250:
-            timewindow_early = slice(75,125)
-            timewindow_late = slice(125,200)
-    elif window == 'sliding':
-        if sfreq == 47:
-            timewindow_early = slice(14,24)
-            timewindow_late = slice(24,38)
-        elif sfreq == 50:
-            timewindow_early = slice(15,25)
-            timewindow_late = slice(25,40)
-        elif sfreq == 95:
-            timewindow_early = dict(start=29,stop=48)
-            timewindow_late = dict(start=48,stop=76)
-        elif sfreq == 97:
-            timewindow_early = dict(start=29,stop=49)
-            timewindow_late = dict(start=49,stop=78)
-        elif sfreq == 118:
-            timewindow_early = dict(start=36,stop=60)
-            timewindow_late = dict(start=60,stop=95)
 
-    if to_plot == 'concreteness_xcond_full':
-        for i, (evaluation, train_on) in enumerate(zip(['subsective','privative','subsective','privative'],['subsective','subsective','privative','privative'])):
-            for timewindow_name, timewindow in zip(['early','late'],[timewindow_early,timewindow_late]):
-                scores_timewindow = scores_group[i][:, timewindow['start']:timewindow['stop']].mean(axis=1)
-                list_scores.extend(scores_timewindow)
-                list_timewindows.extend(np.repeat(timewindow_name, len(scores_timewindow)))
-                list_evaluations.extend(np.repeat(evaluation, len(scores_timewindow)))
-                list_train_on.extend(np.repeat(train_on, len(scores_timewindow)))
-        averaged_data['timewindow'] = list_timewindows
-        averaged_data['evaluation'] = list_evaluations
-        averaged_data['score'] = list_scores
-        averaged_data['subject'] = subjects * 8
-        averaged_data['train_on'] = list_train_on
-    else:
-        for i, evaluation in enumerate(['subsective','privative']):
-            for timewindow_name, timewindow in zip(['early','late'],[timewindow_early,timewindow_late]):
-                scores_timewindow = scores_group[i][:, timewindow['start']:timewindow['stop']].mean(axis=1)
-                list_scores.extend(scores_timewindow)
-                list_timewindows.extend(np.repeat(timewindow_name, len(scores_timewindow)))
-                list_evaluations.extend(np.repeat(evaluation, len(scores_timewindow)))
-        averaged_data['timewindow'] = list_timewindows
-        averaged_data['evaluation'] = list_evaluations
-        averaged_data['score'] = list_scores
-        averaged_data['subject'] = subjects * 4
-    
-       
-    color_palette = [plt.get_cmap(color_scheme['concreteness_trainWord_testSub'])(0.7),
-                     plt.get_cmap(color_scheme['concreteness_trainWord_testPri'])(0.7)]
-    
-    if to_plot == 'concreteness_xcond_full':
-        for i, train_on in enumerate(['subsective','privative']):
-            filtered_averaged_data = averaged_data[averaged_data.train_on == train_on]
-            fig, axis = plt.subplots(figsize=(2.75,3)) 
-            sns.barplot(
-                data=filtered_averaged_data,
-                x='timewindow', y='score', hue='evaluation',
-                palette=sns.color_palette(color_palette), 
-                # alpha=0.3,
-                errorbar='se',
-                ax=axis
-            )
-            axis.set(ylim=(0.45,0.55))
-            axis.set(xlabel='time window', ylabel='')
-            plt.gca().legend().set_title('')
-            plt.tight_layout()
-    
-            if roi:
-                plt.savefig(op.join(figures_dir, f'fig_time_decod_group_{classifier}_{data_type}_{window}_{roi}_{sfreq}Hz_bar.png'))
-            else:
-                plt.savefig(op.join(figures_dir, f'fig_time_decod_group_{classifier}_{data_type}_{window}_train-on-{train_on}_{sfreq}Hz_bar.png'))
+# --- 6. STATISTICAL ANALYSIS & BAR PLOT (for cross-condition designs) ---
 
-    else:
-        fig, axis = plt.subplots(figsize=(2.75,3.15)) 
-        sns.barplot(
-            data=averaged_data,
-            x='timewindow', y='score', hue='evaluation',
-            palette=sns.color_palette(color_palette), 
-            # alpha=0.3,
-            errorbar='se',
-            ax=axis
-        )
-        axis.set(ylim=(0.45,0.55), yticks=[0.45,0.50,0.55])
-        axis.set(xlabel='time window', ylabel='AUC')
-        plt.gca().legend(frameon=False).set_title('') # , loc='upper right', bbox_to_anchor=(1., 1.35)
+if to_plot.startswith('concreteness_xcond'):
+    print("\n--- Running cross-condition interaction analysis ---")
+    # Prepare DataFrame for ANOVA
+    df_list = []
+    time_windows = ANOVA_TIME_WINDOWS.get(window, {}).get(sfreq)
 
-        plt.tight_layout()
-
-        if roi:
-            plt.savefig(op.join(figures_dir, f'fig_time_decod_group_{classifier}_{data_type}_{window}_{roi}_{sfreq}Hz_bar.png'))
+    if time_windows:
+        # Determine iteration parameters based on plot type
+        if to_plot == 'concreteness_xcond_full':
+            iter_params = list(zip(analyses, ['subsective','privative','subsective','privative'], ['subsective','subsective','privative','privative']))
         else:
-            plt.savefig(op.join(figures_dir, f'fig_time_decod_group_{classifier}_{data_type}_{window}_{sfreq}Hz_bar.png'))
+            iter_params = list(zip(analyses, ['subsective','privative']))
 
-#%% save fig 
+        # Loop to populate the DataFrame
+        for i, params in enumerate(iter_params):
+            analysis_name, evaluation = params[0], params[1]
+            for timewindow_name, tw_slice in time_windows.items():
+                scores_timewindow = scores_group[i][:, tw_slice].mean(axis=1)
+                for subj_idx, score in enumerate(scores_timewindow):
+                    row = {'score': score, 'timewindow': timewindow_name, 'evaluation': evaluation, 'subject': subjects[subj_idx]}
+                    if to_plot == 'concreteness_xcond_full':
+                        row['train_on'] = params[2]
+                    df_list.append(row)
+        averaged_data = pd.DataFrame(df_list)
 
-if roi:
-    plt.savefig(op.join(figures_dir, f'fig_time_decod_group_{classifier}_{data_type}_{window}_{roi}.png'))
-else:
-    plt.savefig(op.join(figures_dir, f'fig_time_decod_group_{classifier}_{data_type}_{window}.png'))
+        # --- RUN AND SAVE ANOVA ---
+        print("Fitting OLS model and running ANOVA...")
+        model = ols('score ~ C(evaluation) * C(timewindow)', data=averaged_data).fit()
+        anova_results = anova_lm(model, typ=2)
+        print(anova_results)
+        anova_filename = op.join(figures_dir, f'stats_anova_{roi}_{sfreq}Hz.csv')
+        anova_results.to_csv(anova_filename)
+        print(f"Saved ANOVA results to {anova_filename}")
+
+        # Note: Other statistical models like MixedLM or follow-up tests can be run here.
+        # For example:
+        # model = smf.mixedlm('score ~ C(evaluation) * C(timewindow)', averaged_data, groups=averaged_data['subject']).fit()
+        # print(model.summary())
+
+        # --- Create and save bar plot ---
+        color_palette = [plt.get_cmap(color_scheme['concreteness_trainWord_testSub'])(0.7),
+                         plt.get_cmap(color_scheme['concreteness_trainWord_testPri'])(0.7)]
+
+        fig, axis = plt.subplots(figsize=(3, 3.5))
+        sns.barplot(
+            data=averaged_data, x='timewindow', y='score', hue='evaluation',
+            palette=color_palette, errorbar='se', ax=axis
+        )
+        axis.set(ylim=(0.45, 0.55), xlabel='Time Window', ylabel='Decoding Accuracy (AUC)')
+        axis.legend(title='', frameon=False)
+        plt.tight_layout()
+        plt.savefig(op.join(figures_dir, f'fig_barplot_{roi}_{sfreq}Hz.png'))
+        plt.close()
+    else:
+        print(f"Warning: No defined time windows for sfreq={sfreq} and window='{window}'. Skipping ANOVA.")

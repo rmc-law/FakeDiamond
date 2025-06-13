@@ -7,10 +7,13 @@ Created on Sat Mar  9 14:55:24 2024
 """
 
 import sys
+import os
 import os.path as op
 import numpy as np
+import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib.gridspec import GridSpec
+import argparse
 
 sys.path.append('/imaging/hauk/rl05/fake_diamond/scripts/preprocessing')
 sys.path.append('/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding')
@@ -18,104 +21,105 @@ import config
 import helper
 from plot_decoding import *
 
+# Set matplotlib style
+mpl.rc_file('fake_diamond.rc')
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Parse CLI arguments
+# ─────────────────────────────────────────────────────────────────────────────
+parser = argparse.ArgumentParser(description="Plot time-generalisation decoding results")
+parser.add_argument('--to_plot', type=str, default='concreteness_xcond')
+parser.add_argument('--data_type', type=str, default='MEEG')
+args = parser.parse_args()
+to_plot = args.to_plot
+data_type = args.data_type
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Plotting helper for colorbars
+# ─────────────────────────────────────────────────────────────────────────────
 def demo_locatable_axes_easy(ax, ticks, im):
     from mpl_toolkits.axes_grid1 import make_axes_locatable
-
     divider = make_axes_locatable(ax)
-
     ax_cb = divider.new_horizontal(size="5%", pad=0.1)
     fig = ax.get_figure()
     fig.add_axes(ax_cb)
-
     cb = plt.colorbar(im, cax=ax_cb, ticks=ticks)
     cb.outline.set_visible(False)
     cb.set_label('AUC', labelpad=-20, rotation=270)
     ax_cb.yaxis.tick_right()
     ax_cb.yaxis.set_tick_params(labelright=True)
 
-to_plot = 'concreteness_xcond'
+# ─────────────────────────────────────────────────────────────────────────────
+# Configuration
+# ─────────────────────────────────────────────────────────────────────────────
 classifier = 'logistic'
-data_type = 'MEEG'
-window = 'single'
-# window = 'sliding'
-
+window = 'single' # 'sliding'
+micro_ave = True
+if micro_ave:
+    micro_averaging = 'micro_ave'
+roi = input(f'For "{to_plot}", enter ROI: ') if data_type == 'ROI' else None
 subjects = [f'sub-{subject_id}' for subject_id in config.subject_ids]
+
+# Figure output directory
 decoding_dir = op.join(config.project_repo, 'scripts/analysis/neural/decoding')
-figures_dir = op.join(config.project_repo, f'figures/decoding/{to_plot}/{data_type}/{window}')
+figures_dir = op.join(config.project_repo, f'figures/decoding/{to_plot}/timegen/{classifier}/{data_type}/{window}/{micro_averaging}')
 if not op.exists(figures_dir):
     os.makedirs(figures_dir, exist_ok=True)
 
+analysis_map = {
+    'denotation+concreteness': ['denotation', 'concreteness'],
+    'composition': ['composition'],
+    'specificity': ['specificity'],
+    'specificity_word': ['specificity_word'],
+    'concreteness_xcond': ['concreteness_trainWord_testSub', 'concreteness_trainWord_testPri'],
+    'concreteness_xcond_general': ['concreteness_general_testSub', 'concreteness_general_testPri'],
+    'concreteness_xcond_full': ['concreteness_trainSub_testSub', 'concreteness_trainSub_testPri',
+                                'concreteness_trainPri_testSub', 'concreteness_trainPri_testPri']
+}
+analyses = analysis_map.get(to_plot, [])
+if not analyses:
+    raise ValueError(f"Unknown value for --to_plot: {to_plot}")
 
-if to_plot == 'denotation+concreteness':
-    analyses = ['denotation','concreteness']
-elif to_plot == 'composition':
-    analyses = ['composition']
-elif to_plot == 'specificity':
-    analyses = ['specificity']
-elif to_plot == 'specificity_word':
-    analyses = ['specificity_word']
-elif to_plot == 'concreteness_xcond':
-    analyses = ['concreteness_trainWord_testSub','concreteness_trainWord_testPri']
-elif to_plot == 'concreteness_xcond_general':
-    analyses = ['concreteness_general_testSub','concreteness_general_testPri']
-elif to_plot == 'concreteness_xcond_full':
-    analyses = ['concreteness_trainSub_testSub','concreteness_trainSub_testPri',
-                'concreteness_trainPri_testSub','concreteness_trainPri_testPri']
-  
+layout_config = {
+    'denotation+concreteness': (2, 1, (3.85, 6)),
+    'concreteness_xcond': (2, 1, (3.85, 6)),
+    'concreteness_xcond_general': (2, 1, (3.85, 6)),
+    'concreteness_xcond_full': (2, 2, (8, 6)),
+    'composition': (1, 1, (5, 5)),
+    'specificity_word': (1, 1, (5, 5)),
+}
 
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Load decoding scores
+# ─────────────────────────────────────────────────────────────────────────────
 scores_group = []
 for analysis in analyses:
-    scores = read_decoding_scores(subjects, analysis, classifier, data_type, window=window, timegen=True)
+    scores = read_decoding_scores(subjects, analysis, classifier, data_type, window=window, roi=roi, timegen=True, micro_ave=micro_ave)
     scores_group.append(scores)
     del scores
 
-if to_plot == 'denotation+concreteness':
-    sfreq = int(scores_group[0].shape[1] / 1.9)
-else:
-    sfreq = int(scores_group[0].shape[1] / 0.8)
-print('sfreq:',sfreq)
+# Sampling frequency for plotting
+sfreq = int(scores_group[0].shape[1] / 1.6) if to_plot == 'denotation+concreteness' else int(scores_group[0].shape[1] / 0.8)
+print('sfreq:', sfreq)
 
-#%% set figure style 
-FONT = 'Arial'
-FONT_SIZE = 15
-LINEWIDTH = 1
-EDGE_COLOR = 'grey'
-plt.rcParams.update({
-    'figure.dpi': 300,
-    'savefig.dpi': 300,
-    'savefig.transparent': False,
-    'axes.labelsize': FONT_SIZE,
-    'axes.edgecolor': EDGE_COLOR,
-    'axes.linewidth': LINEWIDTH,
-    'xtick.labelsize': FONT_SIZE,
-    'ytick.labelsize': FONT_SIZE,
-    'xtick.color': EDGE_COLOR,
-    'ytick.color': EDGE_COLOR,
-    'xtick.major.size': 6,
-    'ytick.major.size': 6,
-    'xtick.major.width': LINEWIDTH,
-    'ytick.major.width': LINEWIDTH
-})
+# Time window
+is_long_window = to_plot in ['denotation+concreteness', 'composition']
+extents = [np.array([0., 1., 0., 1.]) if is_long_window else np.array([0., 0.8, 0., 0.8]),
+          np.array([0.6, 1.4, 0.6, 1.4]) if is_long_window else np.array([0., 0.8, 0., 0.8])]
+times = [np.linspace(extents[0][0], extents[0][1], scores_group[0][0].shape[0]), 
+         np.linspace(extents[1][0], extents[1][1], scores_group[0][0].shape[0])]
 
-#%% draw figure
-    
-if to_plot in ['denotation+concreteness']:
-    fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(3.85, 6.), sharex=True, sharey=True)
-    gs = GridSpec(2, 1, height_ratios=[1,1])
-elif to_plot in ['concreteness_xcond','concreteness_xcond_general']:
-    fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(3.85, 6.), sharex=True, sharey=True)
-    gs = GridSpec(2, 1, height_ratios=[1,1])
-elif to_plot == 'composition':
-    fig, axes = plt.subplots(nrows=1, ncols=1, figsize=(5., 5.))
-elif to_plot == 'concreteness_xcond_full':
-    fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(8., 6.), sharex=True, sharey=True)
-    gs = GridSpec(2, 2, height_ratios=[1,1])
-elif to_plot == 'specificity_word':
-    fig, axes = plt.subplots(nrows=1, ncols=1, figsize=(5., 5.))
+# ─────────────────────────────────────────────────────────────────────────────
+# Plot each analysis
+# ─────────────────────────────────────────────────────────────────────────────
+nrows, ncols, figsize = layout_config[to_plot]
+fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=figsize, sharex=True, sharey=True)
+axes = np.array(axes).reshape(-1)  # flatten for indexing
+gs = GridSpec(nrows, ncols)
 
+# get maximum decoding performance score for limiting colorbars
 vmaxs = []
-
 for i, analysis in enumerate(analyses):
         
     if to_plot == 'composition':    
@@ -125,31 +129,32 @@ for i, analysis in enumerate(analyses):
     else:
         axis = plt.subplot(gs[i])
 
-    
     # plot temporal generalisation matrix
     group_avg = np.array(scores_group[i]).mean(axis=0)
     vmax = round(np.max(group_avg), 2)
     vmaxs.append(vmax)
-    if (to_plot == 'denotation+concreteness') or (to_plot == 'composition'):
-        extent = np.array([-0.2,1.4,-0.2,1.4])
-    else:
-        extent = np.array([0.,0.8,0.,0.8])
+    # if (to_plot == 'denotation+concreteness') or (to_plot == 'composition'):
+    #     extents = [np.array([0.,1.,0.,1.]),np.array([0.6,1.4,0.6,1.4])]
+    # else:
+    #     extents = [np.array([0.,0.8,0.,0.8]),np.array([0.,0.8,0.,0.8])]
     vmax = np.max(vmaxs)
+    print(extents[i])
+    print(times[i])
     im = axis.imshow(group_avg, interpolation=None, origin='lower',
                      cmap=color_scheme[analysis],
-                     extent=extent, # times
+                     extent=extents[i], # times
                       vmin = 0.5, 
                       vmax = vmax
                      )
     
     # some plotting params
     axis.plot(axis.get_xlim(),  axis.get_ylim(), color='lightgrey', ls='--', lw=1) # diagonal
-    # add word onsets
-    if (to_plot == 'denotation+concreteness') or (to_plot == 'composition'):
-        word_onsets = [0., 0.6]
-        for onset in word_onsets:
-            axis.axhline(onset, color='lightgrey', linewidth=1, linestyle='--')
-            axis.axvline(onset, color='lightgrey', linewidth=1, linestyle='--')
+    # # add word onsets
+    # if (to_plot == 'denotation+concreteness') or (to_plot == 'composition'):
+    #     word_onsets = [0., 0.6]
+    #     for onset in word_onsets:
+    #         axis.axhline(onset, color='lightgrey', linewidth=1, linestyle='--')
+    #         axis.axvline(onset, color='lightgrey', linewidth=1, linestyle='--')
     # add labels
     axis.tick_params(axis='both', direction='in')
     if to_plot in ['denotation+concreteness', 'concreteness_xcond']:
@@ -170,11 +175,11 @@ for i, analysis in enumerate(analyses):
     demo_locatable_axes_easy(axis, [0.5,vmax], im)
     
     # # plot cluster extent
-    if (to_plot == 'denotation+concreteness') or (to_plot == 'composition'):
-        times = np.linspace(-0.2, 1.4, group_avg.shape[0])
-    else:
-        times = np.linspace(0.0, 0.8, group_avg.shape[0])
-    X, Y = np.meshgrid(times, times)
+    # if (to_plot == 'denotation+concreteness') or (to_plot == 'composition'):
+    #     times = np.linspace(-0.2, 1.4, group_avg.shape[0])
+    # else:
+    #     times = np.linspace(0.0, 0.8, group_avg.shape[0])
+    X, Y = np.meshgrid(times[i], times[i])
     
     # for t_threshold in ['1.5','2']:
         # print(t_threshold)
@@ -206,5 +211,5 @@ for i, analysis in enumerate(analyses):
 
 # if to_plot == 'composition':
 plt.tight_layout()
-plt.savefig(op.join(figures_dir, f'fig_time_gen_group_{classifier}_{data_type}_{window}_{sfreq}Hz.png'))
+plt.savefig(op.join(figures_dir, f'decode_timegen_{roi}_{sfreq}Hz.png'))
 plt.close()

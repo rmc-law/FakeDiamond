@@ -1,11 +1,13 @@
 # Decoding analysis
 
-## Summary of decoding pipeline
-1. `cd /imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding`
-2. `./decoding_batch.sh analysis_name classifier_name data_type generalise`
 
-### Usage of `decoding_batch.sh`
+## Usage of `decoding_batch.sh`
 `./decoding_batch.sh` runs a parallel job for each subject separately. To run the batch script, you need to supply the desired analysis and classifier.
+
+Usage:
+```
+./decoding_batch concreteness logistic ROI single micro_ave generalise
+```
 
 Possible `analysis_name` options: 
 - lexicality: whether word 1 is word vs. letter-string
@@ -24,9 +26,19 @@ Possible `classifier_name` options:
 `data_type` options:
 - MEEG
 - MEG
-- to add: source (for source space decoding)
+- ROI (decoding in each ROI separately)
 
-`generalise`:
-- the flag indicates whether to perform temporal generalisation analyses
+`window` (single, sliding): `single` performs decoding at each time point; `sliding` takes a sliding-window approach with temporal smoothing.
+
+`micro_ave`: use micro-averaging to create pseudotrials to increase SNR (recommended)
+
+`generalise`: whether to perform temporal generalisation analyses
 
 The batch script will then check if that analysis is done for all subjects, and run the analysis if not. 
+
+
+## Plotting decoding scores and generalisation matrices
+
+- `plot_decoding_diagonal.py` for plotting diagonal scores.
+- `plot_decoding_timegen.py` for plotting generalisation matrices.
+- `plot_decoding.py` is a config/utils file.
