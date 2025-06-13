@@ -28,8 +28,8 @@ mpl.rc_file('fake_diamond.rc')
 # Parse CLI arguments
 # ─────────────────────────────────────────────────────────────────────────────
 parser = argparse.ArgumentParser(description="Plot time-generalisation decoding results")
-parser.add_argument('--to_plot', type=str, default='concreteness_xcond', description='Analyses to plot (denotation+concretenss, concretess_xcond)')
-parser.add_argument('--data_type', type=str, default='MEEG', description='Sensor or source data (MEEG, ROI)')
+parser.add_argument('--to_plot', type=str, default='concreteness_xcond', help='Analyses to plot (denotation+concretenss, concretess_xcond)')
+parser.add_argument('--data_type', type=str, default='MEEG', help='Sensor or source data (MEEG, ROI)')
 args = parser.parse_args()
 to_plot = args.to_plot
 data_type = args.data_type
