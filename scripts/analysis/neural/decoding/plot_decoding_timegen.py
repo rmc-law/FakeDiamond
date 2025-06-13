@@ -161,6 +161,8 @@ for i, analysis in enumerate(analyses):
     demo_locatable_axes_easy(axis, [0.5,vmax], im)
     good_clusters, cluster_pv = permutation_tests(scores_group[i], timegen=True, against_chance=True, t_threshold=None)
     print(f'subplot {i+1}')
+    print('good clusters: ', good_clusters)
+    print('cluster_pvs: ', cluster_pv)
 
     X, Y = np.meshgrid(times[i], times[i])
     for cluster, pval in zip(good_clusters, cluster_pv):
@@ -168,6 +170,24 @@ for i, analysis in enumerate(analyses):
             axis.contour(X, Y, cluster, colors=['black'], linewidths=1)
         else:
             axis.contour(X, Y, cluster, colors=['grey'], linewidths=1)
+
+    if cluster_pv:
+        cluster_stats = []
+        for cluster_i, p_val in enumerate(cluster_pv):
+            cluster_stats.append([cluster_i, p_val])
+            print(f"  Found significant cluster {cluster_i} for '{analysis}': p={p_val:.4f}")
+
+        # Save to file
+        stats_filename = op.join(figures_dir, f'stats_cluster_pvals_{analysis}_{roi}')
+        if micro_ave:
+            stats_filename += '_micro-ave.txt'
+        else:
+            stats_filename += '.txt'
+
+        header = f'Cluster-level p-values for {analysis} in {roi}\nColumns: cluster_index, p_value'
+        np.savetxt(stats_filename, cluster_stats, fmt=['%d', '%.6f'], header=header)
+        print(f"Saved cluster p-values to {stats_filename}.")
+
 
 plt.tight_layout()
 plt.savefig(op.join(figures_dir, f'decode_timegen_{roi}_{sfreq}Hz.png'))
