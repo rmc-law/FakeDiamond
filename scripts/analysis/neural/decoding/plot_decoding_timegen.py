@@ -28,8 +28,8 @@ mpl.rc_file('fake_diamond.rc')
 # Parse CLI arguments
 # ─────────────────────────────────────────────────────────────────────────────
 parser = argparse.ArgumentParser(description="Plot time-generalisation decoding results")
-parser.add_argument('--to_plot', type=str, default='concreteness_xcond')
-parser.add_argument('--data_type', type=str, default='MEEG')
+parser.add_argument('--to_plot', type=str, default='concreteness_xcond', description='Analyses to plot (denotation+concretenss, concretess_xcond)')
+parser.add_argument('--data_type', type=str, default='MEEG', description='Sensor or source data (MEEG, ROI)')
 args = parser.parse_args()
 to_plot = args.to_plot
 data_type = args.data_type
@@ -133,29 +133,15 @@ for i, analysis in enumerate(analyses):
     group_avg = np.array(scores_group[i]).mean(axis=0)
     vmax = round(np.max(group_avg), 2)
     vmaxs.append(vmax)
-    # if (to_plot == 'denotation+concreteness') or (to_plot == 'composition'):
-    #     extents = [np.array([0.,1.,0.,1.]),np.array([0.6,1.4,0.6,1.4])]
-    # else:
-    #     extents = [np.array([0.,0.8,0.,0.8]),np.array([0.,0.8,0.,0.8])]
     vmax = np.max(vmaxs)
-    print(extents[i])
-    print(times[i])
     im = axis.imshow(group_avg, interpolation=None, origin='lower',
                      cmap=color_scheme[analysis],
                      extent=extents[i], # times
-                      vmin = 0.5, 
-                      vmax = vmax
+                     vmin = 0.5, vmax = vmax
                      )
     
     # some plotting params
     axis.plot(axis.get_xlim(),  axis.get_ylim(), color='lightgrey', ls='--', lw=1) # diagonal
-    # # add word onsets
-    # if (to_plot == 'denotation+concreteness') or (to_plot == 'composition'):
-    #     word_onsets = [0., 0.6]
-    #     for onset in word_onsets:
-    #         axis.axhline(onset, color='lightgrey', linewidth=1, linestyle='--')
-    #         axis.axvline(onset, color='lightgrey', linewidth=1, linestyle='--')
-    # add labels
     axis.tick_params(axis='both', direction='in')
     if to_plot in ['denotation+concreteness', 'concreteness_xcond']:
         axis.set_ylabel('Train Time (s)')
@@ -173,43 +159,16 @@ for i, analysis in enumerate(analyses):
 
     # add colorbar
     demo_locatable_axes_easy(axis, [0.5,vmax], im)
-    
-    # # plot cluster extent
-    # if (to_plot == 'denotation+concreteness') or (to_plot == 'composition'):
-    #     times = np.linspace(-0.2, 1.4, group_avg.shape[0])
-    # else:
-    #     times = np.linspace(0.0, 0.8, group_avg.shape[0])
-    X, Y = np.meshgrid(times[i], times[i])
-    
-    # for t_threshold in ['1.5','2']:
-        # print(t_threshold)
     good_clusters, cluster_pv = permutation_tests(scores_group[i], timegen=True, against_chance=True, t_threshold=None)
     print(f'subplot {i+1}')
 
+    X, Y = np.meshgrid(times[i], times[i])
     for cluster, pval in zip(good_clusters, cluster_pv):
-        # axis.contour(X, Y, cluster, colors=[color])
         if pval < 0.05:
             axis.contour(X, Y, cluster, colors=['black'], linewidths=1)
         else:
             axis.contour(X, Y, cluster, colors=['grey'], linewidths=1)
 
-    
-    # # add decomposed testing time courses
-    # if to_plot == 'denotation+concreteness':
-    #     train_times_idx_to_plot = {'concreteness': [145, 150, 155, 160, 165],
-    #                                'denotation': [80, 85, 90, 95, 100]}
-    #     for axis_key, train_time_idx in zip(list(axd.keys())[1:], train_times_idx_to_plot[analysis]):
-    #         axis = axd[axis_key]
-    #         axis.plot(times, group_avg[train_time_idx])
-    #         axis.axhline(0.5, color='lightgrey', alpha=0.7, linestyle='--', lw=1, zorder=-20)
-    #         axis.set_xlim(-0.2,1.4)
-    #         axis.set_ylim(0.48, +0.1)
-            
-    #     plt.tight_layout()
-    #     # plt.savefig(op.join(figures_dir, f'fig_time_gen_group_{classifier}_{data_type}.png'))
-
-
-# if to_plot == 'composition':
 plt.tight_layout()
 plt.savefig(op.join(figures_dir, f'decode_timegen_{roi}_{sfreq}Hz.png'))
 plt.close()

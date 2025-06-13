@@ -43,8 +43,8 @@ mpl.rc_file('fake_diamond.rc')
 # Parse CLI arguments
 # ─────────────────────────────────────────────────────────────────────────────
 parser = argparse.ArgumentParser(description="Plot time-generalisation decoding results")
-parser.add_argument('--to_plot', type=str, default='denotation+concreteness')
-parser.add_argument('--data_type', type=str, default='ROI')
+parser.add_argument('--to_plot', type=str, default='concreteness_xcond', description='Analyses to plot (denotation+concretenss, concretess_xcond)')
+parser.add_argument('--data_type', type=str, default='MEEG', description='Sensor or source data (MEEG, ROI)')
 args = parser.parse_args()
 to_plot = args.to_plot
 data_type = args.data_type
@@ -137,7 +137,6 @@ print('Inferred sfreq:', sfreq)
 nrows, ncols, figsize, sharey, sharex = layout_config.get(to_plot, layout_config['default'])
 fig, axes = plt.subplots(nrows=nrows, ncols=ncols, figsize=figsize, sharey=sharey, sharex=sharex)
 axes = np.array(axes).reshape(-1)  # flatten in case of multiple plots
-# gs = GridSpec(2, 2 if to_plot.endswith('_full') else 1) # Adjust GridSpec for multi-plots
 gs = GridSpec(nrows, ncols)
 
 # --- Main plotting loop ---
@@ -148,13 +147,6 @@ for i, analysis in enumerate(analyses):
     # Perform permutation cluster test
     good_clusters, cluster_pvals = permutation_tests(scores_group[i], timegen=False, against_chance=True)
     plot_clusters(good_clusters, scores=scores_group[i], analysis=analysis, ax=axis, cluster_pvals=cluster_pvals)
-
-    # --- SAVE P-VALUES TO DISK ---
-    # if cluster_pvals: # Check if the list of p-values is not empty
-    #     pval_filename = op.join(figures_dir, f'stats_p-values_{analysis}_{roi}.txt')
-    #     np.savetxt(pval_filename, cluster_pvals, fmt='%.4f', header=f'Cluster p-values for {analysis} in {roi}')
-    #     print(f"Saved cluster p-values to {pval_filename}")
-
 
     if cluster_pvals: # Check if the list of p-values is not empty
         cluster_stats = []
@@ -236,7 +228,7 @@ print(f"Saved decoding scores to {decoding_fig_fname}.")
 
 
 # --- 6. STATISTICAL ANALYSIS & BAR PLOT (for cross-condition designs) ---
-
+# this is sort of a quick analysis within python; using R for more rigorous stats modelling
 if to_plot.startswith('concreteness_xcond'):
     print("\n--- Running cross-condition interaction analysis ---")
     # Prepare DataFrame for ANOVA
