@@ -23,8 +23,8 @@ decoding_dir = op.join(config.project_repo, 'scripts/analysis/neural/decoding')
 
 color_scheme = {
     'composition': 'Greys',
-    'concreteness': 'Blues',
-    'denotation': 'Reds',
+    'concreteness': 'PuRd',
+    'denotation': 'PuBuGn',
     'concreteness_trainWord_testSub': 'Purples',
     'concreteness_trainWord_testPri': 'Oranges',
     'concreteness_general_testSub': 'Purples',
@@ -38,25 +38,79 @@ color_scheme = {
 }
 
 
-def read_decoding_scores(subjects, analysis, classifier, data_type, window='', roi=None, timegen=False):
+def read_decoding_scores(subjects, analysis, classifier, data_type, window='', roi=None, timegen=False, micro_ave=True):
+    """
+    Reads decoding scores for multiple subjects, constructing the file path dynamically.
+
+    This function builds file paths cleanly, incorporating logic for time-generalization,
+    ROIs, and micro-averaging without repetitive code.
+    
+    Args:
+        subjects (list): List of subject identifiers.
+        analysis (str): The name of the analysis.
+        classifier (str): The classifier used (e.g., 'logistic').
+        data_type (str): The type of data (e.g., 'ROI', 'source').
+        window (str, optional): The windowing strategy. Defaults to ''.
+        roi (str, optional): The Region of Interest. Defaults to None.
+        timegen (bool, optional): True for time-generalization, False for diagonal decoding. Defaults to False.
+        micro_ave (bool, optional): If True, adds a 'micro_ave' directory to the path. Defaults to True.
+
+    Returns:
+        np.ndarray: A stacked numpy array of scores from all found subjects.
+    """
     scores_group = []
-    print(f'Reading decoding scores: {analysis}')
+    print(f'Reading decoding scores for: {analysis} (Micro-averaging: {micro_ave})')
+
+    # 1. Determine the parts of the path that change based on boolean inputs.
+    generalise_folder = 'timegen' if timegen else 'diagonal'
+    file_prefix = 'scores_time_gen' if timegen else 'scores_time_decod'
+    
+    missing_subjects = []
     for subject in subjects:
+        # 2. Build the directory path by adding components to a list.
+        path_parts = [
+            decoding_dir, 'output', analysis, generalise_folder,
+            classifier, data_type, window, subject
+        ]
+
         if roi:
-            if timegen:
-                score_fname = op.join(decoding_dir, f'output/{analysis}/timegen/{classifier}/{data_type}/{window}/{subject}/{roi}/scores_time_gen_ROI_{roi}.npy')
-            else:
-                score_fname = op.join(decoding_dir, f'output/{analysis}/diagonal/{classifier}/{data_type}/{window}/{subject}/{roi}/scores_time_decod_ROI_{roi}.npy')
-        else:
-            if timegen:
-                score_fname = op.join(decoding_dir, f'output/{analysis}/timegen/{classifier}/{data_type}/{window}/{subject}/scores_time_gen_{data_type}.npy')
-            else:
-                score_fname = op.join(decoding_dir, f'output/{analysis}/diagonal/{classifier}/{data_type}/{window}/{subject}/scores_time_decod_{data_type}.npy')
-        if op.exists(score_fname):
+            path_parts.append(roi)
+
+        if micro_ave:
+            path_parts.append('micro_ave')
+
+        # 3. Construct the full directory path from the parts.
+        scores_dir = op.join(*path_parts)
+        
+        # 4. Determine the final filename.
+        file_identifier = f'ROI_{roi}' if roi else data_type
+        filename = f'{file_prefix}_{file_identifier}.npy'
+        
+        score_fname = op.join(scores_dir, filename)
+
+        # 5. Load the file robustly.
+        try:
             scores = np.load(score_fname)
             scores_group.append(scores)
+        except FileNotFoundError:
+            print(f'Scores not found for: {analysis}, {subject}, ROI: {roi}')
+            print(f'--> Looked for: {score_fname}')
+            missing_subjects.append(subject)
+            continue
+
+    # 6. Safely stack the results into a single array.
+    if not scores_group:
+        print(f"\nWARNING: No scores were found for the analysis '{analysis}'. Returning an empty array.\n")
+        return np.array([])
+
     scores_group = np.stack(scores_group, axis=0)
     print('Final data array shape: ', scores_group.shape)
+
+    # 7. Sanity check to see if any participant is missing
+    if len(subjects) != scores_group.shape[0]:
+        print(f"\nWARNING: Not everyone is here! Missing {len(missing_subjects)} subjects: {missing_subjects}.\n")
+        return np.array([])
+
     return scores_group
 
 
@@ -86,7 +140,7 @@ def permutation_tests(scores, timegen=False, against_chance=True, t_threshold=No
                                            seed=42, 
                                            n_jobs=-1,
                                            out_type='mask', 
-                                           verbose=True)
+                                           verbose='INFO')
     else:
         t_obs, clusters, cluster_pv, H0 = \
             spatio_temporal_cluster_1samp_test(scores_diff_group, 
@@ -96,17 +150,21 @@ def permutation_tests(scores, timegen=False, against_chance=True, t_threshold=No
                                                seed=42, 
                                                out_type='mask', 
                                                n_jobs=-1,
-                                               verbose=True)
+                                               verbose='INFO')
     good_cluster_inds = np.where(cluster_pv < 0.1)[0]
     good_cluster_pv = list(filter(lambda x: x < 0.1, cluster_pv))
     print('good clusters p values: ', good_cluster_pv)
     good_clusters = [(clusters[cluster_ind]) for ii, cluster_ind in enumerate(good_cluster_inds)]
     return good_clusters, good_cluster_pv
 
-def plot_scores(ax, scores, analysis, color, chance=0.5):
+def plot_scores(ax, scores, analysis, chance=0.5):
+    color = plt.get_cmap(color_scheme[analysis])(0.75)
     if analysis.split('_')[-1] in ['subsective','privative','testSub','testPri']:
         # times = np.linspace(0.6, 1.4, scores.shape[1])
         # ax.set_xticks(np.arange(0.6, 1.6, 0.2))
+        times = np.linspace(0., 0.8, scores.shape[1])
+        ax.set_xticks(np.arange(0., 0.8, 0.2))
+    elif analysis == 'specificity_word':
         times = np.linspace(0., 0.8, scores.shape[1])
         ax.set_xticks(np.arange(0., 0.8, 0.2))
     else:
@@ -123,27 +181,33 @@ def plot_scores(ax, scores, analysis, color, chance=0.5):
     plt.tight_layout()
     return ax
 
-def plot_clusters(clusters, cluster_pvals, scores, analysis, ax, color):
+def plot_clusters(clusters, cluster_pvals, scores, analysis, ax):
     avg, _ = helper.calculate_avg_sem(scores)
     if analysis.split('_')[-1] in ['subsective','privative','testSub','testPri']:
         # times = np.linspace(0.6, 1.4, scores.shape[1])
         # ax.set_xticks(np.arange(0.6, 1.6, 0.2))
         times = np.linspace(0., 0.8, scores.shape[1])
         ax.set_xticks(np.arange(0., 0.8, 0.2))
+    elif analysis == 'specificity_word':
+        times = np.linspace(0., 0.8, scores.shape[1])
+        ax.set_xticks(np.arange(0., 1.0, 0.2))
     else:
         times = np.linspace(-0.2, 1.4, scores.shape[1])
     for cluster, pval in zip(clusters,cluster_pvals):
         cluster_start = cluster[0].start
         cluster_stop = cluster[0].stop
+        print(f'cluster extent: {round(times[cluster_start],3)}-{round(times[cluster_stop],3)}')
         x = times[cluster_start:cluster_stop]
         y1 = avg[cluster_start:cluster_stop]
         y2 = 0.5
         if pval < 0.05:
-            ax.fill_between(x, y1, y2, color=color, alpha=0.3)
+            color = plt.get_cmap(color_scheme[analysis])(0.75)
+            ax.fill_between(x, y1, y2, color=color, alpha=(0.5))#, zorder=-100)
             ax.plot(x, y1, color=color, linewidth=3)
         else:
-            ax.fill_between(x, y1, y2, color=color, alpha=0.15)
-            ax.plot(x, y1, color=color, linewidth=1.5)
+            color = plt.get_cmap(color_scheme[analysis])(0.75)
+            ax.fill_between(x, y1, y2, color='grey', alpha=(0.5))#, zorder=-100)
+            ax.plot(x, y1, color=color, linewidth=3)
     return ax
 
 def convert_pvalue_to_asterisks(pvalue):

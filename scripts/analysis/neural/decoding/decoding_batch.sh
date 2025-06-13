@@ -6,7 +6,6 @@
 #SBATCH --output=/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding/job_log/job_output.log
 #SBATCH --error=/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding/job_log/job_error.log
 
-
 # specify decoding analysis and classifier
 analysis="$1"
 classifier="$2"
@@ -26,15 +25,21 @@ for subject in "${subjects[@]}"; do
 
     if [ "$data_type" = "ROI" ]; then
 
-        rois=("anteriortemporal-lh" "posteriortemporal-lh" "inferiorfrontal-lh" "temporoparietal-lh" "lateraloccipital-lh" )
+        rois=("anteriortemporal-lh" "posteriortemporal-lh" "inferiorfrontal-lh" "temporoparietal-lh")
 
         for roi in "${rois[@]}"; do
 
             if [ "$generalise" = "generalise" ]; then
             
                 timegen_output_dir="/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding/output/${analysis}/timegen/${classifier}/${data_type}/${window}/sub-${subject}/${roi}"
+                # echo "Target output dir: $timegen_output_dir"
+                if [ "$micro_ave" = "micro_ave" ]; then
+                    timegen_output_dir="${timegen_output_dir}/micro_ave"
+                    # echo "Appended micro_ave to target output dir: $timegen_output_dir"
+                fi
                 
-                if [ ! -e "$timegen_output_dir" ]; then
+
+                if [ ! -d "$timegen_output_dir" ]; then
                     echo "Timegen $data_type $roi output of $analysis does not exist for sub-$subject. Decoding."
                     # sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",generalise="$generalise",spatial="$spatial" decoding_job.sh
                     sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",window="$window",micro_ave="$micro_ave",generalise="$generalise",roi="$roi" decoding_job.sh
@@ -45,8 +50,13 @@ for subject in "${subjects[@]}"; do
             else
             
                 timedecod_output_dir="/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding/output/${analysis}/diagonal/${classifier}/${data_type}/${window}/sub-${subject}/${roi}"
-                
-                if [ ! -e "$timedecod_output_dir" ]; then
+                # echo "Target output dir: $timedecod_output_dir"
+                if [ "$micro_ave" = "micro_ave" ]; then
+                    timedecod_output_dir="${timedecod_output_dir}/micro_ave"
+                    # echo "Appended micro_ave to target output dir: $timedecod_output_dir"
+                fi
+
+                if [ ! -d "$timedecod_output_dir" ]; then
                     echo "Diagonal $data_type $roi decod output of $analysis does not exist for sub-$subject. Decoding."
                     # sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",spatial="$spatial" decoding_job.sh
                     sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",window="$window",micro_ave="$micro_ave",roi="$roi" decoding_job.sh
@@ -63,8 +73,12 @@ for subject in "${subjects[@]}"; do
         if [ "$generalise" = "generalise" ]; then
         
             timegen_output_dir="/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding/output/${analysis}/timegen/${classifier}/${data_type}/${window}/sub-${subject}"
-            
-            if [ ! -e "$timegen_output_dir" ]; then
+            if [ "$micro_ave" = "micro_ave" ]; then
+                timegen_output_dir="${timegen_output_dir}/micro_ave"
+            fi
+            # echo "Target output dir: $timegen_output_dir"
+
+            if [ ! -d "$timegen_output_dir" ]; then
                 echo "Timegen $data_type output of $analysis does not exist for sub-$subject. Decoding."
                 # sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",generalise="$generalise",spatial="$spatial" decoding_job.sh
                 sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",window="$window",micro_ave="$micro_ave",generalise="$generalise" decoding_job.sh
@@ -75,8 +89,12 @@ for subject in "${subjects[@]}"; do
         else
         
             timedecod_output_dir="/imaging/hauk/rl05/fake_diamond/scripts/analysis/neural/decoding/output/${analysis}/diagonal/${classifier}/${data_type}/${window}/sub-${subject}"
+            if [ "$micro_ave" = "micro_ave" ]; then
+                timedecod_output_dir="${timedecod_output_dir}/micro_ave"
+            fi
+            # echo "Target output dir: $timedecod_output_dir"
             
-            if [ ! -e "$timedecod_output_dir" ]; then
+            if [ ! -d "$timedecod_output_dir" ]; then
                 echo "sub-$subject diagonal decod output-$data_type $analysis $window-does not exist. Decoding."
                 # sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",spatial="$spatial" decoding_job.sh
                 sbatch --export=subject="$subject",analysis="$analysis",classifier="$classifier",data_type="$data_type",window="$window",micro_ave="$micro_ave" decoding_job.sh
