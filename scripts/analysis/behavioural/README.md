@@ -1,5 +1,5 @@
 # Fake Diamond: Behavioral Data Analysis (Accuracy & RT)
-This repository contains R scripts for analyzing behavioral data from the "fake diamond" experiment. The analysis uses mixed-effects models to investigate the effects of phrase concreteness and denotation on participant response accuracy and reaction times. . 
+This repository contains R scripts for analyzing behavioral data from the "fake diamond" experiment. The analysis uses mixed-effects models to investigate the effects of phrase concreteness and denotation on participant response accuracy and reaction times. 
 
 ## To run the script
 ```
@@ -7,5 +7,8 @@ This repository contains R scripts for analyzing behavioral data from the "fake 
 module load R/4.3.1 
 
 # Execute the script
-Rscript behavioral_analysis.R
+Rscript 1_group_data.R
+Rscript 2_generate_summaries.R
+Rscript 3_stats_accuracy.R
+Rscript 4_stats_rt.R
 ```
