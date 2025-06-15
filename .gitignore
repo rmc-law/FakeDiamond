@@ -5,6 +5,7 @@
 */.ipynb_checkpoints
 *.docx
 */*.docx
+*/.Rhistory
 CBU\ MEG\ System.txt
 writing
 ppm
