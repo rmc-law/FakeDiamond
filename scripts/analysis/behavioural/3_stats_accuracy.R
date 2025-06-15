@@ -140,19 +140,29 @@ print(r_squared)
 
 # ---- Post-hoc Comparisons: Interaction IS Significant ----
 emm_interaction <- emmeans(final_model_acc, ~ concreteness * denotation)
+em_deno <- emmeans(final_model_acc, ~ denotation) # main effect of denotation only
 
 # Back-transform EMMs
 emm_interaction_response <- summary(emm_interaction, type = "response") 
+em_deno_resp <- summary(em_deno, type = "response")   
 
-# 1. Simple effect of CONCRETENESS within each DENOTATION level
+# Pairwise post-hoc comparisons
+# main effect of denotation
+pairwise_denotation <- contrast(em_deno, method = "pairwise")
+pairwise_denotation_response <- summary(pairwise_denotation, infer = TRUE, type = "response")
+
+# Simple effect of CONCRETENESS within each DENOTATION level
 pairwise_concreteness_by_denotation <- contrast(emm_interaction, 
                                                 method = "pairwise", 
                                                 by = "denotation")
 
-# 2. Simple effect of DENOTATION within each CONCRETENESS level
+# Simple effect of DENOTATION within each CONCRETENESS level
 pairwise_denotation_by_concreteness <- contrast(emm_interaction, 
                                                 method = "pairwise", 
                                                 by = "concreteness")
+
+cat("\n#### Post-hoc: Effect of DENOTATION\n")
+print(pairwise_denotation_response)
 
 cat("\n#### Post-hoc: Effect of CONCRETENESS within each DENOTATION level\n")
 print(pairwise_concreteness_by_denotation)
@@ -171,6 +181,10 @@ result_text <- c(
   capture.output(print(r_squared)),
   "\n----- Estimated Marginal Means of each condition -----\n",
   capture.output(print(emm_interaction_response)),
+  "\n----- EMMs for DENOTATION -----\n",
+  capture.output(print(em_deno_resp)),
+  "\n----- Pairwise CONTRASTS for DENOTATION -----\n",
+  capture.output(print(pairwise_denotation_response)),
   "\n----- Post-hoc: Effect of CONCRETENESS within each DENOTATION -----\n",
   capture.output(print(pairwise_concreteness_by_denotation)),
   "\n----- Post-hoc: Effect of DENOTATION within each CONCRETENESS -----\n",
