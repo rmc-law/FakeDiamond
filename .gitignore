@@ -14,5 +14,7 @@ open\ science
 participant\ testing
 lab\ notebook
 scripts/stimulus_presentation/logs
+scripts/stimulus_presentation/archive
+scripts/stimulus_presentation/figures
 scripts/fix_bem
 scripts/figs
