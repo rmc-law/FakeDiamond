@@ -2,7 +2,6 @@
 # Stats - decoding concreteness in early and late time windows 
 # in privative and subsective phrases
 # Author: Ryan Law
-# Date: Sys.Date()
 # ──────────────────────────────────────────────────────────────
 
 # ---- Setup ----
@@ -86,6 +85,7 @@ for (roi in rois) {
     }
 
     # final_model is now parsimonious yet still justified by your design.
+    print(formula(final_model))
     summary(final_model)
 
     # Summarise model
@@ -130,9 +130,11 @@ for (roi in rois) {
 
     # Aggregate output for summary
     result_text <- c(
-        paste("\n\n############################################################"),
+        paste("############################################################"),
         paste("########## RESULTS FOR:", identifier),
         paste("############################################################\n"),
+        "\n----- Chosen model -----\n",
+        capture.output(print(formula(final_model))),
         "\n----- ANOVA Results (Type III with Satterthwaite's method) -----\n",
         capture.output(print(summary_anova)),
         "\n----- R-squared (Nakagawa & Schielzeth) -----\n",

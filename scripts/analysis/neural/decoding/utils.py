@@ -9,8 +9,9 @@ Created on Tue Mar 19 15:01:09 2024
 import os.path as op
 import numpy as np
 import yaml
-from itertools import compress
+from itertools import compress, combinations
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import LabelEncoder, RobustScaler
@@ -83,12 +84,40 @@ def sliding_window_average(X, window_size, step, sfreq):
     
     return output
 
-def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False, window='single'):
+def micro_average(X, Y, nb_ave, analysis):
+    # classes = np.unique(Y)
+    if analysis == 'specificity_word':
+        classes = np.array([0,2],dtype='int32')
+    else:
+        classes = np.array([0,1],dtype='int32')
+    _X, _Y = [], [] # Final X and Y
+    print('number of total trials: ',len(X))
+    for clas in classes: # loop over classes
+        _x, _y = X[Y==clas], Y[Y==clas] # single class X and Y
+        print('number of trials in condition ', clas, 'is', len(_x))
+        if _x.shape[0] % 2 == 0: # check if number of trials in a condition is even
+            for i in tqdm(range(0, _x.shape[0], nb_ave)): 
+                comb_x = np.mean(_x[i:i+nb_ave], axis=0) # average pairs of trials in each condition
+                _X.append(comb_x)
+                _Y.append(clas)
+        else: # If odd, loop through the array in steps of 2 for all but the last row
+            for i in tqdm(range(0, _x.shape[0] - 1, nb_ave)): 
+                comb_x = np.mean(_x[i:i+nb_ave], axis=0) # Average the current pair of rows
+                _X.append(comb_x) 
+                _Y.append(clas)
+            last_row = _x[-1]
+            _X.append(last_row)
+            _Y.append(clas)
+    print('number of total new virtual trials: ', len(_X))
+    return np.asarray(_X), np.asarray(_Y)
+
+
+def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False, window='single', micro_averaging=False):
     # input data and events both contain all trials
     
     if spatial:
         X = np.stack([stc._data for stc in trials]) # stc data for all trials
-        if analysis_name.startswith('denotation_cross_condition') or analysis_name.startswith('concreteness_'):
+        if analysis_name.startswith('denotation_cross_condition') or analysis_name.startswith('concreteness_') or analysis_name.startswith('specificity_word'):
             if X[0].shape[1] == 160:
                 X = X[:,:,80:] # only analyse second word for this analysis
     else:
@@ -101,7 +130,10 @@ def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False, 
         X = trials.get_data()
         
     if window == 'sliding': # implement sliding window analysis
-        X = sliding_window_average(X, window_size=50, step=10, sfreq=100)
+        if analysis_name == 'specificity_word':
+            X = sliding_window_average(X, window_size=50, step=10, sfreq=100)
+        else:
+            X = sliding_window_average(X, window_size=50, step=10, sfreq=100)
         
     target_contrasts, conditions_to_merge = get_contrasts(config, analysis_name)
     events = merge_contrast_events(events, target_contrasts, conditions_to_merge)        
@@ -116,6 +148,13 @@ def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False, 
     X = np.array(list(compress(X, mask_experiment)))
     y = np.array(list(compress(y, mask_experiment)))
     assert len(X) == len(y)
+
+    # X_microaveraged = np.zeros((X.shape[0],X.shape[1],X.shape[2]))
+    # if microaveraging:
+    #     if analysis_name == 'composition':
+    #         for set_nr in metadata.set_nr.values(): # get stimulus set number
+    #             mask_set = ((metadata.set_nr == set_nr) & (metadata.experiment == 'compose') & (metadata.concreteness == 'concrete')).values # make mask
+    #             X = np.array(list(compress(X, mask_experiment))) # then average neural responses within a set 
 
     if analysis_name == 'composition':
         mask_remove_privative = [not t for t in (metadata.denotation=='privative').values] # define composition as subsective>baseline
@@ -140,9 +179,6 @@ def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False, 
         X = (X_train, X_test)
         y = (y_train, y_test)
     elif analysis_name.startswith('concreteness_general'):
-        mask_get_word = (metadata.denotation=='baseline').values # get single words
-        X_word = X[mask_get_word]
-        y_word = y[mask_get_word]
         n_splits = 10
         cv = StratifiedKFold(shuffle=True, n_splits=n_splits, random_state=42)
         # get train-test splits for subsective trials
@@ -152,12 +188,10 @@ def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False, 
         X_sub_train, X_sub_test = [], []
         y_sub_train, y_sub_test = [], []
         for train_index, test_index in cv.split(X_sub, y_sub):
-            X_sub_train_split, X_sub_test_split = X_sub[train_index], X_sub[test_index]
-            X_sub_train.append(X_sub_train_split)
-            X_sub_test.append(X_sub_test_split)
-            y_sub_train_split, y_sub_test_split = y_sub[train_index], y_sub[test_index]
-            y_sub_train.append(y_sub_train_split)
-            y_sub_test.append(y_sub_test_split)
+            X_sub_train.append(X_sub[train_index])
+            X_sub_test.append(X_sub[test_index])
+            y_sub_train.append(y_sub[train_index])
+            y_sub_test.append(y_sub[test_index])
         # get train-test splits for privative trials
         mask_get_privative = (metadata.denotation=='privative').values # get private trials
         X_pri = X[mask_get_privative]
@@ -165,38 +199,31 @@ def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False, 
         X_pri_train, X_pri_test = [], []
         y_pri_train, y_pri_test = [], []
         for train_index, test_index in cv.split(X_pri, y_pri):
-            X_pri_train_split, X_pri_test_split = X_pri[train_index], X_pri[test_index]
-            y_pri_train_split, y_pri_test_split = y_pri[train_index], y_pri[test_index]
-            X_pri_train.append(X_pri_train_split)
-            X_pri_test.append(X_pri_test_split)
-            y_pri_train.append(y_pri_train_split)
-            y_pri_test.append(y_pri_test_split)
+            X_pri_train.append(X_pri[train_index])
+            X_pri_test.append(X_pri[test_index])
+            y_pri_train.append(y_pri[train_index])
+            y_pri_test.append(y_pri[test_index])
         X_train, X_test = [], []
         y_train, y_test = [], []
         for i in range(n_splits):
             print('split', i+1)
-            X_train.append(np.concatenate((X_word, X_sub_train[i], X_pri_train[i]), axis=0))
-            print('len y_word', len(y_word))
-            print(y_word)
-            print('len y_sub_train', len(y_sub_train[i]))
-            print(y_sub_train[i])
-            print('len y_pri_train', len(y_pri_train[i]))
-            print(y_pri_train[i])
-            y_train.append(np.concatenate((y_word, y_sub_train[i], y_pri_train[i]), axis=0))
-
+            # training a general decoder, which has both subsective and privative training trials in it
+            X_train.append(np.concatenate((X_sub_train[i], X_pri_train[i]), axis=0)) 
+            y_train.append(np.concatenate((y_sub_train[i], y_pri_train[i]), axis=0))
+            # X_train.append(X_sub_train[i])
+            # X_train.append(X_pri_train[i]) 
+            # y_train.append(y_sub_train[i])
+            # y_train.append(y_pri_train[i])
+            # testing heldout subsective and privative separately
             if analysis_name.endswith('testSub'):
                 X_test.append(X_sub_test[i])
                 y_test.append(y_sub_test[i])
             if analysis_name.endswith('testPri'):
                 X_test.append(X_pri_test[i])
                 y_test.append(y_pri_test[i])
-        print(y_test)
         X = (X_train, X_test)
         y = (y_train, y_test)
     elif analysis_name.endswith(('trainSub_testSub','trainSub_testPri','trainPri_testSub','trainPri_testPri')):
-        # mask_get_word = (metadata.denotation=='baseline').values # get single words
-        # X_word = X[mask_get_word]
-        # y_word = y[mask_get_word]
         n_splits = 10
         cv = StratifiedKFold(shuffle=True, n_splits=n_splits, random_state=42)
         # get train-test splits for subsective trials
@@ -206,12 +233,10 @@ def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False, 
         X_sub_train, X_sub_test = [], []
         y_sub_train, y_sub_test = [], []
         for train_index, test_index in cv.split(X_sub, y_sub):
-            X_sub_train_split, X_sub_test_split = X_sub[train_index], X_sub[test_index]
-            X_sub_train.append(X_sub_train_split)
-            X_sub_test.append(X_sub_test_split)
-            y_sub_train_split, y_sub_test_split = y_sub[train_index], y_sub[test_index]
-            y_sub_train.append(y_sub_train_split)
-            y_sub_test.append(y_sub_test_split)
+            X_sub_train.append(X_sub[train_index])
+            X_sub_test.append(X_sub[test_index])
+            y_sub_train.append(y_sub[train_index])
+            y_sub_test.append(y_sub[test_index])
         # get train-test splits for privative trials
         mask_get_privative = (metadata.denotation=='privative').values # get private trials
         X_pri = X[mask_get_privative]
@@ -219,19 +244,15 @@ def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False, 
         X_pri_train, X_pri_test = [], []
         y_pri_train, y_pri_test = [], []
         for train_index, test_index in cv.split(X_pri, y_pri):
-            X_pri_train_split, X_pri_test_split = X_pri[train_index], X_pri[test_index]
-            y_pri_train_split, y_pri_test_split = y_pri[train_index], y_pri[test_index]
-            X_pri_train.append(X_pri_train_split)
-            X_pri_test.append(X_pri_test_split)
-            y_pri_train.append(y_pri_train_split)
-            y_pri_test.append(y_pri_test_split)
+            X_pri_train.append(X_pri[train_index])
+            X_pri_test.append(X_pri[test_index])
+            y_pri_train.append(y_pri[train_index])
+            y_pri_test.append(y_pri[test_index])
         X_train, X_test = [], []
         y_train, y_test = [], []
         if analysis_name.startswith('concreteness_trainSub'):
             for i in range(n_splits):
                 print('split', i+1)
-                # X_train.append(np.concatenate((X_word, X_sub_train[i]), axis=0))
-                # y_train.append(np.concatenate((y_word, y_sub_train[i]), axis=0))
                 X_train.append(X_sub_train[i])
                 y_train.append(y_sub_train[i])
                 if analysis_name.endswith('testSub'):
@@ -243,8 +264,6 @@ def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False, 
         elif analysis_name.startswith('concreteness_trainPri'):
             for i in range(n_splits):
                 print('split', i+1)
-                # X_train.append(np.concatenate((X_word, X_pri_train[i]), axis=0))
-                # y_train.append(np.concatenate((y_word, y_pri_train[i]), axis=0))
                 X_train.append(X_pri_train[i])
                 y_train.append(y_pri_train[i])
                 if analysis_name.endswith('testSub'):
@@ -259,6 +278,44 @@ def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False, 
         mask_remove_mid = [not t for t in (metadata.specificity=='mid').values]
         X = X[mask_remove_mid]
         y = y[mask_remove_mid]
+
+    if micro_averaging:
+        print('Performing micro-averaging.')
+        if analysis_name.startswith('concreteness_trainWord'):
+            nb_ave = 2 # do a small amount of averaging
+            _X, _Y = [], []
+            for i, _ in enumerate(['train','test']):
+                _x, _y = micro_average(X[i], y[i], nb_ave=nb_ave, analysis=analysis_name)
+                _X.append(_x)
+                _Y.append(_y)
+            X = _X
+            y = _Y
+        if analysis_name.startswith('concreteness_general'):
+            nb_ave = 2 # do a small amount of averaging
+            n_splits = 10
+            _X_train, _Y_train = [], []
+            _X_test, _Y_test = [], []
+            for j in range(n_splits): # micro-averaging within train splits
+                print('split', i+1)
+                _x, _y = micro_average(X[0][j], y[0][j], nb_ave=nb_ave, analysis=analysis_name) # X[0] is the train data
+                _X_train.append(_x)
+                _Y_train.append(_y)
+            for j in range(n_splits): # micro-averaging within test splits
+                print('split', i+1)
+                _x, _y = micro_average(X[1][j], y[1][j], nb_ave=nb_ave, analysis=analysis_name) # X[1] is the train data
+                _X_test.append(_x)
+                _Y_test.append(_y)
+            X = (_X_train, _X_test)
+            y = (_Y_train, _Y_test)
+        else:
+            if analysis_name == 'concreteness':
+                nb_ave = 3 # average over 3 denotation levels
+            elif analysis_name == 'denotation':
+                nb_ave = 2 # average over 2 denotation levels
+            elif analysis_name == 'specificity_word':
+                nb_ave = 4
+            X, y = micro_average(X, y, nb_ave=nb_ave, analysis=analysis_name) # average together 2 or 3 trials to get better SNR
+
     return X, y
 
 
@@ -268,7 +325,10 @@ def get_analysis_X_y(trials, events, metadata, analysis_name='', spatial=False, 
 
 def choose_pipelines(classifier='', analysis=''):
     if classifier == 'logistic':
-        clf = LogisticRegression(solver='liblinear', class_weight='balanced', multi_class='auto', max_iter=10000)
+        if analysis.startswith('specificity'):
+            clf = LogisticRegression(penalty='l2', solver='liblinear', class_weight='balanced', multi_class='auto', max_iter=10000)
+        else:
+            clf = LogisticRegression(penalty='l2', solver='liblinear', class_weight='balanced', multi_class='auto', max_iter=10000)
         clf = make_pipeline(RobustScaler(), LinearModel(clf))
     elif classifier == 'svc':
         clf = make_pipeline(RobustScaler(), LinearModel(SVC(kernel='linear')))
@@ -283,21 +343,28 @@ def choose_scorer(analysis=''):
         scorer = 'roc_auc'
     return scorer
 
+def choose_cv(analysis=''):
+    if analysis == 'specificity_word':
+        cv = StratifiedKFold(shuffle=True, n_splits=10, random_state=42) 
+    else:
+        cv = StratifiedKFold(shuffle=True, n_splits=10, random_state=42) 
+    return cv
+
 def decode_diagonal(X, y, analysis='', classifier=''):
-    clf = choose_pipelines(classifier=classifier, analysis=analysis)
-    scorer = choose_scorer(analysis=analysis)
+    clf = choose_pipelines(classifier, analysis)
+    scorer = choose_scorer(analysis)
     time_decod = SlidingEstimator(clf, scoring=scorer, verbose=True)
-    cv = StratifiedKFold(shuffle=True, n_splits=10, random_state=42) 
+    cv = choose_cv(analysis)
     scores = cross_val_multiscore(time_decod, X, y, cv=cv) 
     time_decod.fit(X, y) # retrieve spatial patterns and spatial filters for interpretability
     coef = get_coef(time_decod, 'patterns_', inverse_transform=True)
     return scores, coef
 
 def decode_generalise(X, y, analysis='', classifier=''):
-    clf = choose_pipelines(classifier=classifier)
-    scorer = choose_scorer(analysis=analysis)
+    clf = choose_pipelines(classifier, analysis)
+    scorer = choose_scorer(analysis)
     time_gen = GeneralizingEstimator(clf, scoring=scorer, verbose=True)
-    cv = StratifiedKFold(shuffle=True, n_splits=10, random_state=42) 
+    cv = choose_cv(analysis)
     scores = cross_val_multiscore(time_gen, X, y, cv=cv)
     return scores
 
