@@ -16,5 +16,12 @@ lab\ notebook
 scripts/stimulus_presentation/logs
 scripts/stimulus_presentation/archive
 scripts/stimulus_presentation/figures
+scripts/analysis/parcellations
 scripts/fix_bem
 scripts/figs
+scripts/analysis/fsaverage_surf
+results
+review
+admin
+backup
+**/archive
