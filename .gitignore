@@ -6,13 +6,6 @@
 *.docx
 */*.docx
 */.Rhistory
-CBU\ MEG\ System.txt
-writing
-ppm
-meg\ protocol
-open\ science
-participant\ testing
-lab\ notebook
 scripts/stimulus_presentation/logs
 scripts/stimulus_presentation/archive
 scripts/stimulus_presentation/figures
