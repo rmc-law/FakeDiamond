@@ -6,6 +6,11 @@
 *.docx
 */*.docx
 */.Rhistory
+*/renv/
+*/.Rproj.user
+*/.Rhistory
+*/.Rdata
+*/.Rprofile
 scripts/stimulus_presentation/logs
 scripts/stimulus_presentation/archive
 scripts/stimulus_presentation/figures
@@ -18,3 +23,4 @@ review
 admin
 backup
 **/archive
+**/working_remotely.txt

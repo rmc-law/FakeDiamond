@@ -71,6 +71,7 @@ map_subjects_meg = {
         '34': ('meg24_039', '240130'),
         '35': ('meg24_042', '240201'),
         '36': ('meg24_064', '240221'),
+        # '37': ('meg24_149', '240724') # for work experience student
     }
 
 # subject names of MRI data

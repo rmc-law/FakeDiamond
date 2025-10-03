@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 
 import mne
+from mne.event import _mask_trigs
 # from mne.viz import tight_layout
 
 from autoreject import Ransac  # noqa
@@ -80,10 +81,11 @@ def copy_log_files(project, subject):
 def read_raws(preprocessed_data_path, subject, runs):
     print('Reading raws from all runs.')
     raws = []
-    for run in runs:
-        # print('run', run)
+    for run in runs:            
         raw_sss_fname = op.join(preprocessed_data_path, subject, 'maxfiltered', f'run-{run}', f'run{run}_sss_raw.fif')
         raw = mne.io.read_raw_fif(raw_sss_fname, verbose=False)
+        if subject == 'sub-09' and run == 1:
+            raw.crop(tmin=35.) # this subject has an extra event due to a restart in the stim pres but not the data recording
         picks = mne.pick_types(raw.info, meg=True, eeg=True, stim=True, eog=True, chpi=False)
         raw = raw.pick(picks)
         raws.append(raw)
@@ -161,7 +163,7 @@ def plot_noisy_channel_detection(auto_scores, ch_type):
 def find_semantic_events(raw, subject='', semantic_triggers=''):
     print('Finding semantic events.')
     events = mne.find_events(raw, stim_channel='STI101', min_duration=0.002, 
-                         initial_event=True, verbose=False)
+                         initial_event=True, verbose=True)
     events_semantic = mne.pick_events(events, include=semantic_triggers)
     if subject == 'sub-35':
         # manually add an event because participant pressed on button box through these trials
@@ -172,31 +174,38 @@ def find_semantic_events(raw, subject='', semantic_triggers=''):
         events_semantic = events_added[sort_indices]
     if len(events_semantic) < 900:
         try:
-        #     print('Not finding 900 semantic events. Tring unit_cast method.')
-        #     events = mne.find_events(raw, stim_channel='STI101', min_duration=0.002, 
-        #                              uint_cast=True, verbose=False)
-        #     events_semantic = mne.pick_events(events, include=semantic_triggers)
-        #     assert(len(events_semantic) == 900)
-        # except AssertionError:
-        #     print('Not finding 900 semantic events. Tring consecutive=True.')
-        #     events = mne.find_events(raw, stim_channel='STI101', min_duration=0.002, 
-        #                              verbose=True, consecutive=False)
-        #     events_semantic = mne.pick_events(events, include=semantic_triggers)
-        #     assert(len(events_semantic) == 900)
-        # except AssertionError:
             print('Not finding 900 semantic events. Trying a mask.')
             events = mne.find_events(raw, stim_channel='STI101', min_duration=0.002, 
-                                     mask=8192, mask_type='not_and', verbose=False)
+                                     mask=8192, mask_type='not_and', verbose=True, uint_cast=True)
             events_semantic = mne.pick_events(events, include=semantic_triggers)
             assert(len(events_semantic) == 900)
         except AssertionError:
-            print('Not finding 900 semantic events. Trying another mask.')
-            events = mne.find_events(raw, stim_channel='STI101', min_duration=0.002, 
-                                     mask=512, mask_type='not_and', verbose=False)
-            events_semantic = mne.pick_events(events, include=semantic_triggers)
-            assert(len(events_semantic) == 900)
-        finally:
-            print(f'Found {len(events_semantic)} semantic events.')
+            try:
+                print('Not finding 900 semantic events. Trying another mask.')
+                events = mne.find_events(raw, stim_channel='STI101', min_duration=0.002, 
+                                         mask=512, mask_type='not_and', verbose=False)
+                events_semantic = mne.pick_events(events, include=semantic_triggers)
+                assert(len(events_semantic) == 900)
+            except AssertionError:
+                try:
+                    print('Not finding 900 semantic events. Trying another mask.')
+                    events = mne.find_events(raw, stim_channel='STI101', min_duration=0.002, 
+                                         initial_event=True, verbose=True)
+                    mask_type = 'not_and'
+                    events = _mask_trigs(_mask_trigs(_mask_trigs(events, 512, mask_type), 4096, mask_type), 8192, mask_type)
+                    events_semantic = mne.pick_events(events, include=semantic_triggers)
+                    assert(len(events_semantic) == 900)
+                except AssertionError:
+                    try:
+                        print('Not finding 900 semantic events. Trying another mask.')
+                        events = mne.find_events(raw, stim_channel='STI101', min_duration=0.002, 
+                                             initial_event=True, verbose=True, uint_cast=True)
+                        mask_type = 'not_and'
+                        events = _mask_trigs(_mask_trigs(_mask_trigs(_mask_trigs(events, 512, mask_type), 4096, mask_type), 8192, mask_type), 32768, mask_type)
+                        events_semantic = mne.pick_events(events, include=semantic_triggers)
+                        assert(len(events_semantic) == 900)
+                    finally:
+                        print(f'Found {len(events_semantic)} semantic events.')
     return events_semantic
 
 def correct_display_delay(events_semantic, events_photodiode):
