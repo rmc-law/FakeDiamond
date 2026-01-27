@@ -1,50 +1,29 @@
 # MEG-MRI preprocessing pipeline (2023-09-08, RMCL)
+The preprocessing pipeline uses MNE-Python (v1.4.2) to transform raw MEG/EEG sensor data into cortical source estimates. It integrates concurrent 306-channel MEG, 64-channel EEG, and structural MRI.
 
-## Summary of MRI preprocessing pipeline
-0. Convert DICOM images to NIFTI format: `00_setup_subject.py`
-1. Reconstruct cortical surfaces: `cd mri` then `./01_recon_all_batch.sh`
-2. Create BEM meshes: `./02_watershed_bem_batch.sh`
-3. Coregister MEG and MRI data: 
+## Execution order
+
+### MEG-EEG steps
+1. `00_setup_subject.py` & `00_organise_logfiles.py`: Standardises the directory structure and prepares participant metadata.
+2. `01_maxfilter_batch.sh`: Performs Maxwell filtering (SSS) and head movement compensation for noise reduction.
+3. `02_preprocess_data.py`: Handles filtering (0.1–40 Hz), ICA-based artifact rejection, and automated trial rejection via autoreject.
+4. `03_noise_cov.py`: Estimates the noise covariance matrix from the pre-stimulus baseline.
+5. `04_forward_solution.py`: Constructs a three-layer boundary element model (BEM) and computes the gain matrix.
+6. `05_inverse_solution.py`: Assembles the L2-MNE inverse operator.
+7. `06_source_estimation.py`: Projects sensor data to a common cortical space (fsaverage) for group analysis.
+
+### MRI steps
+1. `00_setup_subject.py`: Converts DICOM images to NIFTI format
+2. `01_recon_all_batch.sh`: Reconstructs cortical surfaces
+3. `02_watershed_bem_batch.sh`: Creates BEM meshes
+4. Coregister MEG and MRI data: 
     ```
     conda activate mne1.4.2
     module load mnelib
     mne coreg
     # save sub-xx_trans.fif in subjects_dir
     ```
-## Summary of MEG preprocessing pipeline
-0. Convert MEG data to MNE-BIDS format: `00_setup_subject.py`
-1. Separate distal sources from biological sources: `01_maxfilter_batch.sh`
-2. Suppress artifact and segment continuous data: `02_preprocess_data.py`
-    - bandpass filter 0.1-40 Hz (FIR, Hamming window)
-    - ica to remove eye-related components (~2-3 componets) (not heart-related components)
-    - correct for delay between trigger and display via photodiode
-    - segment continuous data into epochs
-    - downsample to 250 Hz
-    - use `autoreject` to determine amplitude rejection threshold
-3. Calculate noise covariance matrices: `03_noise_cov.py`
-4. Calculate forward solution: `04_forward_solution.py`
-5. Calculate inverse solution: `05_inverse_solution.py`
-6. Estimate sources: `06_source_estimation.py`
 
-***
-
-## Summary of behavioural preprocessing pipeline
-```
-cd /imaging/hauk/rl05/fake_diamond/scripts/preprocessing/
-python 00_organise_logfiles.py
-cd ../analysis/behavioural
-jupyter notebook -> lme_rt.ipynb
-```
-To access jupyter notebook within a VNC session:
-```
-conda activate mne1.4.2
-cd /imaging/hauk/rl05/fake_diamond/
-jupyter notebook
-```
-To access jupyter notebook outside VNC session (e.g., on a local browser):
-1. Find IP of login node locally: `ifconfig | grep 172.31.120 | awk '{print $2}'`
-2. Launch jupyter notebook within VNC `jupyter-notebook --ip [insert IP] --no-browser
-3. Access notebok `http://login-j02.mrc-cbu.cam.ac.uk:<port>` or `http://<IP address>:<port>` 
 
 ## 1. Convert dicom to nifti
 
