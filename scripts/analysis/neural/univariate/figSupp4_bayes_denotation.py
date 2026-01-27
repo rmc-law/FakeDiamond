@@ -32,28 +32,28 @@ figures_dir  = op.join(config.project_repo, f'figures/paper/')
 
 # 3. SET UP FIGURE 
 mosaic = [
-    ['A','A','B','B'],
-    ['.','C','C','.']]
+    ['.','A','A','.']]
 fig, ax_dict = plt.subplot_mosaic(
     mosaic,  # Specify the layout of subplots using the mosaic parameter
-    figsize=(fig_constants.FIG_WIDTH, 3.5),  # Set the size of the figure in inches
+    figsize=(fig_constants.FIG_WIDTH, 2),  # Set the size of the figure in inches
     dpi=300,  # Set the resolution of the figure in dots per inch
     constrained_layout=True,  # Enable constrained layout for automatic adjustment
     # sharey='row',
     gridspec_kw={
-        'height_ratios': [1,1], # Set the relative heights of the rows
+        'height_ratios': [1], # Set the relative heights of the rows
         'width_ratios': [1,1,1,1], # Set the relative widths of the columns
         'wspace': 0.001,
         'hspace': 0.005}
 )
 
-hemis = ['lh', 'rh', 'lh']
-analyses = ['composition','composition','denotation']
-rois = ['anteriortemporal-lh', 'anteriortemporal-rh', 'anteriortemporal-lh']
-subplot_labels = ['A','B','C']
+hemis = ['lh']
+analyses = ['denotation']
+rois = ['anteriortemporal-lh']
+rois_names = ['left anterior temporal lobe']
+subplot_labels = ['A']
 times = np.linspace(0.0, 0.8, 200)
 
-for analysis, hemi, roi, subplot_label in zip(analyses, hemis, rois, subplot_labels):
+for analysis, hemi, roi, roi_name, subplot_label in zip(analyses, hemis, rois, rois_names, subplot_labels):
     axis = ax_dict[subplot_label]
     bf_dir = f'/imaging/hauk/rl05/fake_diamond/results/neural/bayes/{analysis}'
     bf_ts_fname = os.path.join(bf_dir, f'bayes_factor_time_series_{hemi}.csv')
@@ -77,7 +77,7 @@ for analysis, hemi, roi, subplot_label in zip(analyses, hemis, rois, subplot_lab
     axis.set_xlim(0., 0.8)
     axis.set_xticks([0., 0.2, 0.4, 0.6, 0.8])
     axis.set_xlabel('Time (s)')
-    axis.title.set_text(roi)
+    axis.title.set_text(roi_name)
     if subplot_label in ['A','C']:
         axis.set_ylabel('Bayes Factor\n(log scale)')
     axis.set_yscale('log')
@@ -89,23 +89,45 @@ for analysis, hemi, roi, subplot_label in zip(analyses, hemis, rois, subplot_lab
         axis.legend(loc='lower right', fontsize='x-small')
     
     # add brain model inset
-    imgA = mpimg.imread(f'/imaging/hauk/rl05/fake_diamond/figures/labels/fig_roi_label_{roi}_silver.png')
-    imagebox = OffsetImage(imgA, zoom=0.03)  # adjust zoom as needed
-    ab = AnnotationBbox(
-        imagebox,
-        xy=(1.0, 1.0),             # upper-right in axis coordinates
-        xycoords='axes fraction', # interpret xy as relative to axes
-        box_alignment=(1., 1.),     # align image top-right
-        frameon=False             # no border around image
-    )
-    axis.add_artist(ab)
+    if roi.endswith('both'):
+        imgA = mpimg.imread('/imaging/hauk/rl05/fake_diamond/figures/labels/fig_roi_label_anteriortemporal-lh_silver.png')
+        imagebox = OffsetImage(imgA, zoom=0.03)  # adjust zoom as needed
+        ab = AnnotationBbox(
+            imagebox,
+            xy=(0.9, 1.0),             # upper-right in axis coordinates
+            xycoords='axes fraction', # interpret xy as relative to axes
+            box_alignment=(1, 1),     # align image top-right
+            frameon=False             # no border around image
+        )
+        axis.add_artist(ab)
+        imgA = mpimg.imread('/imaging/hauk/rl05/fake_diamond/figures/labels/fig_roi_label_anteriortemporal-rh_silver.png')
+        imagebox = OffsetImage(imgA, zoom=0.03)  # adjust zoom as needed
+        ab = AnnotationBbox(
+            imagebox,
+            xy=(1.0, 1.0),             # upper-right in axis coordinates
+            xycoords='axes fraction', # interpret xy as relative to axes
+            box_alignment=(1, 1),     # align image top-right
+            frameon=False             # no border around image
+        )
+        axis.add_artist(ab)
+    else:
+        imgA = mpimg.imread(f'/imaging/hauk/rl05/fake_diamond/figures/labels/fig_roi_label_{roi}_silver.png')
+        imagebox = OffsetImage(imgA, zoom=0.03)  # adjust zoom as needed
+        ab = AnnotationBbox(
+            imagebox,
+            xy=(1.0, 1.0),             # upper-right in axis coordinates
+            xycoords='axes fraction', # interpret xy as relative to axes
+            box_alignment=(1., 1.),     # align image top-right
+            frameon=False             # no border around image
+        )
+        axis.add_artist(ab)
 
 fh.label_panels_mosaic(fig, ax_dict, size = 14)
 
 # plt.suptitle('Main effect of composition in anterior temporal lobe', fontweight='bold')
 
 # 9. FINALIZE & SAVE
-out_fname = op.join(figures_dir, 'figSupp3_bayes.png')
+out_fname = op.join(figures_dir, 'figSupp4_bayes_denotation.png')
 plt.savefig(out_fname, dpi=300)
 plt.close()
 print(f"Saved combined figure to {out_fname}.")

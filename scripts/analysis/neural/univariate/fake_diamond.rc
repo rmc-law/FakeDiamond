@@ -16,5 +16,3 @@ xtick.major.size: 6
 ytick.major.size: 6
 xtick.major.width: 1
 ytick.major.width: 1
-
-font.family: Arial
