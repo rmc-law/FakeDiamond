@@ -91,6 +91,7 @@ def read_decoding_scores(subjects, analysis, classifier, data_type, window='', r
         # 5. Load the file robustly.
         try:
             scores = np.load(score_fname)
+            print(scores.shape)
             scores_group.append(scores)
         except FileNotFoundError:
             print(f'Scores not found for: {analysis}, {subject}, ROI: {roi}')
@@ -130,6 +131,9 @@ def permutation_tests(scores, timegen=False, against_chance=True, t_threshold=No
         p_val = 0.05
         df = n_subjects - 1  # degrees of freedom for the test
         t_threshold = t.ppf(1 - p_val, df) # one-tailed t-threshold
+        print(f'Computed t-threshold based on number of subjects. df = {df}, t threshold = {t_threshold}')
+    # if len(scores_diff_group.shape) == 2:
+    #     scores_diff_group = scores_diff_group.reshape(-1, 1)
     print(t_threshold)
     if timegen is False:
         t_obs, clusters, cluster_pv, H0 = \
@@ -157,28 +161,98 @@ def permutation_tests(scores, timegen=False, against_chance=True, t_threshold=No
     good_clusters = [(clusters[cluster_ind]) for ii, cluster_ind in enumerate(good_cluster_inds)]
     return good_clusters, good_cluster_pv
 
+# def permutation_test_single_subj(scores: np.ndarray, t_threshold: float = None, p_val_cluster_alpha: float = 0.05):
+#     """
+#     Performs a single-subject permutation cluster test for temporal generalization matrices.
+#     Tests against a chance level of 0.5.
+
+#     Parameters
+#     ----------
+#     scores : numpy.ndarray
+#         2D array (n_test_times, n_train_times) representing the single subject's
+#         temporal generalization decoding accuracy matrix.
+#     t_threshold : float | None
+#         The threshold for the test statistic to form clusters.
+#         If None, defaults to 0.0, meaning any positive deviation from chance
+#         contributes to a cluster.
+#     p_val_cluster_alpha : float
+#         The alpha level for cluster significance (e.g., 0.05 or 0.1).
+
+#     Returns
+#     -------
+#     good_clusters : list of numpy.ndarray
+#         List of boolean masks, one for each significant cluster.
+#     good_cluster_pv : list of float
+#         List of p-values for the significant clusters.
+#     t_obs : numpy.ndarray
+#         The observed test statistic map (e.g., t-values).
+#     """
+#     if scores.ndim != 2:
+#         raise ValueError("Input `scores` for single subject must be a 2D array "
+#                          "(n_test_times, n_train_times).")
+
+#     # Subtract chance level (0.5) from scores
+#     scores_diff = scores - 0.5
+
+#     # Reshape for MNE's spatio_temporal_cluster_1samp_test: (n_observations, n_vertices, n_times)
+#     # Here, n_observations = 1, n_vertices = n_test_times, n_times = n_train_times
+#     data_for_test = scores_diff[np.newaxis, :, :]
+
+#     # Determine t_threshold if not provided
+#     current_t_threshold = t_threshold
+#     if current_t_threshold is None:
+#         current_t_threshold = 0.0
+#         print("Single-subject permutation_test_single_subj: Using default t_threshold of 0.0 "
+#               "(any positive difference from chance).")
+#     else:
+#         print(f"Single-subject permutation_test_single_subj: Using provided t_threshold: {current_t_threshold:.3f}")
+
+#     # As requested, connectivity is None. This means clustering will occur along
+#     # the 'train_time' axis for each 'test_time' point independently.
+#     # If 2D clustering across the entire temporal generalization matrix is desired,
+#     # a connectivity matrix would need to be provided (e.g., using mne.stats.spatio_temporal_connectivity_from_sensors_adjacency).
+#     connectivity = None
+
+#     t_obs, clusters, cluster_pv, H0 = \
+#         spatio_temporal_cluster_1samp_test(data_for_test,
+#                                                      threshold=current_t_threshold,
+#                                                      tail=1, # One-tailed test (accuracy > chance)
+#                                                      n_permutations=5000,
+#                                                      seed=42,
+#                                                      out_type='mask',
+#                                                      n_jobs=-1,
+#                                                      verbose='INFO')
+
+#     good_cluster_inds = np.where(cluster_pv < p_val_cluster_alpha)[0]
+#     good_cluster_pv = [cluster_pv[ind] for ind in good_cluster_inds]
+#     print(f'Found {len(good_cluster_inds)} significant clusters (p < {p_val_cluster_alpha}): ', [f"{p:.4f}" for p in good_cluster_pv])
+
+#     # good_clusters will contain boolean masks for the original (n_vertices, n_times) shape
+#     good_clusters = [(clusters[cluster_ind]) for cluster_ind in good_cluster_inds]
+#     return good_clusters, good_cluster_pv, t_obs
+
 def plot_scores(ax, scores, analysis, chance=0.5):
     color = plt.get_cmap(color_scheme[analysis])(0.75)
     if analysis.split('_')[-1] in ['subsective','privative','testSub','testPri']:
         # times = np.linspace(0.6, 1.4, scores.shape[1])
         # ax.set_xticks(np.arange(0.6, 1.6, 0.2))
         times = np.linspace(0., 0.8, scores.shape[1])
-        ax.set_xticks(np.arange(0., 0.8, 0.2))
+        ax.set_xticks(np.linspace(0., 0.8, 5))
     elif analysis == 'specificity_word':
         times = np.linspace(0., 0.8, scores.shape[1])
-        ax.set_xticks(np.arange(0., 0.8, 0.2))
+        ax.set_xticks(np.linspace(0., 0.8, 5))
     else:
         times = np.linspace(-0.2, 1.4, scores.shape[1])
         ax.set_xticks(np.arange(-0.2, 1.6, 0.2))
         ax.axvline(0., color='lightgrey', alpha=0.7, lw=1, zorder=-20)
         ax.axvline(0.6, color='lightgrey', alpha=0.7, lw=1, zorder=-20)
     avg, sem = helper.calculate_avg_sem(scores)
-    ax.plot(times, avg, color=color, lw=2)
-    ax.fill_between(times, avg - sem, avg + sem, alpha=.05, color=color)
+    ax.plot(times, avg, color=color, lw=1.5)
+    ax.fill_between(times, avg - sem, avg + sem, alpha=.1, color=color)
     ax.axhline(chance, color='lightgrey', alpha=0.7, linestyle='--', lw=1, zorder=-20)
     ax.set_xlabel('Time (s)')
     ax.set_ylabel('AUC') 
-    plt.tight_layout()
+    # plt.tight_layout()
     return ax
 
 def plot_clusters(clusters, cluster_pvals, scores, analysis, ax):
@@ -187,27 +261,30 @@ def plot_clusters(clusters, cluster_pvals, scores, analysis, ax):
         # times = np.linspace(0.6, 1.4, scores.shape[1])
         # ax.set_xticks(np.arange(0.6, 1.6, 0.2))
         times = np.linspace(0., 0.8, scores.shape[1])
-        ax.set_xticks(np.arange(0., 0.8, 0.2))
+        # ax.set_xticks(np.arange(0., 0.8, 0.2))
     elif analysis == 'specificity_word':
         times = np.linspace(0., 0.8, scores.shape[1])
-        ax.set_xticks(np.arange(0., 1.0, 0.2))
+        # ax.set_xticks(np.arange(0., 1.0, 0.2))
     else:
         times = np.linspace(-0.2, 1.4, scores.shape[1])
     for cluster, pval in zip(clusters,cluster_pvals):
         cluster_start = cluster[0].start
+        cluster_start_time = round(times[cluster_start],3)
         cluster_stop = cluster[0].stop
-        print(f'cluster extent: {round(times[cluster_start],3)}-{round(times[cluster_stop],3)}')
+        cluster_stop_safe_idx = min(cluster_stop, len(times) - 1)
+        cluster_stop_time = round(times[cluster_stop_safe_idx],3)
+        print(f'cluster extent: {cluster_start_time:.3f}-{cluster_stop_time:.3f}')
         x = times[cluster_start:cluster_stop]
         y1 = avg[cluster_start:cluster_stop]
         y2 = 0.5
         if pval < 0.05:
             color = plt.get_cmap(color_scheme[analysis])(0.75)
             ax.fill_between(x, y1, y2, color=color, alpha=(0.5))#, zorder=-100)
-            ax.plot(x, y1, color=color, linewidth=3)
+            ax.plot(x, y1, color=color, linewidth=2)
         else:
             color = plt.get_cmap(color_scheme[analysis])(0.75)
             ax.fill_between(x, y1, y2, color='grey', alpha=(0.5))#, zorder=-100)
-            ax.plot(x, y1, color=color, linewidth=3)
+            ax.plot(x, y1, color=color, linewidth=1.75)
     return ax
 
 def convert_pvalue_to_asterisks(pvalue):

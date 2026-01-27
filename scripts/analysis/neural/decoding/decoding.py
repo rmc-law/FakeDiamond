@@ -33,6 +33,8 @@ def main():
     parser.add_argument('-clas', '--classifier', type=str, required=True, default='logistic', help='Specify classifier: logistic or svc')
     parser.add_argument('-data', '--data_type', type=str, required=True, default='MEEG', help='MEEG or MEG or ROI (source space)')
     parser.add_argument('-win', '--window', type=str, required=True, default='temporal', help='Perform analysis on each time point, sliding, or open windows')
+    parser.add_argument('--sliding_window_size', type=int, required=False, default=50, help='Sliding window size in ms')
+    parser.add_argument('--sliding_window_step', type=int, required=False, default=10, help='Sliding window step in ms')
     parser.add_argument('--micro_ave', action='store_true', default=False, help='Perform micro-averaging')
     parser.add_argument('--generalise', action='store_true', default=False, help='Perform temporal generalisation')
     # parser.add_argument('--freq', type='store_true', default=False, help='Decompose data into separate frequency bands')
@@ -53,6 +55,12 @@ def main():
     print('generalise: ', generalise)
     window = args.window
     print('window: ', window)
+    if window == 'sliding':
+        sliding_window_size = args.sliding_window_size
+        print('sliding_window_size: ', sliding_window_size)
+        sliding_window_step = args.sliding_window_step
+        print('sliding_window_step: ', sliding_window_step)
+        window = f'sliding{sliding_window_size}-{sliding_window_step}'
     roi = args.roi
     print('roi: ', roi)
     print()
@@ -66,7 +74,6 @@ def main():
     trial_info = pd.read_csv(op.join(data_dir, 'logs', f'{subject}_logfile.csv'))
 
     epochs.load_data()
-    # epochs.filter(l_freq=None, h_freq=4.0)
     
     # get epochs drop log as a mask, then apply it to trial info as epochs.metadata
     epochs_drop_mask = [not bool(epoch) for epoch in epochs.drop_log]
@@ -81,11 +88,9 @@ def main():
             print(subject, ' stcs in ', roi, ' not found.')
         else:
             stcs = list(np.load(stcs_epochs_fname, allow_pickle=True)) # stc of a given roi
-            X, y = get_analysis_X_y(stcs, epochs.events, epochs.metadata, analysis_name=analysis, spatial=True, window=window) 
+            X, y = get_analysis_X_y(stcs, epochs.events, epochs.metadata, analysis_name=analysis, spatial=True, window=window, micro_averaging=micro_averaging) 
     else:
         X, y = get_analysis_X_y(epochs, epochs.events, epochs.metadata, analysis_name=analysis, spatial=False, window=window, micro_averaging=micro_averaging)
-                
-    # 1/0
 
     # some plotting-related parameters
     if analysis.startswith('concreteness_trainWord'):
@@ -108,11 +113,19 @@ def main():
         roi_infix = f'_{roi}'
     else:
         roi_infix = ''
+    if micro_averaging:
+        micro_ave_suffix = f'_micro-ave'
+    else:
+        micro_ave_suffix = ''
     if generalise:
         if roi:
             analysis_output_dir = op.join(decoding_output_dir, f'{analysis}/timegen/{classifier}/{data_type}/{window}/{subject}/{roi}')
+            if micro_averaging:
+                analysis_output_dir = op.join(analysis_output_dir, 'micro_ave')
         else:
             analysis_output_dir = op.join(decoding_output_dir, f'{analysis}/timegen/{classifier}/{data_type}/{window}/{subject}')
+            if micro_averaging:
+                analysis_output_dir = op.join(analysis_output_dir, 'micro_ave')
         if not op.exists(analysis_output_dir):
             os.makedirs(analysis_output_dir, exist_ok=True)
         if analysis.startswith('concreteness_trainWord'):
@@ -141,8 +154,12 @@ def main():
     else:
         if roi:
             analysis_output_dir = op.join(decoding_output_dir, f'{analysis}/diagonal/{classifier}/{data_type}/{window}/{subject}/{roi}')
+            if micro_averaging:
+                analysis_output_dir = op.join(analysis_output_dir, 'micro_ave')
         else:
             analysis_output_dir = op.join(decoding_output_dir, f'{analysis}/diagonal/{classifier}/{data_type}/{window}/{subject}')
+            if micro_averaging:
+                analysis_output_dir = op.join(analysis_output_dir, 'micro_ave')
         if not op.exists(analysis_output_dir):
             os.makedirs(analysis_output_dir, exist_ok=True)
             
@@ -172,8 +189,12 @@ def main():
             scores, coef = decode_diagonal(X, y, analysis=analysis, classifier=classifier)
             scores = np.mean(scores, axis=0) 
 
-        np.save(os.path.join(analysis_output_dir, f'scores_time_decod_{data_type}{roi_infix}.npy'), scores)
-        np.save(os.path.join(analysis_output_dir, f'scores_coef_{data_type}{roi_infix}.npy'), coef)
+        scores_fname = os.path.join(analysis_output_dir, f'scores_time_decod_{data_type}{roi_infix}.npy')
+        np.save(scores_fname, scores)
+        coef_fname = os.path.join(analysis_output_dir, f'scores_coef_{data_type}{roi_infix}.npy')
+        np.save(coef_fname, coef)
+        print(f'Decoding scores saved to {scores_fname}.')
+        print(f'Decoding coefs saved to {coef_fname}.')
 
         fig, _ = plot_scores(times=times, scores=scores, analysis=analysis, subject=subject)
         fig.savefig(op.join(analysis_output_dir, f'fig_time_decod{roi_infix}.png'))
